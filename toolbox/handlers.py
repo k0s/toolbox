@@ -62,7 +62,6 @@ class TempitaHandler(Handler):
         Handler.__init__(self, app, request)
         self.data = { 'request': request,
                       'link': self.link }
-        projects = self.app.model.get()
 
     def __call__(self):
         return getattr(self, self.request.method.title())()
@@ -85,6 +84,5 @@ class QueryView(TempitaHandler):
 
     def __init__(self, app, request):
         TempitaHandler.__init__(self, app, request)
-
-    def Get(self):
-        return GenshiHandler.Get(self)
+        projects = self.app.model.get()
+        self.data['projects'] = projects

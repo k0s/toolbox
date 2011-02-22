@@ -57,7 +57,8 @@ class MemoryCache(ProjectsModel):
     def get(self, **query):
         results = set(self.projects.keys())
         for key, value in query.items():
-            results.intersection_update(self.index.get(key, {}).get(value, set())
+            results.intersection_update(self.index.get(key, {}).get(value, set()))
+        return set([self.projects[project] for project in results])
 
     def fields(self):
         return self._fields

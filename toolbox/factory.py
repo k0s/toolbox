@@ -1,12 +1,11 @@
 import os
 
 from dispatcher import Dispatcher
-from paste.httpexceptions import HTTPExceptionHandler
-from paste.urlparser import StaticURLParser
 from pkg_resources import resource_filename
 
 class PassthroughFileserver(object):
     """serve files if they exist"""
+    from paste.urlparser import StaticURLParser
 
     def __init__(self, app, directory):
         self.app = app
@@ -19,7 +18,7 @@ class PassthroughFileserver(object):
             return self.fileserver(environ, start_response)
         return self.app(environ, start_response)
 
-def factory(global_conf, **app_conf):
+def paste_factory(global_conf, **app_conf):
     """create a webob view and wrap it in middleware"""
 
     keystr = 'toolbox.'
@@ -27,5 +26,16 @@ def factory(global_conf, **app_conf):
                  for key, value in app_conf.items()
                  if key.startswith(keystr) ])
     app = Dispatcher(**args)
-    return HTTPExceptionHandler(PassthroughFileserver(app, resource_filename(__name__, 'static')))
+    return PassthroughFileserver(app, resource_filename(__name__, 'static'))
+
+def wsgiref_factory(host='0.0.0.0', port=8080):
+    # for testing only
+    here = os.path.dirname(os.path.abspath(__file__))
+    directory = os.path.join(os.path.dirname(here), 'sample')
+    app = Dispatcher(directory=directory)
+    from wsgiref import simple_server
+    server = simple_server.make_server(host=host, port=int(port), app=app)
+    server.serve_forever()
     
+if __name__ == '__main__':
+    wsgiref_factory()

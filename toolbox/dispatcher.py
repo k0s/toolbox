@@ -13,15 +13,13 @@ from webob import Request, Response, exc
 class Dispatcher(object):
 
     ### class level variables
-    defaults = { 'template_dirs': '',
-                 'name': 'anonymous' }
+    defaults = { 'template_dirs': ''}
 
     def __init__(self, directory, **kw):
 
         # set instance parameters from kw and defaults
         for key in self.defaults:
             setattr(self, key, kw.get(key, self.defaults[key]))
-        self.auto_reload = self.auto_reload.lower() == 'true'
 
         # JSON blob directory
         assert os.path.exists(directory) and os.path.isdir(directory)
@@ -31,13 +29,7 @@ class Dispatcher(object):
         self.model = MemoryCache(self.directory)
 
         # request handlers
-        self.handlers = [ Index ]
-
-        # template loader
-        self.template_dirs = self.template_dirs.split()
-        self.template_dirs.append(resource_filename(__name__, 'templates'))
-        self.loader = TemplateLoader(self.template_dirs,
-                                     auto_reload=self.auto_reload)
+        self.handlers = [ QueryView ]
 
     def __call__(self, environ, start_response):
 
@@ -56,8 +48,6 @@ class Dispatcher(object):
             if handler is not None:
                 break
         else:
-            if self.app:
-                return self.app(environ, start_response)
             handler = exc.HTTPNotFound
 
         # get response
