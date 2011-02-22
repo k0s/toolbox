@@ -68,7 +68,7 @@ for element in elements:
     else:
         project['name'] = header.text
     description = element.find("p[@class='description']")
-    if description:
+    if description is not None:
         project['description'] = description.text or ''
     for field in ('author', 'usage', 'language'):
         e = element.find("ul[@class='%s']" % field)
