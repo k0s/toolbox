@@ -1,0 +1,6 @@
+{"name": "sendchanges",
+ "description": "send changes to a Mozilla buildmaster for testing",
+ "author": ["jhammel"],
+ "usage": ["buildbot"],
+ "language": ["python"],
+ "dependencies": ["GetLatestTinderbox"]}

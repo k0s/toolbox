@@ -1,0 +1,41 @@
+from setuptools import setup, find_packages
+
+try:
+    description = file('README.txt').read()
+except IOError: 
+    description = ''
+
+version = "0.0"
+
+# dependencies
+dependencies = [
+    # -*- Extra requirements: -*-
+    'WebOb',	
+    'genshi',
+    'tempita'
+    ]
+try:
+    import json
+except ImportError:
+    dependencies.append('simplejson')
+
+setup(name='toolbox',
+      version=version,
+      description="a place to put Mozilla software tools",
+      long_description=description,
+      classifiers=[], # Get strings from http://www.python.org/pypi?%3Aaction=list_classifiers
+      author='Jeff Hammel',
+      author_email='jhammel@mozilla.com',
+      url='',
+      license="MPL",
+      packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
+      include_package_data=True,
+      zip_safe=False,
+      install_requires=dependencies,
+      entry_points="""
+      # -*- Entry points: -*-
+      [paste.app_factory]
+      toolbox = toolbox.factory:factory
+      """,
+      )
+      
