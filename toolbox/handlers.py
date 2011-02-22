@@ -79,6 +79,8 @@ class TempitaHandler(Handler):
                         body=template.substitute(**self.data))
 
 class QueryView(TempitaHandler):
+    """general view to query all projects"""
+    
     template = 'index.html'
     methods=set(['GET'])
 
@@ -87,3 +89,38 @@ class QueryView(TempitaHandler):
         projects = self.app.model.get(**self.request.GET.mixed())
         self.data['projects'] = projects
         self.data['fields'] = self.app.model.fields()
+        self.data['title'] = 'Tools'
+
+class ProjectView(TempitaHandler):
+    """view of a particular project"""
+
+    template = 'index.html'
+    methods=set(['GET'])
+
+    @classmethod
+    def match(cls, app, request):
+
+        # check the method
+        if request.method not in cls.methods:
+            return None
+
+        # the path should match a project
+        if len(request.environ['path']) != 1:
+            return None
+
+        # get the project if it exists
+        project = app.model.project(request.environ['path'][0])
+        if not project:
+            return None
+
+        # check the constructor
+        try:
+            return cls(app, request, project)
+        except HandlerMatchException:
+            return None
+
+    def __init__(self, app, request, project):
+        TempitaHandler.__init__(self, app, request)
+        self.data['fields'] = self.app.model.fields()
+        self.data['projects'] = [project]
+        self.data['title'] = project['name']

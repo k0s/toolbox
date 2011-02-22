@@ -3,7 +3,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Tools</title>
+<title>{{title}}</title>
 <script src="{{link('jquery.js')}}"></script>
 </head>
 <body>
@@ -12,7 +12,7 @@
     <a name="{{project['name']}}"></a>
     <h1>
       {{if 'url' in project}}
-      <a href="{{project['url'}}">{{project['name']}}</a>
+      <a href="{{project['url']}}">{{project['name']}}</a>
       {{else}}
       {{project['name']}}
       {{endif}}

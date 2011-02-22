@@ -25,11 +25,23 @@ class ProjectsModel(object):
         raise NotImplementedError
 
     def get(self, **query):
+        """
+        get a list of projects matching a query
+        the query should be key, value pairs to match;
+        if the value is single, it should be a string;
+        if the value is multiple, it should be a set which will be
+        anded together
+        """
         raise NotImplementedError
 
     def fields(self):
         """what fields does the model support?"""
         raise NotImplementedError
+
+    def project(self, name):
+        """get a project of a particular name, or None if there is none"""
+        raise NotImplementedError
+    
 
 class MemoryCache(ProjectsModel):
     """
@@ -70,3 +82,6 @@ class MemoryCache(ProjectsModel):
 
     def fields(self):
         return self._fields
+
+    def project(self, name):
+        return self.projects.get(name)
