@@ -15,10 +15,10 @@
     <p class="description">
       {{project.get('description', '')}}
     </p>
-    {{for field in fields}}
+    {{for field in [f in fields if f in project]}}
     <ul class="{{field}}">
       <h2><a href="{{link(field)}}">{{field.title()}}</a></h2>
-      {{for entry in project.get(field, ())}}
+      {{for entry in project[field]}}
       <li><a href="?{{field}}={{entry}}">{{entry}}</a></li>
       {{endfor}}
     </ul>
