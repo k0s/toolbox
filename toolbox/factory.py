@@ -5,11 +5,11 @@ from pkg_resources import resource_filename
 
 class PassthroughFileserver(object):
     """serve files if they exist"""
-    from paste.urlparser import StaticURLParser
 
     def __init__(self, app, directory):
         self.app = app
         self.directory = directory
+        from paste.urlparser import StaticURLParser
         self.fileserver = StaticURLParser(self.directory)
 
     def __call__(self, environ, start_response):

@@ -15,6 +15,14 @@
     <p class="description">
       {{project.get('description', '')}}
     </p>
+    {{for field in fields}}
+    <ul class="{{field}}">
+      <h2><a href="{{link(field)}}">{{field.title()}}</a></h2>
+      {{for entry in project.get(field, ())}}
+      <li><a href="?{{field}}={{entry}}">{{entry}}</a></li>
+      {{endfor}}
+    </ul>
+    {{endfor}}
   </div><!-- project -->
 {{endfor}}  
 </body>
