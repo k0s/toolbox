@@ -9,9 +9,7 @@ version = "0.0"
 
 # dependencies
 dependencies = [
-    # -*- Extra requirements: -*-
     'WebOb',	
-    'genshi',
     'tempita'
     ]
 try:
