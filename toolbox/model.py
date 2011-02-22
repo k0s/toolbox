@@ -2,6 +2,8 @@
 models for toolbox
 """
 
+import os
+
 try:
     import json
 except ImportError:
@@ -11,7 +13,7 @@ class ProjectsModel(object):
     """
     abstract base class for toolbox projects
     """
-    reserved = set(['name', 'description'])
+    reserved = set(['name', 'description', 'url'])
 
     def __init__(self, directory):
         """
@@ -39,17 +41,23 @@ class MemoryCache(ProjectsModel):
         self.projects = {}
         self._fields = set()
         self.index = {}
+        self.load()
 
     def load(self):
         for i in os.listdir(self.directory):
             if not i.endswith('.json'):
                 continue
-            project = json.loads(file(os.path.join(self.directory, i))).read()
+            project = json.loads(file(os.path.join(self.directory, i)).read())
             self.projects[project['name']] = project
             fields = [i for i in project if i not in self.reserved]
-            self.fields.update(fields)
+            self._fields.update(fields)
             for field in fields:
-                self.index.setdefault(field, {}).setdefault(project[field], set()).update([project['name']])
+                index = self.index.setdefault(field, {})
+                values = project[field]
+                if isinstance(values, basestring):
+                    values = [values]
+                for value in values:
+                    index.setdefault(value, set()).update([project['name']])
 
     def update(self, project):
         pass
@@ -58,7 +66,7 @@ class MemoryCache(ProjectsModel):
         results = set(self.projects.keys())
         for key, value in query.items():
             results.intersection_update(self.index.get(key, {}).get(value, set()))
-        return set([self.projects[project] for project in results])
+        return [self.projects[project] for project in results]
 
     def fields(self):
         return self._fields
