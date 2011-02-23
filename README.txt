@@ -7,3 +7,5 @@ Other useful things:
 * smart bookmarks
 * code snippets
 
+TODO:
+* URLs in the description should be made links
