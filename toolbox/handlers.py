@@ -113,12 +113,16 @@ class ProjectsView(TempitaHandler):
         """check to see if the request is for JSON"""
         self.json = self.request.GET.pop('format', '') == 'json'
 
+    def get_json(self):
+        """JSON to serialize if requested"""
+        return self.data['projects']
+
     def Get(self):
         if self.json:
             return Response(content_type='application/json',
-                            body=json.dumps(self.data['projects']))
+                            body=json.dumps(self.get_json()))
         return TempitaHandler.Get(self)
-        
+
 class QueryView(ProjectsView):
     """general view to query all projects"""
     
@@ -203,3 +207,8 @@ class FieldView(ProjectsView):
             raise HandlerMatchException
         self.data['field'] = field
         self.data['projects'] = projects
+
+    def get_json(self):
+        return dict([(key, list(value))
+                     for key, value in self.data['projects'].items()])
+        
