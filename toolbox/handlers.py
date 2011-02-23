@@ -156,4 +156,8 @@ class FieldView(TempitaHandler):
 
     def __init__(self, app, request, field):
         TempitaHandler.__init__(self, app, request)
+        projects = self.app.model.field_query(field)
+        if projects is None:
+            raise HandlerMatchException
         self.data['field'] = field
+        self.data['projects'] = projects

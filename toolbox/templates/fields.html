@@ -9,5 +9,16 @@
 <body>
 <h1>Tools by {{field}}</h1>
 
+{{for key in sorted(projects.keys(), key=lambda x: x.lower())}}
+<div id="{{key}}"><a name="{{key}}"></a>
+<h2><a href="/?{{field}}={{key}}">{{key}}</a></h2>
+<ul>
+  {{for project in sorted(projects[key])}}
+  <li><a href="{{link(project)}}">{{project}}</a></li>
+  {{endfor}}
+</ul>
+</div>
+{{endfor}}
+
 </body>
 </html>

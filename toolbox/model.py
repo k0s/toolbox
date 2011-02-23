@@ -41,7 +41,10 @@ class ProjectsModel(object):
     def project(self, name):
         """get a project of a particular name, or None if there is none"""
         raise NotImplementedError
-    
+
+    def field_query(self, field):
+        """get projects according to a particular field, or None"""
+        raise NotImplementedError
 
 class MemoryCache(ProjectsModel):
     """
@@ -85,3 +88,6 @@ class MemoryCache(ProjectsModel):
 
     def project(self, name):
         return self.projects.get(name)
+
+    def field_query(self, field):
+        return self.index.get(field)
