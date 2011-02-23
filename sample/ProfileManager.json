@@ -1,0 +1,12 @@
+{
+  "url": "http://hg.mozilla.org/automation/profilemanager/", 
+  "usage": [
+    "profiles"
+  ], 
+  "author": [
+    "jgriffin", 
+    "jhammel"
+  ], 
+  "name": "ProfileManager", 
+  "description": "Manage profiles for Firefox and other XULRunner applications"
+}

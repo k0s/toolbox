@@ -1,0 +1,10 @@
+{
+  "url": "https://bitbucket.org/dmose/hgactivity", 
+  "usage": [
+    "hg"
+  ], 
+  "name": "hgactivity", 
+  "author": [
+    "dmose"
+  ]
+}

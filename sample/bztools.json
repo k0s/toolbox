@@ -1,0 +1,13 @@
+{
+  "url": "https://github.com/LegNeato/bztools", 
+  "usage": [
+    "bugzilla"
+  ], 
+  "name": "bztools", 
+  "language": [
+    "python"
+  ], 
+  "author": [
+    "LegNeato"
+  ]
+}

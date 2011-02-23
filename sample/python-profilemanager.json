@@ -1,0 +1,14 @@
+{
+  "name": "python-profilemanager", 
+  "language": [
+    "python"
+  ], 
+  "author": [
+    "jhammel"
+  ], 
+  "url": "http://k0s.org/mozilla/hg/ProfileManager/", 
+  "usage": [
+    "profiles"
+  ], 
+  "description": "A python version of profile manager; see also http://hg.mozilla.org/automation/profilemanager/"
+}

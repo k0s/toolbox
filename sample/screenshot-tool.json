@@ -1,0 +1,11 @@
+{
+  "url": "http://hg.mozilla.org/users/tmielczarek_mozilla.com/screenshot-tools", 
+  "usage": [
+    "screenshots"
+  ], 
+  "author": [
+    "ted"
+  ], 
+  "name": "screenshot-tool", 
+  "description": "screenshot program"
+}

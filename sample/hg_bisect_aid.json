@@ -1,0 +1,10 @@
+{
+  "url": "http://hg.mozilla.org/users/bugzilla_standard8.plus.com/useful-tools/file/tip/hg_bisect_aid", 
+  "usage": [
+    "hg"
+  ], 
+  "name": "hg_bisect_aid", 
+  "author": [
+    "Standard8"
+  ]
+}

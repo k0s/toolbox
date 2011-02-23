@@ -1,0 +1,12 @@
+{
+  "url": "http://hg.mozilla.org/automation/logparser/", 
+  "author": [
+    "jgriffin", 
+    "jhammel"
+  ], 
+  "name": "logparser", 
+  "language": [
+    "python"
+  ], 
+  "description": "\nparses test logs into JSON and scrapes logs from stage.mozilla.org\n"
+}

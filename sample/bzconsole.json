@@ -1,0 +1,6 @@
+{"name": "bzconsole",
+ "description": "console API to bugzilla",
+ "url": "http://k0s.org/mozilla/hg/bzconsole",
+ "author": ["jhammel"],
+ "usage": ["bugzilla"],
+ "language": ["python"]}

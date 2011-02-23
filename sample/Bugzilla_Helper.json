@@ -1,0 +1,6 @@
+{"name": "Bugzilla Helper",
+ "description": "Quickly reply to your bugmail on bugzilla.mozilla.org without leaving Thunderbird",
+ "url": "https://addons.mozilla.org/en-US/thunderbird/addon/bugzilla-helper/",
+ "author": ["sdwilsh"],
+ "usage": ["bugzilla", "thunderbird"],
+ "type": ["addon"]}

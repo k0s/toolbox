@@ -1,0 +1,10 @@
+{
+  "url": "http://hg.mozilla.org/automation/getlatest-tinderbox/", 
+  "name": "GetLatestTinderbox", 
+  "language": [
+    "python"
+  ], 
+  "author": [
+    "jhammel"
+  ]
+}

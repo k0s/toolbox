@@ -1,0 +1,7 @@
+{
+  "url": "http://hg.mozilla.org/build/tools/file/tip/buildfarm/utils/hgtool.py", 
+  "usage": [
+    "hg"
+  ], 
+  "name": "hgtool"
+}

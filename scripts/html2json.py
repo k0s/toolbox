@@ -67,10 +67,12 @@ for element in elements:
         project['url'] = link.attrib['href']
     else:
         project['name'] = header.text
+    project['name'] = ' '.join(project['name'].strip().split())
     description = element.find("p[@class='description']")
     if description is not None:
         project['description'] = description.text or ''
-    for field in ('author', 'usage', 'language'):
+        project['description'] = ' '.join(project['description'].strip().split())
+    for field in ('author', 'usage', 'language', 'type'):
         e = element.find("ul[@class='%s']" % field)
         if e is not None:
             values = e.findall('li')
