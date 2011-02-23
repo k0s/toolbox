@@ -222,3 +222,14 @@ class FieldView(ProjectsView):
         self.data['field'] = field
         self.data['projects'] = projects
         
+class CreateProjectView(TempitaHandler):
+    """view to create a new project"""
+
+    template = 'new.html'
+    methods = set(['GET', 'POST'])
+    handler_path = ['new']
+
+    def __init__(self, app, request):
+        TempitaHandler.__init__(self, app, request)
+        self.data['navigation'] = self.navigation()
+    

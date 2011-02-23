@@ -1,0 +1,47 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Add a tool</title>
+<script src="{{link('jquery.js')}}"></script>
+</head>
+<body>
+
+{{navigation | html}}
+
+<h1>Add a tool</h1>
+
+<form method="post">
+
+  <div>
+    <label for="name">Name</label>
+    <input type="text" name="name"/>
+  </div>
+
+  <div>
+    <label for="description">Description</label>
+    <textarea name="description"></textarea>
+  </div>
+
+  <div>
+    <label for="url">URL</label>
+    <input type="text" name="url"/>
+  </div>
+
+  <div>
+    <label for="author">Author</label>
+    <input type="text" name="author"/>
+  </div>
+
+  <div>
+    <label for="language">Language</label>
+    <input type="text" name="language"/>
+  </div>
+
+  <input type="submit"/>
+
+</form>
+
+</body>
+</html>

@@ -5,6 +5,7 @@ data persisting across requests should go here
 
 import os
 
+from handlers import CreateProjectView
 from handlers import FieldView
 from handlers import ProjectView
 from handlers import QueryView
@@ -31,7 +32,7 @@ class Dispatcher(object):
         self.model = MemoryCache(self.directory)
 
         # request handlers
-        self.handlers = [ FieldView, ProjectView, QueryView ]
+        self.handlers = [ CreateProjectView, FieldView, ProjectView, QueryView ]
 
     def __call__(self, environ, start_response):
 
