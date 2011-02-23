@@ -13,23 +13,27 @@ class ProjectsModel(object):
     """
     abstract base class for toolbox projects
     """
-    reserved = set(['name', 'description', 'url'])
+    reserved = set(['name', 'description', 'url', 'modified'])
 
     def __init__(self, directory):
         """
         - directory: directory of projects
         """
         self.directory = directory
-        files = set()
+        self.files = {} 
 
     def load(self):
-        """load JSON"""        
+        """load JSON from the directory"""
         for i in os.listdir(self.directory):
             if not i.endswith('.json'):
                 continue
             filename = os.path.join(self.directory, i)
-            project = json.loads(file(filename).read())
-            self.update(project)
+            mtime = os.path.getmtime(filename)
+            if mtime > self.files.get(i, -1):
+                self.files[i] = mtime
+                project = json.loads(file(filename).read())
+                project['modified'] = mtime
+                self.update(project)
 
     def update(self, project):
         """update a project"""

@@ -4,6 +4,7 @@ these are instantiated for every request, then called
 """
 
 import os
+from datetime import datetime
 from pkg_resources import resource_filename
 from urlparse import urlparse
 from util import JSONEncoder
@@ -109,6 +110,7 @@ class ProjectsView(TempitaHandler):
         self.check_json()
         if not self.json:
             self.data['navigation'] = self.navigation()
+            self.data['format_date'] = self.format_date
 
     def check_json(self):
         """check to see if the request is for JSON"""
@@ -124,6 +126,17 @@ class ProjectsView(TempitaHandler):
                             body=json.dumps(self.get_json(), cls=JSONEncoder))
         return TempitaHandler.Get(self)
 
+    def sort(self, field):
+        if field == 'name':
+            self.data['projects'].sort(key=lambda value: value[field].lower())
+        else:
+            self.data['projects'].sort(key=lambda value: value[field])
+
+    def format_date(self, timestamp):
+        """return a string representation of a timestamp"""
+        return datetime.fromtimestamp(timestamp).isoformat()
+
+
 class QueryView(ProjectsView):
     """general view to query all projects"""
     
@@ -132,9 +145,9 @@ class QueryView(ProjectsView):
 
     def __init__(self, app, request):
         ProjectsView.__init__(self, app, request)
-        projects = self.app.model.get(**self.request.GET.mixed())
-        projects.sort(key=lambda project: project['name'].lower())
-        self.data['projects'] = projects
+        sort_type = self.request.GET.pop('sort', 'modified')
+        self.data['projects']= self.app.model.get(**self.request.GET.mixed())
+        self.sort(sort_type)
         self.data['fields'] = self.app.model.fields()
         self.data['title'] = 'Tools'
 

@@ -20,6 +20,7 @@
       {{project['name']}}
       {{endif}}
     </h1>
+    <span class="date">Modified: {{format_date(project['modified'])}}</span>
     <p class="description">
       {{project.get('description', '')}}
     </p>
