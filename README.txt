@@ -7,6 +7,18 @@ Other useful things:
 * smart bookmarks
 * code snippets
 
+Testing
+-------
+
+To run in testing mode, cd to the toolbox directory and run::
+
+ python factory.py
+
+This will run a primitive wsgiref server on port 8080.
+
+Improve instructions to come! :)
+
+
 TODO
 ----
 
