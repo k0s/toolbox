@@ -6,6 +6,7 @@ these are instantiated for every request, then called
 import os
 from pkg_resources import resource_filename
 from urlparse import urlparse
+from util import JSONEncoder
 from webob import Response, exc
 from tempita import HTMLTemplate
 
@@ -120,7 +121,7 @@ class ProjectsView(TempitaHandler):
     def Get(self):
         if self.json:
             return Response(content_type='application/json',
-                            body=json.dumps(self.get_json()))
+                            body=json.dumps(self.get_json(), cls=JSONEncoder))
         return TempitaHandler.Get(self)
 
 class QueryView(ProjectsView):
@@ -207,8 +208,4 @@ class FieldView(ProjectsView):
             raise HandlerMatchException
         self.data['field'] = field
         self.data['projects'] = projects
-
-    def get_json(self):
-        return dict([(key, list(value))
-                     for key, value in self.data['projects'].items()])
         
