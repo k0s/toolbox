@@ -144,7 +144,7 @@ class FieldView(TempitaHandler):
             return None
 
         # ensure the field exists
-        field = request.environ['path']
+        field = request.environ['path'][0]
         if field not in app.model.fields():
             return None
 
