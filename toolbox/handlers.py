@@ -125,3 +125,35 @@ class ProjectView(TempitaHandler):
         self.data['fields'] = self.app.model.fields()
         self.data['projects'] = [project]
         self.data['title'] = project['name']
+
+
+class FieldView(TempitaHandler):
+    """view of projects sorted by a field"""
+
+    template = 'fields.html'
+
+    @classmethod
+    def match(cls, app, request):
+
+        # check the method
+        if request.method not in cls.methods:
+            return None
+
+        # the path should match a project
+        if len(request.environ['path']) != 1:
+            return None
+
+        # ensure the field exists
+        field = request.environ['path']
+        if field not in app.model.fields():
+            return None
+
+        # check the constructor
+        try:
+            return cls(app, request, field)
+        except HandlerMatchException:
+            return None
+
+    def __init__(self, app, request, field):
+        TempitaHandler.__init__(self, app, request)
+        self.data['field'] = field

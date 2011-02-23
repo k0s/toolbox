@@ -4,6 +4,7 @@
     "bugzilla"
   ], 
   "name": "bztools", 
+  "description": "Models and scripts to access the Bugzilla REST API",
   "language": [
     "python"
   ], 
