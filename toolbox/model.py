@@ -20,8 +20,19 @@ class ProjectsModel(object):
         - directory: directory of projects
         """
         self.directory = directory
+        files = set()
 
     def load(self):
+        """load JSON"""        
+        for i in os.listdir(self.directory):
+            if not i.endswith('.json'):
+                continue
+            filename = os.path.join(self.directory, i)
+            project = json.loads(file(filename).read())
+            self.update(project)
+
+    def update(self, project):
+        """update a project"""
         raise NotImplementedError
 
     def get(self, **query):
@@ -58,24 +69,17 @@ class MemoryCache(ProjectsModel):
         self.index = {}
         self.load()
 
-    def load(self):
-        for i in os.listdir(self.directory):
-            if not i.endswith('.json'):
-                continue
-            project = json.loads(file(os.path.join(self.directory, i)).read())
-            self.projects[project['name']] = project
-            fields = [i for i in project if i not in self.reserved]
-            self._fields.update(fields)
-            for field in fields:
-                index = self.index.setdefault(field, {})
-                values = project[field]
-                if isinstance(values, basestring):
-                    values = [values]
-                for value in values:
-                    index.setdefault(value, set()).update([project['name']])
-
     def update(self, project):
-        pass
+        self.projects[project['name']] = project
+        fields = [i for i in project if i not in self.reserved]
+        self._fields.update(fields)
+        for field in fields:
+            index = self.index.setdefault(field, {})
+            values = project[field]
+            if isinstance(values, basestring):
+                values = [values]
+            for value in values:
+                index.setdefault(value, set()).update([project['name']])
 
     def get(self, **query):
         results = set(self.projects.keys())
