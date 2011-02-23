@@ -9,10 +9,16 @@ from urlparse import urlparse
 from webob import Response, exc
 from tempita import HTMLTemplate
 
+try:
+    import json
+except ImportError:
+    import simplejson as json
+
 class HandlerMatchException(Exception):
     """the handler doesn't match the request"""
 
 class Handler(object):
+    """general purpose request handler (view)"""
 
     methods = set(['GET']) # methods to listen to
     handler_path = [] # path elements to match        
@@ -54,7 +60,9 @@ class Handler(object):
     def redirect(self, location):
         raise exc.HTTPSeeOther(location=location)
 
+
 class TempitaHandler(Handler):
+    """handler for tempita templates"""
 
     template_dirs = [ resource_filename(__name__, 'templates') ]
     
@@ -62,9 +70,6 @@ class TempitaHandler(Handler):
         Handler.__init__(self, app, request)
         self.data = { 'request': request,
                       'link': self.link }
-
-        # toolbox-specific init
-        self.data['navigation'] = self.navigation()
 
     def __call__(self):
         return getattr(self, self.request.method.title())()
@@ -85,28 +90,51 @@ class TempitaHandler(Handler):
         # needs to have self.template set
         return Response(content_type='text/html',
                         body=self.render(self.template, **self.data))
-
-    ### toolbox-specific functions
+    
     def navigation(self):
+        """render navigation menu"""
+        ### toolbox-specific function
         data = self.data.copy()
         data['fields'] = self.app.model.fields()
         return self.render('navigation.html', **data)
 
-class QueryView(TempitaHandler):
+
+class ProjectsView(TempitaHandler):
+    """abstract base class for view with projects"""
+
+    def __init__(self, app, request):
+        """project views specific init"""
+        TempitaHandler.__init__(self, app, request)
+        self.check_json()
+        if not self.json:
+            self.data['navigation'] = self.navigation()
+
+    def check_json(self):
+        """check to see if the request is for JSON"""
+        self.json = self.request.GET.pop('format', '') == 'json'
+
+    def Get(self):
+        if self.json:
+            return Response(content_type='application/json',
+                            body=json.dumps(self.data['projects']))
+        return TempitaHandler.Get(self)
+        
+class QueryView(ProjectsView):
     """general view to query all projects"""
     
     template = 'index.html'
     methods=set(['GET'])
 
     def __init__(self, app, request):
-        TempitaHandler.__init__(self, app, request)
+        ProjectsView.__init__(self, app, request)
         projects = self.app.model.get(**self.request.GET.mixed())
         projects.sort(key=lambda project: project['name'].lower())
         self.data['projects'] = projects
         self.data['fields'] = self.app.model.fields()
         self.data['title'] = 'Tools'
 
-class ProjectView(TempitaHandler):
+
+class ProjectView(ProjectsView):
     """view of a particular project"""
 
     template = 'index.html'
@@ -135,13 +163,13 @@ class ProjectView(TempitaHandler):
             return None
 
     def __init__(self, app, request, project):
-        TempitaHandler.__init__(self, app, request)
+        ProjectsView.__init__(self, app, request)
         self.data['fields'] = self.app.model.fields()
         self.data['projects'] = [project]
         self.data['title'] = project['name']
 
 
-class FieldView(TempitaHandler):
+class FieldView(ProjectsView):
     """view of projects sorted by a field"""
 
     template = 'fields.html'
@@ -169,7 +197,7 @@ class FieldView(TempitaHandler):
             return None
 
     def __init__(self, app, request, field):
-        TempitaHandler.__init__(self, app, request)
+        ProjectsView.__init__(self, app, request)
         projects = self.app.model.field_query(field)
         if projects is None:
             raise HandlerMatchException
