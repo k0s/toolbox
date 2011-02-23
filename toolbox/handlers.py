@@ -72,11 +72,16 @@ class TempitaHandler(Handler):
             if os.path.exists(path):
                 return HTMLTemplate.from_filename(path)
 
+    def render(self, template, **data):
+        template = self.find_template(template)
+        if template is None:
+            raise Exception("I can't find your template")
+        return template.substitute(**data)
+
     def Get(self):
         # needs to have self.template set
-        template = self.find_template(self.template)
         return Response(content_type='text/html',
-                        body=template.substitute(**self.data))
+                        body=self.render(self.template, **self.data))
 
 class QueryView(TempitaHandler):
     """general view to query all projects"""
