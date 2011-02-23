@@ -1,0 +1,9 @@
+<!-- navigation menu -->
+<ul class="navigation">
+  <li><a href="/" title="toolbox">toolbox</a></li>
+  {{for field in fields}}
+  <li>
+    <a href="{{link(field)}}" title="tools by {{field}}">{{field}}</a>
+  </li>
+  {{endfor}}
+</ul>

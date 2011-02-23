@@ -63,6 +63,9 @@ class TempitaHandler(Handler):
         self.data = { 'request': request,
                       'link': self.link }
 
+        # toolbox-specific init
+        self.data['navigation'] = self.navigation()
+
     def __call__(self):
         return getattr(self, self.request.method.title())()
 
@@ -82,6 +85,12 @@ class TempitaHandler(Handler):
         # needs to have self.template set
         return Response(content_type='text/html',
                         body=self.render(self.template, **self.data))
+
+    ### toolbox-specific functions
+    def navigation(self):
+        data = self.data.copy()
+        data['fields'] = self.app.model.fields()
+        return self.render('navigation.html', **data)
 
 class QueryView(TempitaHandler):
     """general view to query all projects"""
