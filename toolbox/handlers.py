@@ -87,6 +87,7 @@ class QueryView(TempitaHandler):
     def __init__(self, app, request):
         TempitaHandler.__init__(self, app, request)
         projects = self.app.model.get(**self.request.GET.mixed())
+        projects.sort(key=lambda project: project['name'].lower())
         self.data['projects'] = projects
         self.data['fields'] = self.app.model.fields()
         self.data['title'] = 'Tools'
