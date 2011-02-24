@@ -232,6 +232,7 @@ class FieldView(ProjectsView):
             raise HandlerMatchException
         self.data['field'] = field
         self.data['projects'] = projects
+
         
 class CreateProjectView(TempitaHandler):
     """view to create a new project"""

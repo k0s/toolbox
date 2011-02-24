@@ -5,6 +5,7 @@ import tempfile
 from whoosh import fields
 from whoosh import index
 #from whoosh import store
+from whoosh.qparser import QueryParser
 
 class WhooshSearch(object):
     """full-text search"""
@@ -30,6 +31,11 @@ class WhooshSearch(object):
         writer.update_document(name=name, description=description)
         writer.commit()
 
+    def search(self, query):
+        q = QueryParser("content", schema=self.ix.schema)
+        searcher = self.ix.searcher()
+        return searcher.search(q)
+        
     def __del__(self):
         if self.tempdir:
             # delete the temporary directory, if present
