@@ -28,6 +28,7 @@ The list:
 * full-text search via whoosh
 * add some CSS+JS
 * keep track of which URLs projects cant use
+* use a slotted template structure
 * setup.py scraper
 * AMO scraper
 * more types of links should be allowed
