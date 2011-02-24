@@ -23,7 +23,6 @@ TODO
 
 The list:
 
-* depend on paste and use its StaticURLParser to serve JS + CSS
 * allow editing of a tool via AJAX and add updating fields to model
 * add a way of deleting a tool
 * full-text search via whoosh
