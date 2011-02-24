@@ -3,6 +3,7 @@ models for toolbox
 """
 
 import os
+from search import WhooshSearch
 from time import time
 from util import str2filename
 
@@ -22,7 +23,8 @@ class ProjectsModel(object):
         - directory: directory of projects
         """
         self.directory = directory
-        self.files = {} 
+        self.files = {}
+        self.search = WhooshSearch()
 
     def load(self):
         """load JSON from the directory"""
