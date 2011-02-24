@@ -34,14 +34,25 @@ class ProjectsModel(object):
             if mtime > self.files.get(i, -1):
                 self.files[i] = mtime
                 project = json.loads(file(filename).read())
+                self.files[project['name']] = i
                 project['modified'] = mtime
                 self.update(project)
 
     def save(self, project):
-        filename = str2filename(project['name']) + '.json'
+        filename = self.files.get(project['name'])
+        if not filename:
+            filename = str2filename(project['name']) + '.json'
         filename = os.path.join(self.directory, filename)
         file(filename, 'w').write(json.dumps(project))
         # TODO: data integrity checking
+
+    def update_fields(self, name, **fields):
+        """
+        update the fields of a particular project
+        """
+        project = self.project(name)
+        for field, value in fields.items():
+            raise NotImplementedError # TODO
 
     def update(self, project):
         """update a project"""
