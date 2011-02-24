@@ -34,7 +34,7 @@ class WhooshSearch(object):
         """update adocument"""
         writer = ix.writer()
         writer.add_document(name=name, description=description)
-        writer.commit()        
+        writer.commit()
 
     def __del__(self):
         if self.tempdir:
