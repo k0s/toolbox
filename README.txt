@@ -23,9 +23,9 @@ TODO
 
 The list:
 
+* add keywords (fields) to whoosh search
 * allow editing of a tool via AJAX and add updating fields to model
 * add a way of deleting a tool
-* full-text search via whoosh
 * add some CSS+JS
 * keep track of which URLs projects cant use
 * use a slotted template structure

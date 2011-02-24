@@ -13,10 +13,13 @@ from model import MemoryCache
 from pkg_resources import resource_filename
 from webob import Request, Response, exc
 
+models = {'memory_cache': MemoryCache}
+
 class Dispatcher(object):
 
     ### class level variables
-    defaults = { 'template_dirs': ''}
+    defaults = { 'template_dirs': '',
+                 'model_type': 'memory_cache'}
 
     def __init__(self, directory, **kw):
 
@@ -28,8 +31,10 @@ class Dispatcher(object):
         assert os.path.exists(directory) and os.path.isdir(directory)
         self.directory = directory
 
-        # model -- TODO: make pluggable via setuptools entry points
-        self.model = MemoryCache(self.directory)
+        # model: backend storage and accessors
+        if self.model_type not in models:
+            raise AssertionError("model_type '%s' not found in %s" % (self.model_type, models.keys()))
+        self.model = models[self.model_type](directory)
 
         # request handlers
         self.handlers = [ CreateProjectView, FieldView, ProjectView, QueryView ]
