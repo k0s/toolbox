@@ -29,15 +29,12 @@
     <input type="text" name="url"/>
   </div>
 
+  {{for field in fields}}
   <div>
-    <label for="author">Author</label>
-    <input type="text" name="author"/>
+    <label for="{{field}}">{{field.title()}}</label>
+    <input type="text" name="field"/>
   </div>
-
-  <div>
-    <label for="language">Language</label>
-    <input type="text" name="language"/>
-  </div>
+  {{endfor}}
 
   <input type="submit"/>
 

@@ -7,6 +7,21 @@ try:
 except ImportError:
     import simplejson as json
 
+def strreplace(string, translation):
+    """replace substrings from a translation matrix"""
+    for key, value in translation.items():
+        string = string.replace(key, value)
+    return string
+
+def str2filename(string):
+    """converts a string to an acceptable filename"""
+    matrix = {' ': '_',
+              '&': '',
+              '\\': '',
+              '/': ''}
+    return strreplace(string, matrix)
+
+
 class JSONEncoder(json.JSONEncoder):
     """provide additional serialization for JSON"""
 

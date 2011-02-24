@@ -45,6 +45,9 @@ class Dispatcher(object):
             path = []
         request.environ['path'] = path
 
+        # load any new data
+        self.model.load()
+
         # match the request to a handler
         for h in self.handlers:
             handler = h.match(self, request)

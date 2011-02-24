@@ -1,6 +1,7 @@
 <!-- navigation menu -->
 <ul class="navigation">
   <li><a href="/" title="toolbox">toolbox</a></li>
+  <li><a href="{{link('new')}}" title="add a tool">new</a></li>
   {{for field in fields}}
   <li>
     <a href="{{link(field)}}" title="tools by {{field}}">{{field}}</a>

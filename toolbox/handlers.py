@@ -60,7 +60,14 @@ class Handler(object):
         return '/'.join(path)
 
     def redirect(self, location):
-        raise exc.HTTPSeeOther(location=location)
+        return exc.HTTPSeeOther(location=location)
+
+    def query_string(self, query):
+        """
+        generate a query string; query is a list of 2-tuples
+        """
+        return '?' + '&'.join(['%s=%s' % (i,j)
+                               for i, j in query])
 
 
 class TempitaHandler(Handler):
@@ -232,4 +239,24 @@ class CreateProjectView(TempitaHandler):
     def __init__(self, app, request):
         TempitaHandler.__init__(self, app, request)
         self.data['navigation'] = self.navigation()
-    
+        self.data['fields'] = self.app.model.fields()
+
+    def Post(self):
+        required = set(['name', 'description', 'url'])
+        missing = set([i for i in required
+                       if not self.request.POST.get(i, '').strip()])
+
+        if missing:
+            location = self.link(self.request.path_info) + self.query_string([('missing', i) for i in missing])
+            return self.redirect(location)
+        # TODO check for duplicate project name
+
+        project = dict([(i, self.request.POST[i]) for i in required]) 
+        for field in self.app.model.fields():
+            value = self.request.POST.get(field, '').strip()
+            if not value:
+                continue
+            project[field] = value.split()
+
+        self.app.model.save(project)
+        return self.redirect(project['name'])

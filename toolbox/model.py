@@ -3,6 +3,8 @@ models for toolbox
 """
 
 import os
+from time import time
+from util import str2filename
 
 try:
     import json
@@ -34,6 +36,12 @@ class ProjectsModel(object):
                 project = json.loads(file(filename).read())
                 project['modified'] = mtime
                 self.update(project)
+
+    def save(self, project):
+        filename = str2filename(project['name']) + '.json'
+        filename = os.path.join(self.directory, filename)
+        file(filename, 'w').write(json.dumps(project))
+        # TODO: data integrity checking
 
     def update(self, project):
         """update a project"""
