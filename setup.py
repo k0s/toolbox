@@ -35,7 +35,7 @@ setup(name='toolbox',
       entry_points="""
       # -*- Entry points: -*-
       [paste.app_factory]
-      toolbox = toolbox.factory:factory
+      toolbox = toolbox.factory:paste_factory
       """,
       )
       
