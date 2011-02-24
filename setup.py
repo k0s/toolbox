@@ -9,8 +9,9 @@ version = "0.0"
 
 # dependencies
 dependencies = [
-    'WebOb',	
-    'tempita'
+    'WebOb',
+    'tempita',
+    'paste'
     ]
 try:
     import json

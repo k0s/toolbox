@@ -1,6 +1,7 @@
 import os
 
 from dispatcher import Dispatcher
+from paste.urlparser import StaticURLParser
 from pkg_resources import resource_filename
 
 class PassthroughFileserver(object):
@@ -9,7 +10,6 @@ class PassthroughFileserver(object):
     def __init__(self, app, directory):
         self.app = app
         self.directory = directory
-        from paste.urlparser import StaticURLParser
         self.fileserver = StaticURLParser(self.directory)
 
     def __call__(self, environ, start_response):
@@ -33,6 +33,7 @@ def wsgiref_factory(host='0.0.0.0', port=8080):
     here = os.path.dirname(os.path.abspath(__file__))
     directory = os.path.join(os.path.dirname(here), 'sample')
     app = Dispatcher(directory=directory)
+    app = PassthroughFileserver(app, resource_filename(__name__, 'static'))
     from wsgiref import simple_server
     server = simple_server.make_server(host=host, port=int(port), app=app)
     server.serve_forever()
