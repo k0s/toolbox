@@ -4,7 +4,8 @@
     "hg"
   ], 
   "name": "hg_bisect_aid", 
+  "description": "aid to bisect with hg",
   "author": [
-    "Standard8"
+    "standard8"
   ]
 }

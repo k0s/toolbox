@@ -39,6 +39,11 @@ class ProjectsModel(object):
                 self.files[project['name']] = i
                 project['modified'] = mtime
                 self.update(project)
+                try:
+                    self.search.update(name=project['name'], description=project['description'])
+                except KeyError:
+                    print "File: %s" % i
+                    raise
 
     def save(self, project):
         filename = self.files.get(project['name'])

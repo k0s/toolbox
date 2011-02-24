@@ -4,6 +4,7 @@
     "hg"
   ], 
   "name": "hgactivity", 
+  "description": "(Temporary, I hope!) fork of http://labs.freehackers.org/projects/hgactivity... with the ability to generate a monthly summary of checkins per-committer in CSV format, suitable for spreadsheet import.",
   "author": [
     "dmose"
   ]

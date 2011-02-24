@@ -13,7 +13,7 @@ class WhooshSearch(object):
         """
         - whoosh_index : whoosh index directory
         """
-        self.schema = fields.Schema(name=fields.ID,
+        self.schema = fields.Schema(name=fields.ID(unique=True),
                                     description=fields.TEXT)
         self.tempdir = False
         if whoosh_index is None:
@@ -24,16 +24,10 @@ class WhooshSearch(object):
         self.index = whoosh_index
         self.ix = index.create_in(self.index, self.schema)
 
-    def create(self, name, description):
-        """create a new document"""
-        writer = ix.writer()
-        writer.add_document(name=name, description=description)
-        writer.commit()
-
     def update(self, name, description):
         """update adocument"""
-        writer = ix.writer()
-        writer.add_document(name=name, description=description)
+        writer = self.ix.writer()
+        writer.update_document(name=name, description=description)
         writer.commit()
 
     def __del__(self):

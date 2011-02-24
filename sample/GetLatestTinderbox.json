@@ -1,5 +1,6 @@
 {
   "url": "http://hg.mozilla.org/automation/getlatest-tinderbox/", 
+  "description": "gets the latest builds logs from staging.mozilla.org",
   "name": "GetLatestTinderbox", 
   "language": [
     "python"
