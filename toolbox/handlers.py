@@ -134,10 +134,14 @@ class ProjectsView(TempitaHandler):
         return TempitaHandler.Get(self)
 
     def sort(self, field):
+        reverse = False
+        if field.startswith('-'):
+            field = field[1:]
+            reverse = True
         if field == 'name':
-            self.data['projects'].sort(key=lambda value: value[field].lower())
+            self.data['projects'].sort(key=lambda value: value[field].lower(), reverse=reverse)
         else:
-            self.data['projects'].sort(key=lambda value: value[field])
+            self.data['projects'].sort(key=lambda value: value[field], reverse=reverse)
 
     def format_date(self, timestamp):
         """return a string representation of a timestamp"""
@@ -152,7 +156,7 @@ class QueryView(ProjectsView):
 
     def __init__(self, app, request):
         ProjectsView.__init__(self, app, request)
-        sort_type = self.request.GET.pop('sort', 'modified')
+        sort_type = self.request.GET.pop('sort', '-modified')
         self.data['projects']= self.app.model.get(**self.request.GET.mixed())
         self.sort(sort_type)
         self.data['fields'] = self.app.model.fields()
