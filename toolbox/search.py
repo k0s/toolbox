@@ -24,6 +24,19 @@ class WhooshSearch(object):
         self.index = whoosh_index
         self.ix = index.create_in(self.index, self.schema)
 
+    def create(self, name, description):
+        """create a new document"""
+        writer = ix.writer()
+        writer.add_document(name=name, description=description)
+        writer.commit()
+
+    def update(self, name, description):
+        """update adocument"""
+        writer = ix.writer()
+        writer.add_document(name=name, description=description)
+        writer.commit()        
+
     def __del__(self):
         if self.tempdir:
+            # delete the temporary directory, if present
             shutil.rmtree(self.index)
