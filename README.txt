@@ -28,6 +28,7 @@ The list:
 * add a way of deleting a tool
 * full-text search via whoosh
 * add some CSS+JS
+* keep track of which URLs projects cant use
 * setup.py scraper
 * AMO scraper
 * more types of links should be allowed
