@@ -53,10 +53,12 @@ class Handler(object):
             path = [ path ]
         path = [ i.strip('/') for i in path ]
         if permanant:
-            application_url = [ self.request.application_url ]
+            application_url = self.request.application_url
         else:
-            application_url = [ self.application_path ]
-        path = application_url + path
+            application_url = self.application_path
+        path = [ application_url ] + path
+        if path == ['']:
+            return '/'
         return '/'.join(path)
 
     def redirect(self, location):
@@ -157,7 +159,8 @@ class QueryView(ProjectsView):
     def __init__(self, app, request):
         ProjectsView.__init__(self, app, request)
         sort_type = self.request.GET.pop('sort', '-modified')
-        self.data['projects']= self.app.model.get(**self.request.GET.mixed())
+        search = self.request.GET.pop('q', None)
+        self.data['projects']= self.app.model.get(search, **self.request.GET.mixed())
         self.sort(sort_type)
         self.data['fields'] = self.app.model.fields()
         self.data['title'] = 'Tools'

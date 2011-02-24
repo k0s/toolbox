@@ -14,7 +14,7 @@ class WhooshSearch(object):
         """
         - whoosh_index : whoosh index directory
         """
-        self.schema = fields.Schema(name=fields.ID(unique=True),
+        self.schema = fields.Schema(name=fields.ID(unique=True, stored=True),
                                     description=fields.TEXT)
         self.tempdir = False
         if whoosh_index is None:
@@ -31,10 +31,11 @@ class WhooshSearch(object):
         writer.update_document(name=name, description=description)
         writer.commit()
 
-    def search(self, query):
-        q = QueryParser("content", schema=self.ix.schema)
+    def __call__(self, query):
+        """search"""
+        q = QueryParser("description", schema=self.ix.schema).parse(unicode(query))
         searcher = self.ix.searcher()
-        return searcher.search(q)
+        return [i['name'] for i in searcher.search(q)]
         
     def __del__(self):
         if self.tempdir:

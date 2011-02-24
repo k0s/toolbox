@@ -111,10 +111,22 @@ class MemoryCache(ProjectsModel):
             for value in values:
                 index.setdefault(value, set()).update([project['name']])
 
-    def get(self, **query):
-        results = set(self.projects.keys())
+    def get(self, search=None, **query):
+        """
+        - search: text search
+        """
+        order = None
+        if search:
+            results = self.search(search)
+            order = dict([(j,i) for i,j in enumerate(results)])
+        else:
+            results = self.projects.keys()
+        results = set(results)
         for key, value in query.items():
             results.intersection_update(self.index.get(key, {}).get(value, set()))
+        if order:
+            # preserve search order
+            results = sorted(list(results), key=lambda x: order[x])
         return [self.projects[project] for project in results]
 
     def fields(self):
