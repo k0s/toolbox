@@ -243,7 +243,10 @@ class CreateProjectView(TempitaHandler):
     def __init__(self, app, request):
         TempitaHandler.__init__(self, app, request)
         self.data['navigation'] = self.navigation()
-        self.data['fields'] = self.app.model.fields()
+        self.data['fields'] = ['name', 'description', 'url'] + list(self.app.model.fields())
+        self.data['errors'] = {}
+        for field in self.request.GET.getall('missing'):
+            self.data['errors'].setdefault(field, []).append('Required')
 
     def Post(self):
         required = set(['name', 'description', 'url'])

@@ -14,25 +14,23 @@
 
 <form method="post">
 
-  <div>
-    <label for="name">Name</label>
-    <input type="text" name="name"/>
-  </div>
-
-  <div>
-    <label for="description">Description</label>
-    <textarea name="description"></textarea>
-  </div>
-
-  <div>
-    <label for="url">URL</label>
-    <input type="text" name="url"/>
-  </div>
-
   {{for field in fields}}
   <div>
     <label for="{{field}}">{{field.title()}}</label>
+    
+    {{if field == 'description'}}
+    <textarea name="description"></textarea>
+    {{else}}
     <input type="text" name="{{field}}"/>
+    {{endif}}
+
+    {{if field in errors}}
+     <ul class="error">
+       {{for error in errors[field]}}
+       <li>{{error}}</li>
+       {{endfor}}
+     </ul>
+    {{endif}}
   </div>
   {{endfor}}
 
