@@ -271,3 +271,16 @@ class CreateProjectView(TempitaHandler):
 
         self.app.model.save(project)
         return self.redirect(project['name'])
+
+class DeleteProjectHandler(Handler):
+
+    methods = set(['POST'])
+    handler_path = ['delete']
+
+    def Post(self):
+        project = self.request.POST.get('project')
+        if project:
+            self.app.model.delete(project)
+
+        # redirect to query view
+        return self.redirect(location=self.link())

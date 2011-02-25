@@ -93,6 +93,9 @@ class ProjectsModel(object):
         """get projects according to a particular field, or None"""
         raise NotImplementedError
 
+    def delete(self, project):
+        raise NotImplementedError
+
 class MemoryCache(ProjectsModel):
     """
     sample implementation keeping everything in memory
@@ -145,6 +148,15 @@ class MemoryCache(ProjectsModel):
     def field_query(self, field):
         return self.index.get(field)
 
+    def delete(self, project):
+        if project not in self.projects:
+            return
+        del self.projects[project]
+        for key, value in self.index.items():
+            if project in value:
+                if len(value) == 1:
+                    self._fields.pop(key)
+                value.pop(project)
 
 class CouchCache(MemoryCache):
     """

@@ -32,6 +32,11 @@
       {{endfor}}
     </ul>
     {{endfor}}
+
+    <!-- project deletion -->
+    <form action={{link('delete')}} method="POST">
+      <input type="submit" name="project" value="{{project['name']}}"/>
+    </form>
   </div><!-- project -->
 {{endfor}}  
 </body>
