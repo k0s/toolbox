@@ -5,6 +5,20 @@
 <head>
 <title>{{title}}</title>
 <script src="{{link('/js/jquery.js')}}"></script>
+<script src="{{link('/js/jquery.jeditable.js')}}"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+$('div.project').each(function(){
+var project = $(this).attr('id'); 
+//$(this).find('p.description').each(function(){alert($(this).html())});
+$(this).find('p.description').editable(project, {
+'type': 'textarea',
+'rows': 7,
+'indicator': '/img/indicator.gif',
+});
+});
+});
+</script>
 </head>
 <body>
 
@@ -25,9 +39,7 @@
       {{endif}}
     </h1>
     <span class="date">Modified: {{format_date(project['modified'])}}</span>
-    <p class="description">
-      {{project.get('description', '')}}
-    </p>
+    <p class="description">{{project.get('description', '')}}</p>
     {{for field in [f for f in fields if f in project]}}
     <ul class="{{field}}">
       <h2><a href="{{link(field)}}">{{field.title()}}</a></h2>
