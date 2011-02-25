@@ -38,7 +38,11 @@ class ProjectsModel(object):
             mtime = os.path.getmtime(filename)
             if mtime > self.files.get(i, -1):
                 self.files[i] = mtime
-                project = json.loads(file(filename).read())
+                try:
+                    project = json.loads(file(filename).read())
+                except:
+                    print 'File: ' + i
+                    raise
                 self.files[project['name']] = i
                 project['modified'] = mtime
                 self.update(project)
@@ -56,8 +60,13 @@ class ProjectsModel(object):
         update the fields of a particular project
         """
         project = self.project(name)
+        for field in required:
+            value = fields.pop(field)
+            if value is not None:
+                project[field] = value
         for field, value in fields.items():
-            raise NotImplementedError # TODO
+            project[field] = value
+        self.update(project)
 
     def update_search(self, project):
         """update the search index"""

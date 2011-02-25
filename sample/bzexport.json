@@ -1,0 +1,9 @@
+{
+ "url": "http://hg.mozilla.org/users/tmielczarek_mozilla.com/bzexport/",
+ "usage": ["bugzilla", "hg", "mq"],
+ "name": "bzexport",
+ "description": "bzexport: a Mercurial extension for attaching patches from a Mercurial repository to bugzilla from the command line.",
+ "language": ["python"],
+ "author": ["ted"],
+ "type": ["mercurial-extension"]
+}

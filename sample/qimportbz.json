@@ -1,0 +1,9 @@
+{
+ "url": "http://hg.mozilla.org/users/robarnold_cmu.edu/qimportbz",
+ "usage": ["bugzilla", "hg", "mq"],
+ "name": "qimportbz",
+ "description": "hg qimportbz gives you a list of the patches with a descripting and some flags and you select which number you want. handy for pushing other people's patches",
+ "language": ["python"],
+ "author": ["robarnold"],
+ "type": ["mercurial-extension"]
+}

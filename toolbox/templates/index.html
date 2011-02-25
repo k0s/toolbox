@@ -11,7 +11,7 @@
 {{navigation | html}}
 
 {{for project in projects}}
-  <div class="project">
+  <div class="project" id="{{project['name']}}">
     <a name="{{project['name']}}"></a>
     <h1>
       {{if 'url' in project}}
