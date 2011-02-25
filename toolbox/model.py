@@ -149,6 +149,10 @@ class MemoryCache(ProjectsModel):
         return self.index.get(field)
 
     def delete(self, project):
+        """
+        delete a project
+        - project : name of the project
+        """
         if project not in self.projects:
             return
         del self.projects[project]
@@ -157,6 +161,7 @@ class MemoryCache(ProjectsModel):
                 if len(value) == 1:
                     self._fields.pop(key)
                 value.pop(project)
+        os.remove(os.path.join(self.directory, self.files.pop(project)))
 
 class CouchCache(MemoryCache):
     """

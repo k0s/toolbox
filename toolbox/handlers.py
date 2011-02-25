@@ -47,6 +47,9 @@ class Handler(object):
         self.request = request
         self.application_path = urlparse(request.application_url)[2]
 
+    def __call__(self):
+        return getattr(self, self.request.method.title())()
+
     def link(self, path=(), permanant=False):
         """create a link"""
         if isinstance(path, basestring):
@@ -81,9 +84,6 @@ class TempitaHandler(Handler):
         Handler.__init__(self, app, request)
         self.data = { 'request': request,
                       'link': self.link }
-
-    def __call__(self):
-        return getattr(self, self.request.method.title())()
 
     def find_template(self, template):
         for d in self.template_dirs:

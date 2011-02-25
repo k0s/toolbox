@@ -35,7 +35,9 @@
 
     <!-- project deletion -->
     <form action={{link('delete')}} method="POST">
-      <input type="submit" name="project" value="{{project['name']}}"/>
+      <button type="submit" name="project" value="{{project['name']}}">
+        Delete
+      </button>
     </form>
   </div><!-- project -->
 {{endfor}}  
