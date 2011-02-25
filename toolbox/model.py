@@ -2,6 +2,7 @@
 models for toolbox
 """
 
+import couchdb
 import os
 from search import WhooshSearch
 from time import time
@@ -16,7 +17,9 @@ class ProjectsModel(object):
     """
     abstract base class for toolbox projects
     """
-    reserved = set(['name', 'description', 'url', 'modified'])
+    required = set(['name', 'description', 'url'])
+    reserved = required.copy()
+    reserved.update(['modified'])
 
     def __init__(self, directory):
         """
@@ -39,11 +42,6 @@ class ProjectsModel(object):
                 self.files[project['name']] = i
                 project['modified'] = mtime
                 self.update(project)
-                try:
-                    self.search.update(name=project['name'], description=project['description'])
-                except KeyError:
-                    print "File: %s" % i
-                    raise
 
     def save(self, project):
         filename = self.files.get(project['name'])
@@ -60,6 +58,14 @@ class ProjectsModel(object):
         project = self.project(name)
         for field, value in fields.items():
             raise NotImplementedError # TODO
+
+    def update_search(self, project):
+        """update the search index"""
+        assert self.required.issubset(project.keys()) # XXX should go elsewhere
+        fields = dict([(field, project[field])
+                       for field in self.fields()
+                       if field in project])
+        self.search.update(name=project['name'], description=project['description'], **fields)
 
     def update(self, project):
         """update a project"""
@@ -110,6 +116,7 @@ class MemoryCache(ProjectsModel):
                 values = [values]
             for value in values:
                 index.setdefault(value, set()).update([project['name']])
+        self.update_search(project)
 
     def get(self, search=None, **query):
         """
@@ -137,3 +144,36 @@ class MemoryCache(ProjectsModel):
 
     def field_query(self, field):
         return self.index.get(field)
+
+
+class CouchCache(MemoryCache):
+    """
+    store json files in couchdb
+    """
+
+    def __init__(self, directory, server="http://127.0.0.1:5984",
+                 dbname="toolbox"):
+        server = couchdb.Server(server)
+        try:
+            self.db = server[dbname]
+        except:
+            self.db = server.create(dbname)
+        MemoryCache.__init__(self, directory)
+
+
+    def load(self):
+        """load JSON objects from CouchDB docs"""
+        for id in self.db:
+            doc = self.db[id]
+            project = doc['project']
+            self.update(project)
+            
+    def save(self, project):
+        name = project['name']
+        try:
+             updated = self.db[name]
+        except:
+             updated = {}
+        updated['project'] = project
+        updated['project']['modified'] = time()
+        self.db[name] = updated

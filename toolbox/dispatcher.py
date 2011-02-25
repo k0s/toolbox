@@ -9,11 +9,13 @@ from handlers import CreateProjectView
 from handlers import FieldView
 from handlers import ProjectView
 from handlers import QueryView
+from model import CouchCache
 from model import MemoryCache
 from pkg_resources import resource_filename
 from webob import Request, Response, exc
 
-models = {'memory_cache': MemoryCache}
+models = {'memory_cache': MemoryCache,
+          'couch': CouchCache}
 
 class Dispatcher(object):
 

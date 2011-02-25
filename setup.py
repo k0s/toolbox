@@ -12,7 +12,8 @@ dependencies = [
     'WebOb',
     'tempita',
     'paste',
-    'whoosh'
+    'whoosh',
+    'couchdb'
     ]
 try:
     import json
