@@ -23,7 +23,6 @@ TODO
 
 The list:
 
-* add keywords (fields) to whoosh search
 * allow editing of a tool via AJAX and add updating fields to model
 * add a way of deleting a tool
 * add some CSS+JS
