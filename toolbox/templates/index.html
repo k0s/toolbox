@@ -10,7 +10,7 @@
 
 {{navigation | html}}
 
-{{if not request.path_info.strip('/')}}
+{{if len(projects) > 1}}
 <h1>{{len(projects)}} projects</h1>
 {{endif}}
 
