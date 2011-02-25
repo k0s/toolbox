@@ -1,11 +1,1 @@
-{
-  "url": "http://hg.mozilla.org/automation/getlatest-tinderbox/", 
-  "description": "gets the latest builds logs from staging.mozilla.org",
-  "name": "GetLatestTinderbox", 
-  "language": [
-    "python"
-  ], 
-  "author": [
-    "jhammel"
-  ]
-}
+{"description": "gets the latest builds logs from staging.mozilla.org", "language": ["python"], "author": ["jhammel"], "url": "http://hg.mozilla.org/automation/getlatest-tinderbox/", "modified": 1298581466.0599027, "name": "GetLatestTinderbox"}

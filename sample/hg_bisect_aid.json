@@ -1,11 +1,1 @@
-{
-  "url": "http://hg.mozilla.org/users/bugzilla_standard8.plus.com/useful-tools/file/tip/hg_bisect_aid", 
-  "usage": [
-    "hg"
-  ], 
-  "name": "hg_bisect_aid", 
-  "description": "aid to bisect with hg",
-  "author": [
-    "standard8"
-  ]
-}
+{"name": "hg_bisect_aid", "author": ["standard8"], "url": "http://hg.mozilla.org/users/bugzilla_standard8.plus.com/useful-tools/file/tip/hg_bisect_aid", "modified": 1298581662.1799026, "usage": ["hg"], "description": "aid to bisect with hg"}

@@ -1,12 +1,1 @@
-{
-  "url": "http://mxr.mozilla.org/mozilla-central/source/build/package/mac_osx/unpack-diskimage", 
-  "usage": [
-    "dmg"
-  ], 
-  "author": [
-    "catlee", 
-    "kairo"
-  ], 
-  "name": "unpack-diskimage", 
-  "description": "Unpacks and mounts a .dmg file"
-}
+{"description": "Unpacks and mounts a .dmg file", "author": ["catlee", "kairo"], "url": "http://mxr.mozilla.org/mozilla-central/source/build/package/mac_osx/unpack-diskimage", "modified": 1298421274.8493755, "usage": ["dmg"], "name": "unpack-diskimage"}

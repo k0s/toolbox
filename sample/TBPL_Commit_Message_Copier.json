@@ -1,14 +1,1 @@
-{
-  "name": "TBPL Commit Message Copier", 
-  "author": [
-    "KWierso"
-  ], 
-  "url": "https://addons.mozilla.org/en-US/firefox/addon/269586/", 
-  "usage": [
-    "tbpl"
-  ], 
-  "type": [
-    "addon"
-  ], 
-  "description": "This addon lets you copy pre-formatted commit messages to your clipboard right from TBPL."
-}
+{"description": "This addon lets you copy pre-formatted commit messages to your clipboard right from TBPL.", "author": ["KWierso"], "url": "https://addons.mozilla.org/en-US/firefox/addon/269586/", "modified": 1298421199.7653754, "usage": ["tbpl"], "type": ["addon"], "name": "TBPL Commit Message Copier"}

@@ -1,6 +1,1 @@
-{"name": "bzconsole",
- "description": "console API to bugzilla",
- "url": "http://k0s.org/mozilla/hg/bzconsole",
- "author": ["jhammel"],
- "usage": ["bugzilla"],
- "language": ["python"]}
+{"name": "bzconsole", "language": ["python"], "author": ["jhammel"], "url": "http://k0s.org/mozilla/hg/bzconsole", "modified": 1298414293.0170419, "usage": ["bugzilla"], "description": "console API to bugzilla"}

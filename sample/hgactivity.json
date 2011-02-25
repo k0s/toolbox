@@ -1,11 +1,1 @@
-{
-  "url": "https://bitbucket.org/dmose/hgactivity", 
-  "usage": [
-    "hg"
-  ], 
-  "name": "hgactivity", 
-  "description": "(Temporary, I hope!) fork of http://labs.freehackers.org/projects/hgactivity... with the ability to generate a monthly summary of checkins per-committer in CSV format, suitable for spreadsheet import.",
-  "author": [
-    "dmose"
-  ]
-}
+{"name": "hgactivity", "author": ["dmose"], "url": "https://bitbucket.org/dmose/hgactivity", "modified": 1298581934.1279025, "usage": ["hg"], "description": "(Temporary, I hope!) fork of http://labs.freehackers.org/projects/hgactivity... with the ability to generate a monthly summary of checkins per-committer in CSV format, suitable for spreadsheet import."}

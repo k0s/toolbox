@@ -26,6 +26,7 @@ class ProjectsModel(object):
         - directory: directory of projects
         """
         self.directory = directory
+        self.modified = {}
         self.files = {}
         self.search = WhooshSearch()
 
@@ -36,15 +37,17 @@ class ProjectsModel(object):
                 continue
             filename = os.path.join(self.directory, i)
             mtime = os.path.getmtime(filename)
-            if mtime > self.files.get(i, -1):
-                self.files[i] = mtime
+            if mtime > self.modified.get(i, -1):
+                self.modified[i] = mtime
                 try:
                     project = json.loads(file(filename).read())
                 except:
                     print 'File: ' + i
                     raise
                 self.files[project['name']] = i
-                project['modified'] = mtime
+                if 'modified' not in project:
+                    project['modified'] = mtime
+                    self.save(project)
                 self.update(project)
 
     def save(self, project):

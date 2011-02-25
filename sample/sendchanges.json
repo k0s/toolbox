@@ -1,7 +1,1 @@
-{"name": "sendchanges",
- "description": "send changes to a Mozilla buildmaster for testing",
- "url": "http://k0s.org/mozilla/hg/sendchanges",
- "author": ["jhammel"],
- "usage": ["buildbot"],
- "language": ["python"],
- "dependencies": ["GetLatestTinderbox"]}
+{"name": "sendchanges", "language": ["python"], "author": ["jhammel"], "url": "http://k0s.org/mozilla/hg/sendchanges", "modified": 1298398495.6554279, "dependencies": ["GetLatestTinderbox"], "usage": ["buildbot"], "description": "send changes to a Mozilla buildmaster for testing"}
