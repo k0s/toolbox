@@ -10,6 +10,10 @@
 
 {{navigation | html}}
 
+{{if not request.path_info.strip('/')}}
+<h1>{{len(projects)}} projects</h1>
+{{endif}}
+
 {{for project in projects}}
   <div class="project" id="{{project['name']}}">
     <a name="{{project['name']}}"></a>
