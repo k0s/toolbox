@@ -24,8 +24,9 @@ TODO
 The list:
 
 * allow editing of a tool via AJAX and add updating fields to model
-* add a way of deleting a tool
 * add some CSS+JS
+* add import functionality to couch backend and make sure it works
+* add (e.g.) selenium tests
 * keep track of which URLs projects cant use
 * use a slotted template structure
 * setup.py scraper
