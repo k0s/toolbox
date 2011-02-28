@@ -170,7 +170,7 @@ class ProjectView(ProjectsView):
     """view of a particular project"""
 
     template = 'index.html'
-    methods=set(['GET'])
+    methods=set(['GET', 'POST'])
 
     @classmethod
     def match(cls, app, request):
@@ -200,6 +200,21 @@ class ProjectView(ProjectsView):
         self.data['projects'] = [project]
         self.data['title'] = project['name']
 
+    def Post(self):
+
+        # XXX for compatability with jetitable:
+        # http://www.appelsiini.net/projects/jeditable
+        self.request.POST.pop('null', None)
+
+        project = self.data['projects'][0]
+        for field in self.app.model.required:
+            if field in self.request.POST:
+                project[field] = self.request.POST[field]
+        for field in self.app.model.fields():
+            pass # TODO
+        self.app.model.save(project)
+
+        import pdb; pdb.set_trace()
 
 class FieldView(ProjectsView):
     """view of projects sorted by a field"""

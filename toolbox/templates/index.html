@@ -14,7 +14,10 @@ var project = $(this).attr('id');
 $(this).find('p.description').editable(project, {
 'type': 'textarea',
 'rows': 7,
-'indicator': '/img/indicator.gif',
+'indicator': '<img href="/img/indicator.gif"/>',
+'onblur': 'submit',
+'name': 'description',
+'id': null
 });
 });
 });
