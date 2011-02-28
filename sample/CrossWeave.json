@@ -1,0 +1,6 @@
+{
+ "name": "CrossWeave",
+ "description": "Crossweave populates profiles based on data in a file in a YAML-like format.  Right now it populates temporary profiles which are deleted after Crossweave completes, but it would be easy to allow it to allow it to populate data in an existing profile.",
+ "author": ["jgriffin"],
+ "usage": ["profiles"],
+}
