@@ -1,8 +1,1 @@
-{
- "name": "JetCrawl",
- "author": "ddahl",
- "url": "http://daviddahl.blogspot.com/2010/01/jetcrawl.html",
- "description": "make history and bookmarks data more realistic",
- "type": ["jetpack"],
- "usage": ["profiles"]
-}
+{"description": "make history and bookmarks data more realistic", "author": "ddahl", "url": "http://daviddahl.blogspot.com/2010/01/jetcrawl.html", "modified": 1298917305.2201991, "usage": ["profiles"], "type": ["jetpack"], "name": "JetCrawl"}
