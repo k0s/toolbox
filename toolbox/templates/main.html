@@ -4,11 +4,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>{{title}}</title>
+
 {{for sheet in css}}
+<link href="{{link(sheet)}}" rel="stylesheet" type="text/css" />
 {{endfor}}
 
 {{for script in js}}
 <script src="{{link(script)}}"></script>
+{{endfor}}
+
 </head>
 <body>
 {{navigation | html}}

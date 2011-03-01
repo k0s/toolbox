@@ -80,12 +80,14 @@ class TempitaHandler(Handler):
 
     template_dirs = [ resource_filename(__name__, 'templates') ]
     css = []
-    js = []
+    js = ['/js/jquery.js']
     
     def __init__(self, app, request):
         Handler.__init__(self, app, request)
         self.data = { 'request': request,
-                      'link': self.link }
+                      'link': self.link,
+                      'css': self.css,
+                      'js':  self.js }
 
     def find_template(self, template):
         for d in self.template_dirs:
@@ -114,6 +116,9 @@ class TempitaHandler(Handler):
 
 class ProjectsView(TempitaHandler):
     """abstract base class for view with projects"""
+
+    js = TempitaHandler.js[:]
+    js.append('/js/jquery.jeditable.js')
 
     def __init__(self, app, request):
         """project views specific init"""
