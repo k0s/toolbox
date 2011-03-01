@@ -3,17 +3,48 @@ font-family: sans-serif;
 margin: 0.5em;
 }
 
+textarea {
+width: 99%;
+height: 7em;
+}
+
 body {
 background: #4181A1;
 }
 
-div.project {
+div.project,div.field,#new {
  background: white;
  border: thin solid black;
  border-radius: 1em;
  margin: 0.3em;
  margin-bottom: 0.5em;
  clear: both;
+}
+
+#new {
+width: 50em;
+margin: 0;
+}
+
+#new label {
+margin: 0;
+}
+
+#new input {
+margin: 0;
+left: 10em;
+position: absolute;
+}
+
+.submit:hover {
+border-style: groove;
+}
+
+#new input.submit {
+background: white;
+border: thin solid black;
+border-radius: 1em;
+float: right;
 }
 
 a { 
@@ -23,7 +54,6 @@ color: #233;
 
 a:hover {
 color: #425;
-background: white;
 }
 
 ul {
@@ -36,19 +66,19 @@ display: inline;
 
 .navigation li {
 float: left;
-background: #57A;
+text-color: white;
 margin-left: 0.3em;
 margin-right: 0.3em;
 }
 
 h1 {
-margin-left: 0.8em;
-margin-right: 0.8em;
+margin-left: 0.3em;
+margin-right: 0.3em;
 }
 
 h2 {
 margin-left: 0.0em;
-margin-right: 0.2em;
+margin-right: 0.0em;
 margin-top: 0;
 margin-bottom: 0;
 padding: 0;
@@ -67,7 +97,7 @@ border-radius: 1em;
 padding: 0.5em;
 }
 
-#separator {
+.separator {
 clear: both;
 }
 
@@ -82,4 +112,31 @@ float: right;
 
 #search-submit {
 background: url(/img/search.png);
+width: 24px;
+height: 24px;
+border: none;
+}
+
+#search-text {
+width: 50%;
+margin-right: 0;
+}
+
+p.description {
+margin-left: 1em;
+}
+
+.delete button {
+background: white;
+border: thin solid black;
+border-radius: 1em;
+}
+
+label {
+font-weight: bold;
+}
+
+.error {
+float: right;
+color: red;
 }
