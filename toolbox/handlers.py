@@ -87,7 +87,8 @@ class TempitaHandler(Handler):
         self.data = { 'request': request,
                       'link': self.link,
                       'css': self.css,
-                      'js':  self.js }
+                      'js':  self.js,
+                      'title': self.__class__.__name__}
 
     def find_template(self, template):
         for d in self.template_dirs:
