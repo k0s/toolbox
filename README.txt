@@ -23,8 +23,8 @@ TODO
 
 The list:
 
-* allow editing of a tool via AJAX and add updating fields to model
 * add some CSS+JS
+* check to see if in-situ editing isn't overridden by submit
 * add import functionality to couch backend and make sure it works
 * add (e.g.) selenium tests
 * keep track of which URLs projects cant use
