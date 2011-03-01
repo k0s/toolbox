@@ -212,9 +212,9 @@ class ProjectView(ProjectsView):
                 project[field] = self.request.POST[field]
         for field in self.app.model.fields():
             pass # TODO
+        import pdb; pdb.set_trace()
         self.app.model.save(project)
 
-        import pdb; pdb.set_trace()
 
 class FieldView(ProjectsView):
     """view of projects sorted by a field"""
