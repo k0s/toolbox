@@ -1,6 +1,8 @@
 $(document).ready(function(){
         $('div.project').each(function(){
                 var project = $(this).attr('id'); 
+
+                // make description editable with jeditable
                 $(this).find('p.description').editable(project, {
                         'type': 'textarea',
                             'rows': 7,
@@ -9,5 +11,8 @@ $(document).ready(function(){
                             'onblur': 'submit',
                             'name': 'description',
                             });
+
+                // add an add fields button
+                //$(this).find('ul.field'). TODO
             });
     });
