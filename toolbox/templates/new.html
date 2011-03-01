@@ -2,16 +2,27 @@
 
 <form method="post">
 
+  <!-- required fields -->
+  <div>
+    <label for="name">Name</label>
+    <input type="text" name="name"/>
+  </div>
+  <div>
+    <label for="Description">Description</label>
+    <textarea name="description"></textarea>
+  </div>
+  <div>
+    <label for="url">URL</label>
+    <input type="text" name="name"/>
+  </div>
+
+  <!-- optional fields -->
   {{for field in fields}}
   <div>
     <label for="{{field}}">{{field.title()}}</label>
-    
-    {{if field == 'description'}}
-    <textarea name="description"></textarea>
-    {{else}}
     <input type="text" name="{{field}}"/>
-    {{endif}}
 
+    <!-- display errors -->
     {{if field in errors}}
      <ul class="error">
        {{for error in errors[field]}}
@@ -19,6 +30,7 @@
        {{endfor}}
      </ul>
     {{endif}}
+
   </div>
   {{endfor}}
 

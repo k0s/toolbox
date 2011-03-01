@@ -107,13 +107,6 @@ class TempitaHandler(Handler):
         self.data['content'] = self.render(self.template, **self.data)
         return Response(content_type='text/html',
                         body=self.render('main.html', **self.data))
-    def navigation(self):
-        """render navigation menu"""
-        ### toolbox-specific function
-        data = self.data.copy()
-        data['fields'] = self.app.model.fields()
-        return self.render('navigation.html', **data)
-
 
 class ProjectsView(TempitaHandler):
     """abstract base class for view with projects"""
@@ -125,9 +118,9 @@ class ProjectsView(TempitaHandler):
     def __init__(self, app, request):
         """project views specific init"""
         TempitaHandler.__init__(self, app, request)
+        self.data['fields'] = self.app.model.fields()
         self.check_json()
         if not self.json:
-            self.data['navigation'] = self.navigation()
             self.data['format_date'] = self.format_date
 
     def check_json(self):
@@ -275,8 +268,7 @@ class CreateProjectView(TempitaHandler):
 
     def __init__(self, app, request):
         TempitaHandler.__init__(self, app, request)
-        self.data['navigation'] = self.navigation()
-        self.data['fields'] = ['name', 'description', 'url'] + list(self.app.model.fields())
+        self.data['fields'] = self.app.model.fields()
         self.data['errors'] = {}
         self.data['title'] = 'Add a tool'
         for field in self.request.GET.getall('missing'):

@@ -15,7 +15,23 @@
 
 </head>
 <body>
-{{navigation | html}}
+
+<!-- navigation menu -->
+<ul class="navigation">
+  <li><a href="/" title="toolbox">toolbox</a></li>
+  <li><a href="{{link('new')}}" title="add a tool">new</a></li>
+  {{for field in fields}}
+  <li>
+    <a href="{{link(field)}}" title="tools by {{field}}">{{field}}</a>
+  </li>
+  {{endfor}}
+</ul>
+
+<!-- text search form -->
+<form action="{{link()}}">
+  <input type="text" name="q"/>
+  <input type="submit"/>
+</form>
 
 {{content | html}}
 </body>
