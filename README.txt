@@ -3,39 +3,58 @@ toolbox
 
 a place to find Mozilla software tools
 
+The Story of Toolbox
+--------------------
+
+A tool is only useful if you know it exists and can find it.
+
 Other useful things:
 * smart bookmarks
 * code snippets
 
-Testing
+Running
 -------
 
-To run in testing mode, cd to the toolbox directory and run::
+To serve in baseline mode, run in this directory::
 
- python factory.py
+ paster serve paste.ini
 
-This will run a primitive wsgiref server on port 8080.
+This will serve the handlers and static content using the paste
+(http://pythonpaste.org) webserver.
 
-Improve instructions to come! :)
+The dispatcher (``toolbox.dispatcher:Dispatcher``) is the central
+webapp that designates per-request to a number of handlers (from
+``handlers.py``).  The dispatcher has a few options::
+
+* template_dirs: extra directories (in order) to look for templates
+* model_type: type of backend to use
+
+These may be configured in the ``paste.ini`` file in the
+``[app:toolbox]`` section by prepending with the namespace
+``toolbox.``. It is advisable that you copy the example ``paste.ini``
+file for your own usage needs.
+
 
 TODO
 ----
 
 The list:
 
-* add some CSS+JS
-* check to see if in-situ editing isn't overridden by submit
-* add import functionality to couch backend and make sure it works
+* add dynamic field addition with jqueryui autocomplete
+* cleanup model
 * add (e.g.) selenium tests
+* add import functionality to couch backend and make sure it works
+* check to see if in-situ editing isn't overridden by submit
 * keep track of which URLs projects cant use
-* use a slotted template structure
 * setup.py scraper
 * AMO scraper
-* more types of links should be allowed
+* allow projects to point to a setup.py or AMO URL
 * URLs in the description should be made links
 * dependencies should link appropriately (e.g. to toolbox if possible)
 
-The nitty-gritty:
+
+Thought Farm
+------------
 
 More types of links should be allowed:
 The current behaviour is that each project has a single link that is

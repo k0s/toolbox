@@ -12,6 +12,7 @@ dependencies = [
     'WebOb',
     'tempita',
     'paste',
+    'pastescript', # technically optional, but here for ease of install
     'whoosh',
     'couchdb'
     ]
