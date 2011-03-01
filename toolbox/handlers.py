@@ -203,8 +203,7 @@ class ProjectView(ProjectsView):
     def Post(self):
 
         # XXX for compatability with jetitable:
-        # http://www.appelsiini.net/projects/jeditable
-        self.request.POST.pop('null', None)
+        id = self.request.POST.pop('id', None)
 
         project = self.data['projects'][0]
         for field in self.app.model.required:
@@ -212,8 +211,14 @@ class ProjectView(ProjectsView):
                 project[field] = self.request.POST[field]
         for field in self.app.model.fields():
             pass # TODO
-        import pdb; pdb.set_trace()
         self.app.model.save(project)
+
+        # XXX for compatability with jetitable:
+        if id is not None:
+            return Response(content_type='text/plain',
+                            body=project['description'])
+
+        return self.Get()
 
 
 class FieldView(ProjectsView):

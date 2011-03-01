@@ -1,8 +1,1 @@
-{
- "usage": ["profiles"], 
- "author": ["jgriffin"], 
- "name": "CrossWeave", 
- "modified": 1298943796.7334161, 
- "description": "Crossweave populates profiles based on data in a file in a YAML-like format.  Right now it populates temporary profiles which are deleted after Crossweave completes, but it would be easy to allow it to allow it to populate data in an existing profile.",
- "url": "https://wiki.mozilla.org/Auto-tools/Projects/CrossWeave"
-}
+{"name": "CrossWeave", "author": ["jgriffin"], "url": "https://wiki.mozilla.org/Auto-tools/Projects/CrossWeave", "modified": 1298943796.7334161, "usage": ["profiles"], "description": "CrossWeave populates profiles based on data in a file in a YAML-like format.  Right now it populates temporary profiles which are deleted after Crossweave completes, but it would be easy to allow it to allow it to populate data in an existing profile."}
