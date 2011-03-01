@@ -1,31 +1,3 @@
-<!DOCTYPE html
-    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<title>{{title}}</title>
-<script src="{{link('/js/jquery.js')}}"></script>
-<script src="{{link('/js/jquery.jeditable.js')}}"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-$('div.project').each(function(){
-var project = $(this).attr('id'); 
-//$(this).find('p.description').each(function(){alert($(this).html())});
-$(this).find('p.description').editable(project, {
-'type': 'textarea',
-'rows': 7,
-'indicator': '<img src="/img/indicator.gif"/>',
-'onblur': 'submit',
-'name': 'description',
-});
-});
-});
-</script>
-</head>
-<body>
-
-{{navigation | html}}
-
 {{if len(projects) > 1}}
 <h1>{{len(projects)}} projects</h1>
 {{endif}}
@@ -59,5 +31,4 @@ $(this).find('p.description').editable(project, {
     </form>
   </div><!-- project -->
 {{endfor}}  
-</body>
-</html>
+

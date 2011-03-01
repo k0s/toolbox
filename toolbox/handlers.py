@@ -104,9 +104,9 @@ class TempitaHandler(Handler):
 
     def Get(self):
         # needs to have self.template set
+        self.data['content'] = self.render(self.template, **self.data)
         return Response(content_type='text/html',
-                        body=self.render(self.template, **self.data))
-    
+                        body=self.render('main.html', **self.data))
     def navigation(self):
         """render navigation menu"""
         ### toolbox-specific function
@@ -278,6 +278,7 @@ class CreateProjectView(TempitaHandler):
         self.data['navigation'] = self.navigation()
         self.data['fields'] = ['name', 'description', 'url'] + list(self.app.model.fields())
         self.data['errors'] = {}
+        self.data['title'] = 'Add a tool'
         for field in self.request.GET.getall('missing'):
             self.data['errors'].setdefault(field, []).append('Required')
 

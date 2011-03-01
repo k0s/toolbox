@@ -1,15 +1,3 @@
-<!DOCTYPE html
-    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<title>Tools by {{field}}</title>
-<script src="{{link('/js/jquery.js')}}"></script>
-</head>
-<body>
-
-{{navigation | html}}
-
 <h1>Tools by {{field}}</h1>
 
 {{for key in sorted(projects.keys(), key=lambda x: x.lower())}}
@@ -22,6 +10,3 @@
 </ul>
 </div>
 {{endfor}}
-
-</body>
-</html>
