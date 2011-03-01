@@ -119,7 +119,8 @@ class ProjectsView(TempitaHandler):
     """abstract base class for view with projects"""
 
     js = TempitaHandler.js[:]
-    js.append('/js/jquery.jeditable.js')
+    js.extend(['/js/jquery.jeditable.js',
+               '/js/edit_description.js'])
 
     def __init__(self, app, request):
         """project views specific init"""
