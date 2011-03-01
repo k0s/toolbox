@@ -23,7 +23,7 @@ class Handler(object):
     """general purpose request handler (view)"""
 
     methods = set(['GET']) # methods to listen to
-    handler_path = [] # path elements to match        
+    handler_path = [] # path elements to match
 
     @classmethod
     def match(cls, app, request):
