@@ -79,7 +79,7 @@ class TempitaHandler(Handler):
     """handler for tempita templates"""
 
     template_dirs = [ resource_filename(__name__, 'templates') ]
-    css = []
+    css = ['/css/style.css']
     js = ['/js/jquery.js']
     
     def __init__(self, app, request):
