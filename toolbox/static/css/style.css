@@ -19,6 +19,7 @@ div.project,div.field,#new {
  margin: 0.3em;
  margin-bottom: 0.5em;
  clear: both;
+ box-shadow: 0.05em 0.05em 0.1em 0.1em black;
 }
 
 #new {
@@ -144,4 +145,19 @@ font-weight: bold;
 .error {
 float: right;
 color: red;
+}
+
+.add-field {
+background: white;
+align: center;
+text-align: center;
+width: 5em;
+border: 2px inset black;
+}
+
+.remove-field {
+background: white;
+align: left;
+width: 1em;
+border: 1px inset black;
 }

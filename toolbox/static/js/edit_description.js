@@ -13,6 +13,9 @@ $(document).ready(function(){
                             });
 
                 // add an add fields button
-                //$(this).find('ul.field'). TODO
+                $(this).find('ul.field').append('<button class="add-field">+</button>');
+
+                // add a remove fields button
+                $(this).find('ul.field > li').prepend('<button class="remove-field">-</button>');
             });
     });

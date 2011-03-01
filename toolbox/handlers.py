@@ -258,6 +258,7 @@ class FieldView(ProjectsView):
             raise HandlerMatchException
         self.data['field'] = field
         self.data['projects'] = projects
+        self.data['title'] = 'Tools by %s' % field
 
         
 class CreateProjectView(TempitaHandler):
