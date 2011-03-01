@@ -36,8 +36,9 @@ left: 10em;
 position: absolute;
 }
 
-.submit:hover {
-border-style: groove;
+input.submit:hover {
+border-style: inset;
+border-width: 5px;
 }
 
 #new input.submit {
