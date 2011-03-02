@@ -81,9 +81,11 @@ margin-right: 0.3em;
 h2 {
 margin-left: 0.0em;
 margin-right: 0.0em;
-margin-top: 0;
+margin-top: 0.1em;
 margin-bottom: 0;
 padding: 0;
+align: center;
+text-align: center;
 }
 
 .date { 
@@ -147,12 +149,22 @@ float: right;
 color: red;
 }
 
-.add-field {
+button.add-field {
 background: white;
 align: center;
 text-align: center;
 width: 5em;
-border: 2px inset black;
+border: 3px inset black;
+display: block;
+}
+
+ul.field {
+padding: 0;
+}
+
+ul.field li {
+margin: 0;
+padding: 0;
 }
 
 .remove-field {
