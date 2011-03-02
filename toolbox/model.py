@@ -77,7 +77,11 @@ class ProjectsModel(object):
         fields = dict([(field, project[field])
                        for field in self.fields()
                        if field in project])
-        self.search.update(name=project['name'], description=project['description'], **fields)
+
+        # keys must be strings, not unicode, on some systems
+        f = dict([(str(i), j) for i, j in fields.items()])
+
+        self.search.update(name=project['name'], description=project['description'], **f)
 
     def update(self, project):
         """update a project"""
