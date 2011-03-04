@@ -3,6 +3,10 @@ font-family: sans-serif;
 margin: 0.5em;
 }
 
+#title {
+text-shadow: white 0.05em 0.05em 0.05em;
+}
+
 textarea {
 width: 99%;
 height: 7em;

@@ -35,6 +35,13 @@ These may be configured in the ``paste.ini`` file in the
 file for your own usage needs.
 
 
+Links
+-----
+
+* how to report bugs
+* wiki
+
+
 TODO
 ----
 
