@@ -84,6 +84,7 @@ class TempitaHandler(Handler):
     
     def __init__(self, app, request):
         Handler.__init__(self, app, request)
+        self.check_json() # is this a JSON request?
         self.data = { 'request': request,
                       'link': self.link,
                       'css': self.css,
@@ -108,6 +109,20 @@ class TempitaHandler(Handler):
         return Response(content_type='text/html',
                         body=self.render('main.html', **self.data))
 
+    def check_json(self):
+        """check to see if the request is for JSON"""
+        self.json = self.request.GET.pop('format', '') == 'json'
+
+    def get_json(self):
+        """JSON to serialize if requested for GET"""
+
+    def post_data(sefl):
+        """python dict from POST request"""
+        if self.json:
+            return json.loads(self.request.body)
+        else:
+            return self.request.POST.mixed()
+
 class ProjectsView(TempitaHandler):
     """abstract base class for view with projects"""
 
@@ -119,13 +134,8 @@ class ProjectsView(TempitaHandler):
         """project views specific init"""
         TempitaHandler.__init__(self, app, request)
         self.data['fields'] = self.app.model.fields()
-        self.check_json()
         if not self.json:
             self.data['format_date'] = self.format_date
-
-    def check_json(self):
-        """check to see if the request is for JSON"""
-        self.json = self.request.GET.pop('format', '') == 'json'
 
     def get_json(self):
         """JSON to serialize if requested"""
@@ -205,13 +215,15 @@ class ProjectView(ProjectsView):
 
     def Post(self):
 
+        post_data = self.post_data()
+
         # XXX for compatability with jetitable:
-        id = self.request.POST.pop('id', None)
+        id = post_data.pop('id', None)
 
         project = self.data['projects'][0]
         for field in self.app.model.required:
-            if field in self.request.POST:
-                project[field] = self.request.POST[field]
+            if field in post_data:
+                project[field] = post_data[field]
         for field in self.app.model.fields():
             pass # TODO
         self.app.model.save(project)
@@ -277,18 +289,19 @@ class CreateProjectView(TempitaHandler):
             self.data['errors'].setdefault(field, []).append('Required')
 
     def Post(self):
+        post_data = self.post_data()
         required = set(['name', 'description', 'url'])
         missing = set([i for i in required
-                       if not self.request.POST.get(i, '').strip()])
+                       if not post_data.get(i, '').strip()])
 
         if missing:
             location = self.link(self.request.path_info) + self.query_string([('missing', i) for i in missing])
             return self.redirect(location)
         # TODO check for duplicate project name
 
-        project = dict([(i, self.request.POST[i]) for i in required]) 
+        project = dict([(i, post_data[i]) for i in required]) 
         for field in self.app.model.fields():
-            value = self.request.POST.get(field, '').strip()
+            value = post_data.get(field, '').strip()
             if not value:
                 continue
             project[field] = value.split()
@@ -302,7 +315,8 @@ class DeleteProjectHandler(Handler):
     handler_path = ['delete']
 
     def Post(self):
-        project = self.request.POST.get('project')
+        post_data = self.post_data()
+        project = post_data.get('project')
         if project:
             self.app.model.delete(project)
 

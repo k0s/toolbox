@@ -17,7 +17,11 @@ class ProjectsModel(object):
     """
     abstract base class for toolbox projects
     """
+
+    # required fields
     required = set(['name', 'description', 'url'])
+
+    # reserved fields
     reserved = required.copy()
     reserved.update(['modified'])
 

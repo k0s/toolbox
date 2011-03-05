@@ -63,6 +63,7 @@ class Dispatcher(object):
             if handler is not None:
                 break
         else:
+            # TODO: our own 404 handler with a menu
             handler = exc.HTTPNotFound
 
         # get response
