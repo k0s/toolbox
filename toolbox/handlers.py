@@ -116,7 +116,7 @@ class TempitaHandler(Handler):
     def get_json(self):
         """JSON to serialize if requested for GET"""
 
-    def post_data(sefl):
+    def post_data(self):
         """python dict from POST request"""
         if self.json:
             return json.loads(self.request.body)
