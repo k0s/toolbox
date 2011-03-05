@@ -35,13 +35,6 @@ These may be configured in the ``paste.ini`` file in the
 file for your own usage needs.
 
 
-Links
------
-
-* how to report bugs
-* wiki
-
-
 TODO
 ----
 
@@ -58,10 +51,20 @@ The list:
 * allow projects to point to a setup.py or AMO URL
 * URLs in the description should be made links
 * dependencies should link appropriately (e.g. to toolbox if possible)
+* the first time someone edits a description (etc.) from a pointed-to
+  file (e.g. a setup.py) then the project should be notified
 
 
 Thought Farm
 ------------
+
+Links:
+
+* repository
+* how to report bugs
+* wiki
+* pypi
+
 
 More types of links should be allowed:
 The current behaviour is that each project has a single link that is
