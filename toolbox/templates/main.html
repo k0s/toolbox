@@ -15,7 +15,7 @@
 
 <!-- focus the search element -->
 <script type="text/javascript">
-$(document).onload(function() {
+$(document).ready(function() {
 $('#search-text').focus();
 });
 </script>
@@ -36,10 +36,11 @@ $('#search-text').focus();
 
 <!-- text search form -->
 <form id="search" action="{{link()}}">
-  <input id="search-text" type="text" name="q"/>
+  <input id="search-text" type="text" name="q" value="{{request.GET.get('q', '')}}"/>
   <input id="search-submit" type="submit" value=""/>
 </form>
 
 {{content | html}}
+
 </body>
 </html>
