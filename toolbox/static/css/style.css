@@ -72,7 +72,6 @@ display: inline;
 
 .navigation li {
 float: left;
-text-color: white;
 margin-left: 0.3em;
 margin-right: 0.3em;
 }
@@ -91,7 +90,8 @@ padding: 0;
 }
 
 h2.project-header {
-align: center;
+margin-left: auto;
+margin-right: auto;
 text-align: center;
 }
 
@@ -158,7 +158,8 @@ color: red;
 
 button.add-field {
 background: white;
-align: center;
+margin-left: auto;
+margin-right: auto;
 text-align: center;
 width: 5em;
 border: 3px inset black;
@@ -176,7 +177,6 @@ padding: 0;
 
 .remove-field {
 background: white;
-align: left;
 width: 1em;
 border: 1px inset black;
 }
