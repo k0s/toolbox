@@ -1,0 +1,4 @@
+{'name': 'buildtools',
+ 'url': 'https://github.com/mozilla-releng/tools/blob/master/setup.py',
+ 'description': 'Mozilla RelEng Toolkit'
+}
