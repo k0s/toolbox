@@ -46,6 +46,7 @@ class Handler(object):
         self.app = app
         self.request = request
         self.application_path = urlparse(request.application_url)[2]
+        self.check_json() # is this a JSON request?
 
     def __call__(self):
         return getattr(self, self.request.method.title())()
@@ -74,6 +75,22 @@ class Handler(object):
         return '?' + '&'.join(['%s=%s' % (i,j)
                                for i, j in query])
 
+    # methods for JSON
+
+    def check_json(self):
+        """check to see if the request is for JSON"""
+        self.json = self.request.GET.pop('format', '') == 'json'
+
+    def post_data(self):
+        """python dict from POST request"""
+        if self.json:
+            return json.loads(self.request.body)
+        else:
+            return self.request.POST.mixed()
+
+    def get_json(self):
+        """JSON to serialize if requested for GET"""
+        raise NotImplementedError # abstract base class
 
 class TempitaHandler(Handler):
     """handler for tempita templates"""
@@ -84,7 +101,6 @@ class TempitaHandler(Handler):
     
     def __init__(self, app, request):
         Handler.__init__(self, app, request)
-        self.check_json() # is this a JSON request?
         self.data = { 'request': request,
                       'link': self.link,
                       'css': self.css,
@@ -108,20 +124,6 @@ class TempitaHandler(Handler):
         self.data['content'] = self.render(self.template, **self.data)
         return Response(content_type='text/html',
                         body=self.render('main.html', **self.data))
-
-    def check_json(self):
-        """check to see if the request is for JSON"""
-        self.json = self.request.GET.pop('format', '') == 'json'
-
-    def get_json(self):
-        """JSON to serialize if requested for GET"""
-
-    def post_data(self):
-        """python dict from POST request"""
-        if self.json:
-            return json.loads(self.request.body)
-        else:
-            return self.request.POST.mixed()
 
 class ProjectsView(TempitaHandler):
     """abstract base class for view with projects"""
