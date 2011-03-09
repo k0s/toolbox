@@ -180,3 +180,7 @@ background: white;
 width: 1em;
 border: 1px inset black;
 }
+
+.highlight {
+background: yellow;
+}

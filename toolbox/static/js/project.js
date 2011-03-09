@@ -1,9 +1,10 @@
 $(document).ready(function(){
         $('div.project').each(function(){
                 var project = $(this).attr('id'); 
+                var url = '/' + project; // TODO: urlquote
 
                 // make description editable with jeditable
-                $(this).find('p.description').editable(project, {
+                $(this).find('p.description').editable(url, {
                         'type': 'textarea',
                             'rows': 7,
                             'cols': 80,
@@ -17,5 +18,16 @@ $(document).ready(function(){
 
                 // add a remove fields button
                 $(this).find('ul.field > li').prepend('<button class="remove-field">-</button>');
+                $(this).find('button.remove-field').click(function() {
+                        $(this).addClass('highlight');
+                        var ul = $(this).parents("ul.field");
+                        var field = ul.attr('class').split(' ')[1];
+                        var value = $(this).next().html();
+                        data = {action: 'append'}
+                        data[field] = value;
+                        $.post(url, data, function() {
+                                alert($(this).parent().html());
+                            });
+                    });
             });
     });

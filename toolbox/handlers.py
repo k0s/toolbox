@@ -223,12 +223,18 @@ class ProjectView(ProjectsView):
         # XXX for compatability with jetitable:
         id = post_data.pop('id', None)
 
+        action = post_data.get('action', None)
+        if action == 'append':
+            print 'i is in ur house'
+            return self.Get()
+
         project = self.data['projects'][0]
         for field in self.app.model.required:
             if field in post_data:
                 project[field] = post_data[field]
         for field in self.app.model.fields():
-            pass # TODO
+            if field in post_data:
+                import pdb; pdb.set_trace()
         self.app.model.save(project)
 
         # XXX for compatability with jetitable:
