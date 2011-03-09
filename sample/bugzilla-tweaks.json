@@ -1,0 +1,7 @@
+{"name": "bugzilla-tweaks",
+ "description": "The Bugzilla Tweaks extensions, aiming to make bugzilla.mozilla.org usage easier.",
+ "url": "https://bitbucket.org/ehsan/bugzilla-tweaks",
+ "author": ["ehsan", "harth"],
+ "type": ["addon"],
+ "usage": ["bugzilla"]
+}
