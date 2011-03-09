@@ -223,18 +223,25 @@ class ProjectView(ProjectsView):
         # XXX for compatability with jetitable:
         id = post_data.pop('id', None)
 
-        action = post_data.get('action', None)
-        if action == 'append':
-            print 'i is in ur house'
-            return self.Get()
-
+        action = post_data.pop('action', None)
         project = self.data['projects'][0]
-        for field in self.app.model.required:
-            if field in post_data:
-                project[field] = post_data[field]
-        for field in self.app.model.fields():
-            if field in post_data:
-                import pdb; pdb.set_trace()
+        if action == 'delete':
+            for field in self.app.model.fields():
+                if field in post_data and field in project:
+                    values = post_data.pop(field)
+                    if isinstance(values, basestring):
+                        values = [values]
+                    for value in values:
+                        project[field].remove(value)
+                    if not project[field]:
+                        project.pop(field)
+        else:
+            for field in self.app.model.required:
+                if field in post_data:
+                    project[field] = post_data[field]
+            for field in self.app.model.fields():
+                if field in post_data:
+                    raise NotImplementedError
         self.app.model.save(project)
 
         # XXX for compatability with jetitable:
@@ -244,6 +251,8 @@ class ProjectView(ProjectsView):
 
         return self.Get()
 
+    def Delete(self):
+        import pdb; pdb.set_trace()
 
 class FieldView(ProjectsView):
     """view of projects sorted by a field"""

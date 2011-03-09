@@ -23,7 +23,7 @@ $(document).ready(function(){
                         var ul = $(this).parents("ul.field");
                         var field = ul.attr('class').split(' ')[1];
                         var value = $(this).next().html();
-                        data = {action: 'append'}
+                        data = {action: 'delete'}
                         data[field] = value;
                         var that = $(this);
                         $.post(url, data, function() {
