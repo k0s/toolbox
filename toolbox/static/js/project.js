@@ -25,8 +25,15 @@ $(document).ready(function(){
                         var value = $(this).next().html();
                         data = {action: 'append'}
                         data[field] = value;
+                        var that = $(this);
                         $.post(url, data, function() {
-                                alert($(this).parent().html());
+                                $(that).parent().remove();
+                                var fields = ul.find('li');
+                                if (fields.length == 0) {
+                                    $(ul).remove();
+                                    // TODO: add back in to 
+                                    // some field container thingy
+                                }
                             });
                     });
             });
