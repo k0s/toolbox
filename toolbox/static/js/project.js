@@ -17,9 +17,9 @@ $(document).ready(function(){
                 $(this).find('ul.field').append('<button class="add-field">+</button>');
                 $(this).find('button.add-field').click(function() {
                         $(this).addClass('hide');
-                        $(this).before('<input class="add-field" type="text"/>');
+                        var input = $('<input class="add-field" type="text"/>');
+                        $(this).before(input);
                         var button = $(this);
-                        var input = $(this).prev();
                         $(input).focus();
                         $(input).blur(function() {
                                 $(button).removeClass('hide');
