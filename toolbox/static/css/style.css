@@ -63,6 +63,11 @@ color: #625;
 text-shadow: red 1px 1px 1px;
 }
 
+.navigation a:hover {
+color: #625;
+text-shadow: white 1px 1px 1px;
+}
+
 ul {
 list-style: none;
 }
