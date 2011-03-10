@@ -97,7 +97,7 @@ class TempitaHandler(Handler):
 
     template_dirs = [ resource_filename(__name__, 'templates') ]
     css = ['/css/style.css']
-    js = ['/js/jquery.js']
+    js = ['/js/jquery.js', '/js/jquery-ui-1.8.10.custom.min.js']
     
     def __init__(self, app, request):
         Handler.__init__(self, app, request)

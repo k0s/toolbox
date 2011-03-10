@@ -21,11 +21,16 @@ $(document).ready(function(){
                         $(this).before(input);
                         var button = $(this);
                         $(input).focus();
+                        $(input).autocomplete({
+                                source: ["c++", "java", "php", "coldfusion", "javascript", "asp", "ruby"],
+                                    minLength: 0
+                                    });
                         $(input).blur(function() {
                                 $(button).removeClass('hide');
 
                                 // TODO: instead of just removing, 
                                 // should POST whatever's there, etc
+                                alert($(this).attr('value'));
                                 $(this).remove();
                             });
                     });
