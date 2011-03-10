@@ -179,7 +179,7 @@ class QueryView(ProjectsView):
         self.data['projects']= self.app.model.get(search, **query)
         self.sort(sort_type)
         self.data['fields'] = self.app.model.fields()
-        self.data['title'] = 'Tools'
+        self.data['title'] = 'Toolbox'
 
 
 class ProjectView(ProjectsView):
