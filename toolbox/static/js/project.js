@@ -11,10 +11,11 @@ $(document).ready(function(){
                             'indicator': '<img src="/img/indicator.gif"/>',
                             'onblur': 'submit',
                             'name': 'description',
+                            'tooltip': 'click to edit description'
                             });
 
                 // add an add fields button
-                $(this).find('ul.field').append('<button class="add-field">+</button>');
+                $(this).find('ul.field').append('<button class="add-field" title="add a field">+</button>');
                 $(this).find('button.add-field').click(function() {
                         $(this).addClass('hide');
                         var input = $('<input class="add-field" type="text"/>');
@@ -39,7 +40,7 @@ $(document).ready(function(){
                     });
 
                 // add a remove fields button
-                $(this).find('ul.field > li').prepend('<button class="remove-field">-</button>');
+                $(this).find('ul.field > li').prepend('<button class="remove-field" title="remove">-</button>');
                 $(this).find('button.remove-field').click(function() {
                         $(this).addClass('highlight');
                         var ul = $(this).parents("ul.field");
