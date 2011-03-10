@@ -23,8 +23,11 @@ $(document).ready(function(){
                         $(input).focus();
                         $(input).autocomplete({
                                 source: ["c++", "java", "php", "coldfusion", "javascript", "asp", "ruby"],
-                                    minLength: 0
-                                    });
+                                    minLength: 0,
+                                    select: function(event, ui) {
+                                    alert('foo');
+                                }
+                            });
                         $(input).blur(function() {
                                 $(button).removeClass('hide');
 
