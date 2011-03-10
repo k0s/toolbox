@@ -15,6 +15,20 @@ $(document).ready(function(){
 
                 // add an add fields button
                 $(this).find('ul.field').append('<button class="add-field">+</button>');
+                $(this).find('button.add-field').click(function() {
+                        $(this).addClass('hide');
+                        $(this).before('<input class="add-field" type="text"/>');
+                        var button = $(this);
+                        var input = $(this).prev();
+                        $(input).focus();
+                        $(input).blur(function() {
+                                $(button).removeClass('hide');
+
+                                // TODO: instead of just removing, 
+                                // should POST whatever's there, etc
+                                $(this).remove();
+                            });
+                    });
 
                 // add a remove fields button
                 $(this).find('ul.field > li').prepend('<button class="remove-field">-</button>');

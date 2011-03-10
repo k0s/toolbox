@@ -156,14 +156,18 @@ float: right;
 color: red;
 }
 
-button.add-field {
-background: white;
+.add-field {
+width: 5em;
 margin-left: auto;
 margin-right: auto;
+display: block;
+}
+
+button.add-field {
+background: white;
 text-align: center;
 width: 5em;
 border: 3px inset black;
-display: block;
 }
 
 ul.field {
@@ -183,4 +187,8 @@ border: 1px inset black;
 
 .highlight {
 background: yellow;
+}
+
+.hide {
+display: none;
 }
