@@ -21,20 +21,22 @@ $(document).ready(function(){
                         var input = $('<input class="add-field" type="text"/>');
                         $(this).before(input);
                         var button = $(this);
-                        $(input).focus();
                         $(input).autocomplete({
                                 source: ["c++", "java", "php", "coldfusion", "javascript", "asp", "ruby"],
                                     minLength: 0,
+                                    delay: 0,
+                                    position: {my: "left top", at: "left bottom"},
                                     select: function(event, ui) {
                                     alert('foo');
                                 }
                             });
-                        $(input).blur(function() {
+                        $(input).focus();
+                        $(input).blur(function(event) {
                                 $(button).removeClass('hide');
+                                alert(JSON.stringify(event));
 
                                 // TODO: instead of just removing, 
                                 // should POST whatever's there, etc
-                                alert($(this).attr('value'));
                                 $(this).remove();
                             });
                     });
