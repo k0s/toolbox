@@ -1,0 +1,6 @@
+{"name": "tinderstatus",
+ "description": "Tinderstatus is a small Firefox/SeaMonkey extension that displays the current status of the SeaMonkey, Firefox, Thunderbird, XULRunner, and Camino tinderboxen and whether the tree is open or closed in an icon on the browser"s status bar, enabling you to keep close watch on the tree if you have recently checked in code, are sheriffing for the day, or are just interested in keeping tabs on how the code is doing.",
+ "author": ["Alexander J. Vincent"],
+ "type": ["addon"],
+ "usage": ["tinderbox"],
+ "url": "http://tinderstatus.mozdev.org/"}
