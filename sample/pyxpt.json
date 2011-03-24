@@ -1,0 +1,5 @@
+{"name": "pyxpt",
+ "url": "http://hg.mozilla.org/users/tmielczarek_mozilla.com/pyxpt",
+ "author": ["ted"],
+ "description": "A module for working with XPCOM Type Libraries."
+}
