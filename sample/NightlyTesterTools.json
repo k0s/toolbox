@@ -1,0 +1,6 @@
+{"name": "Nightly Tester Tools",
+ "description": "Nightly Tester Tools is an addon for aiding testers of nightly builds of Mozilla apps like Firefox and Thunderbird.",
+ "url": "https://addons.mozilla.org/en-US/firefox/addon/6543/",
+ "type": ["addon"],
+ "author": ["mossop", "harth"]
+}
