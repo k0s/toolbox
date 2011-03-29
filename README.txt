@@ -51,6 +51,7 @@ The list:
 * allow projects to point to a setup.py or AMO URL
 * URLs in the description should be made links
 * dependencies should link appropriately (e.g. to toolbox if possible)
+* calendar view for projects
 * the first time someone edits a description (etc.) from a pointed-to
   file (e.g. a setup.py) then the project should be notified
 
