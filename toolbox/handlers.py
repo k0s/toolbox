@@ -328,6 +328,7 @@ class CreateProjectView(TempitaHandler):
         self.app.model.save(project)
         return self.redirect(project['name'])
 
+
 class DeleteProjectHandler(Handler):
 
     methods = set(['POST'])
@@ -341,3 +342,14 @@ class DeleteProjectHandler(Handler):
 
         # redirect to query view
         return self.redirect(location=self.link())
+
+class TagsView(TempitaHandler):
+    """view most popular tags"""
+    methods = set(['GET'])
+    handler_path = ['tags']
+    template = 'tags.html'
+
+    def __init__(self, app, request):
+        TempitaHandler.__init__(self, app, request)
+        self.data['fields'] = self.app.model.fields()
+        self.data['title'] = 'Tags'

@@ -10,6 +10,7 @@ from handlers import DeleteProjectHandler
 from handlers import FieldView
 from handlers import ProjectView
 from handlers import QueryView
+from handlers import TagsView
 
 from model import CouchCache
 from model import MemoryCache
@@ -41,7 +42,7 @@ class Dispatcher(object):
         self.model = models[self.model_type](directory)
 
         # request handlers in order they will be tried
-        self.handlers = [ CreateProjectView, FieldView, ProjectView, QueryView, DeleteProjectHandler ]
+        self.handlers = [ TagsView, CreateProjectView, FieldView, ProjectView, QueryView, DeleteProjectHandler ]
 
     def __call__(self, environ, start_response):
 
