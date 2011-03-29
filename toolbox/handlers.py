@@ -121,6 +121,9 @@ class TempitaHandler(Handler):
 
     def Get(self):
         # needs to have self.template set
+        if self.json:
+            return Response(content_type='application/json',
+                            body=json.dumps(self.get_json(), cls=JSONEncoder))
         self.data['content'] = self.render(self.template, **self.data)
         return Response(content_type='text/html',
                         body=self.render('main.html', **self.data))
@@ -143,12 +146,6 @@ class ProjectsView(TempitaHandler):
     def get_json(self):
         """JSON to serialize if requested"""
         return self.data['projects']
-
-    def Get(self):
-        if self.json:
-            return Response(content_type='application/json',
-                            body=json.dumps(self.get_json(), cls=JSONEncoder))
-        return TempitaHandler.Get(self)
 
     def sort(self, field):
         reverse = False
@@ -367,3 +364,6 @@ class TagsView(TempitaHandler):
                 tags.append({'field': field, 'value': value, 'count': count})
         tags.sort(key=lambda x: x['count'], reverse=True)
         self.data['tags'] = tags
+
+    def get_json(self):
+        return self.data['tags']
