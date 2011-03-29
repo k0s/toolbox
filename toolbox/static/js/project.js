@@ -32,6 +32,7 @@ $(document).ready(function(){
                                     minChars: 0,
                                     emptyText: null,
                                     startText: 'foo',
+                                    resultsHighlight: false,
                                     extraParams: '&format=json&field=' + field,
                                     preSelectionAdded: function(value) {
                                     alert(value);
