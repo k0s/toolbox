@@ -1,1 +1,1 @@
-{"name": "pybugzilla", "language": ["python"], "author": ["atul"], "url": "https://github.com/toolness/pybugzilla", "modified": 1301358703.815768, "description": ""}
+{"name": "pybugzilla", "language": ["python"], "author": ["atul"], "url": "https://github.com/toolness/pybugzilla", "modified": 1301358703.815768, "description": "Python library and command-line tools for interacting with Bugzilla via Gervase Markham's REST API"}
