@@ -23,15 +23,16 @@ $(document).ready(function(){
                         var button = $(this);
                         var ul = $(this).parents("ul.field");
                         var field = ul.attr('class').split(' ')[1];
-                        alert(field);
                         var data = [{'name': 'foo'}, {'name': 'bar'}, {'name': 'baz'}, 
                                     {'name': 'fleem'}, {'name': 'food'}];
-                        $(input).autoSuggest(data, {selectedItemProp: 'name',
-                                    selectedValuesProp: 'name', 
-                                    searchObjProps: 'name',
+                        var data = '/tags';
+                        $(input).autoSuggest(data, {selectedItemProp: 'value',
+                                    selectedValuesProp: 'value', 
+                                    searchObjProps: 'value',
                                     minChars: 0,
                                     emptyText: null,
-                                    startText: '',
+                                    startText: 'foo',
+                                    extraParams: '&format=json&field=' + field,
                                     preSelectionAdded: function(value) {
                                     alert(value);
                                     return false;
