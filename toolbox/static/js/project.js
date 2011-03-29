@@ -21,6 +21,19 @@ $(document).ready(function(){
                         var input = $('<input class="add-field" type="text"/>');
                         $(this).before(input);
                         var button = $(this);
+                        var data = [{'name': 'foo'}, {'name': 'bar'}, {'name': 'baz'}, 
+                                    {'name': 'fleem'}, {'name': 'food'}];
+                        $(input).autoSuggest(data, {selectedItemProp: 'name',
+                                    selectedValuesProp: 'name', 
+                                    searchObjProps: 'name',
+                                    minChars: 0,
+                                    emptyText: null,
+                                    startText: '',
+                                    preSelectionAdded: function(value) {
+                                    alert(value);
+                                    return false;
+                                }
+                            });
                         $(input).focus();
                     });
 
