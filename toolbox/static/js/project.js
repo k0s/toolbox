@@ -21,6 +21,9 @@ $(document).ready(function(){
                         var input = $('<input class="add-field" type="text"/>');
                         $(this).before(input);
                         var button = $(this);
+                        var ul = $(this).parents("ul.field");
+                        var field = ul.attr('class').split(' ')[1];
+                        alert(field);
                         var data = [{'name': 'foo'}, {'name': 'bar'}, {'name': 'baz'}, 
                                     {'name': 'fleem'}, {'name': 'food'}];
                         $(input).autoSuggest(data, {selectedItemProp: 'name',
