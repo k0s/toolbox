@@ -1,5 +1,1 @@
-{"name": "minotaur", 
- "description": "http://mxr.mozilla.org/mozilla/source/testing/release/minotaur/README.txt",
- "url": "http://mxr.mozilla.org/mozilla/source/testing/release/minotaur",
- "usage": ["dmg"]
-}
+{"url": "http://mxr.mozilla.org/mozilla/source/testing/release/minotaur", "usage": ["dmg"], "name": "minotaur", "modified": 1301103536.6515377, "description": "http://mxr.mozilla.org/mozilla/source/testing/release/minotaur/README.txt"}

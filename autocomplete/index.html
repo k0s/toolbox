@@ -25,7 +25,9 @@ minChars: 0,
 emptyText: null,
 startText: 'add field',
 selectionAdded: function(elem) {
-alert($(elem).contents());
+var value = $(elem).contents().empty().end().text();
+$("#theinput").prepend('<li>' + value + '</li>');
+alert(value);
 }
 });
 
