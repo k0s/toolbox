@@ -42,6 +42,7 @@
 			showResultList: true,
 		  	start: function(){},
 		  	selectionClick: function(elem){},
+                        preSelectionAdded: function(value) { return true; },
 		  	selectionAdded: function(elem){},
 		  	selectionRemoved: function(elem){ elem.remove(); },
 		  	formatList: false, //callback function
@@ -324,6 +325,9 @@
 				}
 				
 				function add_selected_item(data, num){
+                                    if (!opts.preSelectionAdded(data[opts.selectedValuesProp])) {
+                                        return;
+                                    }
 					values_input.val(values_input.val()+data[opts.selectedValuesProp]+",");
 					var item = $('<li class="as-selection-item" id="as-selection-'+num+'"></li>').click(function(){
 							opts.selectionClick.call(this, $(this));
@@ -365,4 +369,4 @@
 			});
 		}
 	}
-})(jQuery);  	
+})(jQuery);

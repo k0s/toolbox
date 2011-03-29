@@ -22,9 +22,13 @@ selectedValuesProp: 'name', searchObjProps: 'name',
 minChars: 0,
 emptyText: null,
 startText: 'add field',
+preSelectionAdded: function(value) {
+alert(value);
+return false;
+},
 selectionAdded: function(elem) {
 var value = $(elem).contents().empty().end().text();
-$("#thelist").prepend('<li>' + value + 'blablhsddsfkjsad' + '</li>');
+$("#thelist").prepend('<li>' + value + '</li>');
 }
 });
 
