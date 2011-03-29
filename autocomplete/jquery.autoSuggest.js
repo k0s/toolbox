@@ -315,7 +315,7 @@
 						}
 					}
 					selections_holder.removeClass("loading");
-					if(matchCount <= 0){
+					if(matchCount <= 0 && opts.emptyText){
 						results_ul.html('<li class="as-message">'+opts.emptyText+'</li>');
 					}
 					results_ul.css("width", selections_holder.outerWidth());
