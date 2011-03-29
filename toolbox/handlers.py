@@ -351,7 +351,7 @@ class TagsView(TempitaHandler):
 
     def __init__(self, app, request):
         TempitaHandler.__init__(self, app, request)
-        self.data['fields'] = self.app.model.fields()
+        self.data['fields'] = self.request.GET.getall('field') or self.app.model.fields()
         self.data['title'] = 'Tags'
         field_tags = dict((i, {}) for i in self.data['fields'])
         for project in self.app.model.get():
