@@ -340,6 +340,7 @@ class DeleteProjectHandler(Handler):
         # redirect to query view
         return self.redirect(location=self.link())
 
+
 class TagsView(TempitaHandler):
     """view most popular tags"""
     methods = set(['GET'])
@@ -348,12 +349,13 @@ class TagsView(TempitaHandler):
 
     def __init__(self, app, request):
         TempitaHandler.__init__(self, app, request)
-        self.data['fields'] = self.request.GET.getall('field') or self.app.model.fields()
+        self.data['fields'] = self.app.model.fields()
+        fields = self.request.GET.getall('field') or self.data['fields']
         self.data['title'] = 'Tags'
-        field_tags = dict((i, {}) for i in self.data['fields'])
+        field_tags = dict((i, {}) for i in fields)
         for project in self.app.model.get():
             # TODO: cache this for speed somehow
-            for field in self.data['fields']:
+            for field in fields:
                 if field in project:
                     for value in project[field]:
                         count = field_tags[field].get(value, 0) + 1
