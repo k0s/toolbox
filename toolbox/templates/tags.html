@@ -1,2 +1,13 @@
 <h1>{{title}}</h1>
 
+<div class="tag">
+  <ul>
+    {{for tag in tags}}
+    <li>
+      <a href="/?{{tag['field']}}={{tag['value']}}" title="{{tag['count']}}">
+        {{tag['value']}}
+      </a>
+    </li>
+    {{endfor}}
+  </ul>
+</div>

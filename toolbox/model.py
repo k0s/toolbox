@@ -123,13 +123,13 @@ class MemoryCache(ProjectsModel):
 
     def __init__(self, directory):
         ProjectsModel.__init__(self, directory)
-        self.projects = {}
+        self._projects = {}
         self._fields = set()
         self.index = {}
         self.load()
 
     def update(self, project):
-        self.projects[project['name']] = project
+        self._projects[project['name']] = project
         fields = [i for i in project if i not in self.reserved]
         self._fields.update(fields)
         for field in fields:
@@ -150,20 +150,20 @@ class MemoryCache(ProjectsModel):
             results = self.search(search)
             order = dict([(j,i) for i,j in enumerate(results)])
         else:
-            results = self.projects.keys()
+            results = self._projects.keys()
         results = set(results)
         for key, value in query.items():
             results.intersection_update(self.index.get(key, {}).get(value, set()))
         if order:
             # preserve search order
             results = sorted(list(results), key=lambda x: order[x])
-        return [self.projects[project] for project in results]
+        return [self._projects[project] for project in results]
 
     def fields(self):
         return self._fields
 
     def project(self, name):
-        return self.projects.get(name)
+        return self._projects.get(name)
 
     def field_query(self, field):
         return self.index.get(field)
@@ -173,9 +173,9 @@ class MemoryCache(ProjectsModel):
         delete a project
         - project : name of the project
         """
-        if project not in self.projects:
+        if project not in self._projects:
             return
-        del self.projects[project]
+        del self._projects[project]
         for key, value in self.index.items():
             if project in value:
                 if len(value) == 1:

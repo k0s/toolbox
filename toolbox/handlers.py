@@ -353,3 +353,17 @@ class TagsView(TempitaHandler):
         TempitaHandler.__init__(self, app, request)
         self.data['fields'] = self.app.model.fields()
         self.data['title'] = 'Tags'
+        field_tags = dict((i, {}) for i in self.data['fields'])
+        for project in self.app.model.get():
+            # TODO: cache this for speed somehow
+            for field in self.data['fields']:
+                if field in project:
+                    for value in project[field]:
+                        count = field_tags[field].get(value, 0) + 1
+                        field_tags[field][value] = count
+        tags = []
+        for field in field_tags:
+            for value, count in field_tags[field].items():
+                tags.append({'field': field, 'value': value, 'count': count})
+        tags.sort(key=lambda x: x['count'], reverse=True)
+        self.data['tags'] = tags
