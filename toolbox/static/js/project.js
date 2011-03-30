@@ -146,12 +146,16 @@ $(document).ready(function(){
                             var ul = $('<ul class="field ' + missing_field + '"><h2 class="project-header"><a href="' + missing_field + '">' + missing_field + '</a></h2></ul>');
                             var input = $('<input class="add-field" type="text"/>');
                             ul.append(input);
-                            project_div.find('ul.field:last').after(ul);
+                            var elem = project_div.find('ul.field:last');
+                            if (elem.length == 0) {
+                                elem = project_div.children('p.description');
+                            }
+                            elem.after(ul);
                             addAutoSuggest(input, missing_field);
                             $(this).parent().remove();
                         });
                 }
-                $(this).find('form.delete').after(additional_fields);
+                $(this).find('form.delete').before(additional_fields);
             });
 
     });
