@@ -82,8 +82,8 @@ $(document).ready(function(){
                             var fields = ul.find('li');
                             if (fields.length == 0) {
                                 $(ul).remove();
-                                // TODO: add back in to 
-                                // some field container thingy if its empty
+                                // add back in to the missing field container 
+                                addMissingField('foo', additional_fields);
                             }
                         });
                 }
