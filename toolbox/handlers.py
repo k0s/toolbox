@@ -364,20 +364,21 @@ class TagsView(TempitaHandler):
         ommitted = dict([(field, set()) for field in fields])
         for name in omit:
             project = self.app.model.project(name)
+            if not project:
+                continue
             for field in fields:
-                ommitted.update(project.get(field, []))
+                ommitted[field].update(project.get(field, []))
             
         for project in self.app.model.get():
             if project in omit:
                 continue
             # TODO: cache this for speed somehow
             for field in fields:
-                if field in project:
-                    for value in project.get(field, []):
-                        if value in ommitted[field]:
-                            continue
-                        count = field_tags[field].get(value, 0) + 1
-                        field_tags[field][value] = count
+                for value in project.get(field, []):
+                    if value in ommitted[field]:
+                        continue
+                    count = field_tags[field].get(value, 0) + 1
+                    field_tags[field][value] = count
         tags = []
         for field in field_tags:
             for value, count in field_tags[field].items():
