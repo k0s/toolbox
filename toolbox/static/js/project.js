@@ -126,11 +126,12 @@ $(document).ready(function(){
                 var additional_fields = $('<ul class="additional-fields"></ul>');
                 for (var i=0; i < missing_fields.length; i++) {
                     var missing_field = missing_fields[i];
-                    var button = $('<button>+ ' + missing_field + '</button>');
+                    var button = $('<button name="' + missing_field + '">+ ' + missing_field + '</button>');
                     var li = $('<li></li>');
                     li.append(button);
                     additional_fields.append(li);
-                    button.click(function() {                            
+                    button.click(function() {
+                            var missing_field = $(this).attr('name');
                             project_div.find('ul.field:last').after('<ul class="field ' + missing_field + '"><h2><a href="' + missing_field + '">' + missing_field + '</a></h2></ul>');
                             $(this).parent().remove();                            
                         });
