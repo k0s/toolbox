@@ -125,7 +125,10 @@ $(document).ready(function(){
                 }
                 var additional_fields = $('<ul class="additional-fields"></ul>');
                 for (var i=0; i < missing_fields.length; i++) {
-                    additional_fields.append('<li>+ ' + missing_fields[i] + '</li>');
+                    var button = $('<button>+ ' + missing_fields[i] + '</button>');
+                    var li = $('<li></li>');
+                    li.append(button);
+                    additional_fields.append(li);
                 }
                 $(this).find('ul.field:last').after(additional_fields);
             });
