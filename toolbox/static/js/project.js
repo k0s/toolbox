@@ -143,8 +143,8 @@ $(document).ready(function(){
                             var input = $('<input class="add-field" type="text"/>');
                             ul.append(input);
                             project_div.find('ul.field:last').after(ul);
-                            input.focus();
-                            $(this).parent().remove();                            
+                            addAutoSuggest(input, missing_field);
+                            $(this).parent().remove();
                         });
                 }
                 $(this).find('ul.field:last').after(additional_fields);
