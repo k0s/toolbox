@@ -44,11 +44,9 @@ $(document).ready(function(){
                                         var li = $('<li><a href="/?' + field + '=' + value + '">' + value + '</a></li>');
 
                                         if (elem.length == 0) {
-                                            $(ul).prepend(li);
-                                        } else {
-                                            elem.after(li);
-                                        }
-
+                                            var elem = $(ul).children('h2');
+                                        } 
+                                        elem.after(li);
                                         addDeleteButton(li);
                                     });
                                 return false;
