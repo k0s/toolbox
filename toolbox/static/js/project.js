@@ -31,7 +31,7 @@ $(document).ready(function(){
                                     emptyText: null,
                                     startText: '',
                                     resultsHighlight: false,
-                                    extraParams: '&format=json&field=' + field,
+                                    extraParams: '&format=json&field=' + field + '&omit=' + project,
                                     preSelectionAdded: function(value) {
                                     var data = {};
                                     data[field] = value;
