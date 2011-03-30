@@ -58,7 +58,6 @@ $(document).ready(function(){
                     });
 
                 // add a remove fields button
-
                 function addDeleteHandler(button) {
                     $(this).addClass('highlight');
                     var ul = $(this).parents("ul.field");
@@ -132,7 +131,8 @@ $(document).ready(function(){
                     li.append(button);
                     additional_fields.append(li);
                     button.click(function() {                            
-                            project_div.find('ul.field:last').after('<ul class="field ' + missing_field + '"><h2>' + missing_field + '</h2></ul>'); 
+                            project_div.find('ul.field:last').after('<ul class="field ' + missing_field + '"><h2><a href="' + missing_field + '">' + missing_field + '</a></h2></ul>');
+                            $(this).parent().remove();                            
                         });
                 }
                 $(this).find('ul.field:last').after(additional_fields);
