@@ -24,6 +24,33 @@ $(document).ready(function(){
                             'tooltip': 'click to edit description'
                             });
 
+                // function to add auto suggest to an input
+                function addAutoSuggest(input, field) {
+                    // raise NotImplementedError
+                    var ul = $(input).parents('ul.field');
+                    $(input).autoSuggest('/tags', {selectedItemProp: 'value',
+                                selectedValuesProp: 'value',
+                                searchObjProps: 'value',
+                                minChars: 0,
+                                emptyText: null,
+                                startText: '',
+                                resultsHighlight: false,
+                                extraParams: '&format=json&field=' + field + '&omit=' + project,
+                                preSelectionAdded: function(value) {
+                                var data = {};
+                                data[field] = value;
+                                $.post(url, data, function() {
+                                        var elem = $(ul).children('li:last');
+                                        var li = $('<li><a href="/?' + field + '=' + value + '">' + value + '</a></li>');
+                                        elem.after(li);
+                                        addDeleteButton(li);
+                                    });
+                                return false;
+                            }
+                        });
+                    $(input).focus();
+                }
+
                 // add an add fields button
                 $(this).find('ul.field').append('<button class="add-field" title="add a field">+</button>');
                 $(this).find('button.add-field').click(function() {
@@ -34,27 +61,7 @@ $(document).ready(function(){
                         var ul = $(this).parents("ul.field");
                         var field = ul.attr('class').split(' ')[1];
                         var data = '/tags';
-                        $(input).autoSuggest(data, {selectedItemProp: 'value',
-                                    selectedValuesProp: 'value',
-                                    searchObjProps: 'value',
-                                    minChars: 0,
-                                    emptyText: null,
-                                    startText: '',
-                                    resultsHighlight: false,
-                                    extraParams: '&format=json&field=' + field + '&omit=' + project,
-                                    preSelectionAdded: function(value) {
-                                    var data = {};
-                                    data[field] = value;
-                                    $.post(url, data, function() {
-                                            var elem = $(ul).children('li:last');
-                                            var li = $('<li><a href="/?' + field + '=' + value + '">' + value + '</a></li>');
-                                            elem.after(li);
-                                            addDeleteButton(li);
-                                        });
-                                    return false;
-                                }
-                            });
-                        $(input).focus();
+                        addAutoSuggest(input, field); // could get field instead from introspection
                     });
 
                 // add a remove fields button
@@ -133,7 +140,7 @@ $(document).ready(function(){
                     button.click(function() {
                             var missing_field = $(this).attr('name');
                             var ul = $('<ul class="field ' + missing_field + '"><h2 class="project-header"><a href="' + missing_field + '">' + missing_field + '</a></h2></ul>');
-                            var input = $('<input type="text"/>');
+                            var input = $('<input class="add-field" type="text"/>');
                             ul.append(input);
                             project_div.find('ul.field:last').after(ul);
                             input.focus();
