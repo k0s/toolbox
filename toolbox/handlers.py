@@ -239,7 +239,14 @@ class ProjectView(ProjectsView):
                     project[field] = post_data[field]
             for field in self.app.model.fields():
                 if field in post_data:
-                    raise NotImplementedError
+                    if 'action' == 'replace':
+                        # replace the field from the POST request
+                        raise NotImplementedError
+                    else:
+                        # append the items....the default action
+                        project.setdefault(field, []).extend(self.request.POST.getall(field))
+                        return # TODO: take out after testing
+                    
         self.app.model.save(project)
 
         # XXX for compatability with jetitable:

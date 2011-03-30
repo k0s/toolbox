@@ -23,19 +23,21 @@ $(document).ready(function(){
                         var button = $(this);
                         var ul = $(this).parents("ul.field");
                         var field = ul.attr('class').split(' ')[1];
-                        var data = [{'name': 'foo'}, {'name': 'bar'}, {'name': 'baz'}, 
-                                    {'name': 'fleem'}, {'name': 'food'}];
                         var data = '/tags';
                         $(input).autoSuggest(data, {selectedItemProp: 'value',
                                     selectedValuesProp: 'value', 
                                     searchObjProps: 'value',
                                     minChars: 0,
                                     emptyText: null,
-                                    startText: 'foo',
+                                    startText: '',
                                     resultsHighlight: false,
                                     extraParams: '&format=json&field=' + field,
                                     preSelectionAdded: function(value) {
-                                    alert(value);
+                                    var data = {};
+                                    data[field] = value;
+                                    $.post(url, data, function() {
+                                            alert(value);
+                                        });
                                     return false;
                                 }
                             });
@@ -49,7 +51,7 @@ $(document).ready(function(){
                         var ul = $(this).parents("ul.field");
                         var field = ul.attr('class').split(' ')[1];
                         var value = $(this).next().html();
-                        data = {action: 'delete'}
+                        var data = {action: 'delete'}
                         data[field] = value;
                         var that = $(this);
                         $.post(url, data, function() {
@@ -58,7 +60,7 @@ $(document).ready(function(){
                                 if (fields.length == 0) {
                                     $(ul).remove();
                                     // TODO: add back in to 
-                                    // some field container thingy
+                                    // some field container thingy if its empty
                                 }
                             });
                     });
