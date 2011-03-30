@@ -245,7 +245,7 @@ class ProjectView(ProjectsView):
                     else:
                         # append the items....the default action
                         project.setdefault(field, []).extend(self.request.POST.getall(field))
-                        return # TODO: take out after testing
+                        return self.Get() # TODO: take out after testing
                     
         self.app.model.save(project)
 

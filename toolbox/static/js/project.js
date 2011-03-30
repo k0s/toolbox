@@ -36,7 +36,7 @@ $(document).ready(function(){
                                     var data = {};
                                     data[field] = value;
                                     $.post(url, data, function() {
-                                            alert(value);
+                                            alert($(ul).find('li:last').html());
                                         });
                                     return false;
                                 }
