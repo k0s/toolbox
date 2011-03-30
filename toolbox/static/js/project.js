@@ -88,6 +88,7 @@ $(document).ready(function(){
                         });
                 }
 
+                // add a delete button to a field value list item
                 function addDeleteButton(li) {
                     var button = $('<button class="remove-field" title="remove">-</button>');
                     li.prepend(button);
@@ -95,24 +96,8 @@ $(document).ready(function(){
                 }
 
                 // add a remove fields button
-                $(this).find('ul.field > li').prepend('<button class="remove-field" title="remove">-</button>');
-                $(this).find('button.remove-field').click(function() {
-                        $(this).addClass('highlight');
-                        var ul = $(this).parents("ul.field");
-                        var field = ul.attr('class').split(' ')[1];
-                        var value = $(this).next().html();
-                        var data = {action: 'delete'}
-                        data[field] = value;
-                        var that = $(this);
-                        $.post(url, data, function() {
-                                $(that).parent().remove();
-                                var fields = ul.find('li');
-                                if (fields.length == 0) {
-                                    $(ul).remove();
-                                    // TODO: add back in to 
-                                    // some field container thingy if its empty
-                                }
-                            });
+                $(this).find('ul.field > li').each(function(index){
+                        addDeleteButton($(this));
                     });
 
                 // add a missing fields container
