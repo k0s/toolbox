@@ -132,7 +132,11 @@ $(document).ready(function(){
                     additional_fields.append(li);
                     button.click(function() {
                             var missing_field = $(this).attr('name');
-                            project_div.find('ul.field:last').after('<ul class="field ' + missing_field + '"><h2><a href="' + missing_field + '">' + missing_field + '</a></h2></ul>');
+                            var ul = $('<ul class="field ' + missing_field + '"><h2><a href="' + missing_field + '">' + missing_field + '</a></h2></ul>');
+                            var input = $('<input type="text"/>');
+                            ul.append(input);
+                            input.focus();
+                            project_div.find('ul.field:last').after(ul);
                             $(this).parent().remove();                            
                         });
                 }
