@@ -35,7 +35,7 @@ $(document).ready(function(){
                         var field = ul.attr('class').split(' ')[1];
                         var data = '/tags';
                         $(input).autoSuggest(data, {selectedItemProp: 'value',
-                                    selectedValuesProp: 'value', 
+                                    selectedValuesProp: 'value',
                                     searchObjProps: 'value',
                                     minChars: 0,
                                     emptyText: null,
