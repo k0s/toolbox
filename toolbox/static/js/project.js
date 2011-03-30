@@ -151,7 +151,7 @@ $(document).ready(function(){
                             $(this).parent().remove();
                         });
                 }
-                $(this).find('ul.field:last').after(additional_fields);
+                $(this).find('form.delete').after(additional_fields);
             });
 
     });
