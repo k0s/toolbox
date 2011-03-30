@@ -36,7 +36,9 @@ $(document).ready(function(){
                                     var data = {};
                                     data[field] = value;
                                     $.post(url, data, function() {
-                                            alert($(ul).find('li:last').html());
+                                            var elem = $(ul).children('li:last');
+                                            var li = $('<li><a href="/?' + field + '=' + value + '">' + value + '</a></li>');
+                                            elem.after(li);
                                         });
                                     return false;
                                 }
