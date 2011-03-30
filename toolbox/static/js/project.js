@@ -79,7 +79,7 @@ $(document).ready(function(){
                     var that = $(this);
                     $.post(url, data, function() {
                             $(that).parent().remove();
-                            var fields = ul.find('li');
+                            var fields = ul.children('li');
                             if (fields.length == 0) {
                                 $(ul).remove();
                                 // add back in to the missing field container 
