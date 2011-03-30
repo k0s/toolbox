@@ -120,8 +120,9 @@ $(document).ready(function(){
                     }
                 }
                 var additional_fields = $('<ul class="additional-fields"></ul>');
-                for (var i=0; i < missing_fields.length; i++) {
-                    var missing_field = missing_fields[i];
+                function addMissingField(missing_field, additional_fields) {
+                    // add a missing field to the additional fields container
+
                     var button = $('<button name="' + missing_field + '">+ ' + missing_field + '</button>');
                     var li = $('<li></li>');
                     li.append(button);
@@ -139,6 +140,11 @@ $(document).ready(function(){
                             addAutoSuggest(input, missing_field);
                             $(this).parent().remove();
                         });
+                    
+                }
+                for (var i=0; i < missing_fields.length; i++) {
+                    var missing_field = missing_fields[i];
+                    addMissingField(missing_field, additional_fields);
                 }
                 $(this).find('form.delete').before(additional_fields);
             });
