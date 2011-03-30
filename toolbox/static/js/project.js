@@ -103,5 +103,26 @@ $(document).ready(function(){
                                 }
                             });
                     });
+
+                // add a missing fields container
+                var missing_fields = [];
+                var found_fields = [];
+                $(this).find('ul.field').each(function(index) {
+                    var field = $(this).attr('class').split(' ')[1];
+                    found_fields[index] = field;
+                    });
+                for (var i=0; i < fields.length; i++) {
+                    var found = false;
+                    for (var j=0; j < found_fields.length; j++) {
+                        if (found_fields[j] == fields[i]) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        missing_fields[missing_fields.length] = fields[i];
+                    }
+                }
             });
+
     });
