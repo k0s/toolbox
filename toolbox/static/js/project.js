@@ -1,4 +1,13 @@
 $(document).ready(function(){
+        
+        // find all fields
+        var fields = [];
+        $('ul.navigation a:gt(1)').each(function(index) {
+                var text = $(this).text();
+                fields[fields.length] = text;
+            });
+
+        // modify project div
         $('div.project').each(function(){
                 var project = $(this).attr('id'); 
                 var url = '/' + project; // TODO: urlquote
