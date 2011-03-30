@@ -39,6 +39,7 @@ $(document).ready(function(){
                                             var elem = $(ul).children('li:last');
                                             var li = $('<li><a href="/?' + field + '=' + value + '">' + value + '</a></li>');
                                             elem.after(li);
+                                            addDeleteButton(li);
                                         });
                                     return false;
                                 }
