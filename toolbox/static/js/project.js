@@ -9,7 +9,8 @@ $(document).ready(function(){
 
         // modify project div
         $('div.project').each(function(){
-                var project = $(this).attr('id'); 
+                var project = $(this).attr('id');
+                var project_div = $(this);
                 var url = '/' + project; // TODO: urlquote
 
                 // make description editable with jeditable
@@ -125,10 +126,14 @@ $(document).ready(function(){
                 }
                 var additional_fields = $('<ul class="additional-fields"></ul>');
                 for (var i=0; i < missing_fields.length; i++) {
-                    var button = $('<button>+ ' + missing_fields[i] + '</button>');
+                    var missing_field = missing_fields[i];
+                    var button = $('<button>+ ' + missing_field + '</button>');
                     var li = $('<li></li>');
                     li.append(button);
                     additional_fields.append(li);
+                    button.click(function() {                            
+                            project_div.find('ul.field:last').after('<ul class="field ' + missing_field + '"><h2>' + missing_field + '</h2></ul>'); 
+                        });
                 }
                 $(this).find('ul.field:last').after(additional_fields);
             });
