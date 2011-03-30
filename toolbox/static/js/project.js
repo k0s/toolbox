@@ -83,7 +83,7 @@ $(document).ready(function(){
                             if (fields.length == 0) {
                                 $(ul).remove();
                                 // add back in to the missing field container 
-                                addMissingField('foo', additional_fields);
+                                addMissingField(field, additional_fields);
                             }
                         });
                 }
