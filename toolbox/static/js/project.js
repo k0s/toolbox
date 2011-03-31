@@ -70,7 +70,9 @@ $(document).ready(function(){
                                 var value = $(this).val();
                                 var data = {};
                                 data[field] = value;
-                                
+                                $.post(url, data, function() {
+                                        postField(value);
+                                    });
                                 $(this).val('');
                             }
                         });
