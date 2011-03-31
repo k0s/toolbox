@@ -49,6 +49,7 @@ $(document).ready(function(){
                                 resultsHighlight: false,
                                 extraParams: '&format=json&field=' + field + '&omit=' + project,
                                 preSelectionAdded: function(value) {
+                                alert('foo' + input.val());
                                 var data = {};
                                 data[field] = value;
                                 $.post(url, data, function() {

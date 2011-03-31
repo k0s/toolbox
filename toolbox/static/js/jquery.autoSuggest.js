@@ -135,9 +135,12 @@
                                 $("li.as-selection-item", selections_holder).removeClass("blur");
                                 if($(this).val() != ""){
                                     results_ul.css("width",selections_holder.outerWidth());
-                                    results_holder.show();
+                                    //                                    results_holder.show();
                                 }
                             }
+
+                            results_holder.show();
+
                             input_focus = true;
                             return true;
                         }).blur(function(){
