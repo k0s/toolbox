@@ -11,6 +11,7 @@ from handlers import FieldView
 from handlers import ProjectView
 from handlers import QueryView
 from handlers import TagsView
+from handlers import AboutView
 
 from model import CouchCache
 from model import MemoryCache
@@ -24,7 +25,8 @@ class Dispatcher(object):
 
     ### class level variables
     defaults = { 'template_dirs': '',
-                 'model_type': 'memory_cache'}
+                 'model_type': 'memory_cache',
+                 'about': None }
 
     def __init__(self, directory, **kw):
 
@@ -43,6 +45,14 @@ class Dispatcher(object):
 
         # request handlers in order they will be tried
         self.handlers = [ TagsView, CreateProjectView, FieldView, ProjectView, QueryView, DeleteProjectHandler ]
+
+        # add an about view 
+        if self.about:
+            about = file(self.about).read()
+            import docutils.core
+            about = docutils.core.publish_parts(about, writer_name='html')['body']
+            self.about = about
+            self.handlers.append(AboutView)
 
     def __call__(self, environ, start_response):
 

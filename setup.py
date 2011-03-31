@@ -14,7 +14,8 @@ dependencies = [
     'paste',
     'pastescript', # technically optional, but here for ease of install
     'whoosh',
-    'couchdb'
+    'couchdb',
+    'docutils'
     ]
 try:
     import json

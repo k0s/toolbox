@@ -105,7 +105,8 @@ class TempitaHandler(Handler):
                       'link': self.link,
                       'css': self.css,
                       'js':  self.js,
-                      'title': self.__class__.__name__}
+                      'title': self.__class__.__name__,
+                      'hasAbout': bool(app.about)}
 
     def find_template(self, template):
         for d in self.template_dirs:
@@ -387,3 +388,15 @@ class TagsView(TempitaHandler):
 
     def get_json(self):
         return self.data['tags']
+
+class AboutView(TempitaHandler):
+    """the obligatory about page"""
+    methods = set(['GET'])
+    handler_path = ['about']
+    template = 'about.html'
+
+    def __init__(self, app, request):
+        TempitaHandler.__init__(self, app, request)
+        self.data['fields'] = self.app.model.fields()
+        self.data['title'] = 'about:toolbox'
+        self.data['about'] = self.app.about

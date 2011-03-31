@@ -2,7 +2,7 @@ $(document).ready(function(){
         
         // find all fields
         var fields = [];
-        $('ul.navigation a:gt(1)').each(function(index) {
+        $('ul.navigation a.by-field').each(function(index) {
                 var text = $(this).text();
                 fields[fields.length] = text;
             });

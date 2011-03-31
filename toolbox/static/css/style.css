@@ -16,7 +16,7 @@ body {
 background: #4181A1;
 }
 
-div.project,div.field,#new,div.tag {
+div.project,div.field,#new,div.tag,div.about {
  background: white;
  border: thin solid black;
  border-radius: 1em;
