@@ -72,15 +72,12 @@ $(document).ready(function(){
                 }
 
                 // add an add fields button
-                $(this).find('ul.field').append('<button class="add-field" title="add a field">+</button>');
-                $(this).find('button.add-field').click(function() {
-                        $(this).addClass('hide');
+                $(this).find('ul.field').each(function() {
                         var input = $('<input class="add-field" type="text"/>');
-                        $(this).before(input);
-                        var button = $(this);
-                        var ul = $(this).parents("ul.field");
-                        var field = ul.attr('class').split(' ')[1];
+                        var ul = $(this);
+                        var field = $(this).attr('class').split(' ')[1];
                         var data = '/tags';
+                        $(this).append(input);
                         addAutoSuggest(input, field); // could get field instead from introspection
                     });
 

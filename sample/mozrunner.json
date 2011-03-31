@@ -1,1 +1,1 @@
-{"url": "https://github.com/mozautomation/mozmill/tree/master/mozrunner", "description": "mozrunner runs XUL-based applications such as Firefox and Thunderbird", "name": "mozrunner", "language": ["python"], "modified": 1298516027.8272631}
+{"description": "mozrunner runs XUL-based applications such as Firefox and Thunderbird", "language": ["python"], "author": ["ctalbert"], "url": "https://github.com/mozautomation/mozmill/tree/master/mozrunner", "modified": 1298516027.8272631, "name": "mozrunner"}
