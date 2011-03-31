@@ -29,7 +29,7 @@ $(document).ready(function(){
                     // raise NotImplementedError
                     var ul = $(input).parents('ul.field');
 
-                    function postField(data) {
+                    function postField() {
                         var elem = $(ul).children('li:last');
                         var li = $('<li><a href="/?' + field + '=' + value + '">' + value + '</a></li>');
                         
@@ -52,14 +52,15 @@ $(document).ready(function(){
                                 var data = {};
                                 data[field] = value;
                                 $.post(url, data, function() {
-                                        var elem = $(ul).children('li:last');
-                                        var li = $('<li><a href="/?' + field + '=' + value + '">' + value + '</a></li>');
+                                        postField();
+                                        // var elem = $(ul).children('li:last');
+                                        // var li = $('<li><a href="/?' + field + '=' + value + '">' + value + '</a></li>');
 
-                                        if (elem.length == 0) {
-                                            var elem = $(ul).children('h2');
-                                        } 
-                                        elem.after(li);
-                                        addDeleteButton(li);
+                                        // if (elem.length == 0) {
+                                        //     var elem = $(ul).children('h2');
+                                        // } 
+                                        // elem.after(li);
+                                        // addDeleteButton(li);
                                     });
                                 return false;
                             }
