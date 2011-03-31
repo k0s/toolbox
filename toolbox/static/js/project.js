@@ -53,14 +53,6 @@ $(document).ready(function(){
                                 data[field] = value;
                                 $.post(url, data, function() {
                                         postField(value);
-                                        // var elem = $(ul).children('li:last');
-                                        // var li = $('<li><a href="/?' + field + '=' + value + '">' + value + '</a></li>');
-
-                                        // if (elem.length == 0) {
-                                        //     var elem = $(ul).children('h2');
-                                        // } 
-                                        // elem.after(li);
-                                        // addDeleteButton(li);
                                     });
                                 return false;
                             }
