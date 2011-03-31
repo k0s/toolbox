@@ -49,7 +49,6 @@ $(document).ready(function(){
                                 resultsHighlight: false,
                                 extraParams: '&format=json&field=' + field + '&omit=' + project,
                                 preSelectionAdded: function(value) {
-                                alert('foo' + input.val());
                                 var data = {};
                                 data[field] = value;
                                 $.post(url, data, function() {
@@ -68,10 +67,6 @@ $(document).ready(function(){
                                     });
                                 $(this).val('');
                             }
-                        });
-                    $(input).blur(function() {
-                            var value = $(this).val();
-                            alert(value);
                         });
                     $(input).focus();
                 }
