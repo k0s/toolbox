@@ -68,6 +68,10 @@ $(document).ready(function(){
                                 $(this).val('');
                             }
                         });
+                    $(input).blur(function() {
+                            var value = $(this).val();
+                            alert(value);
+                        });
                     $(input).focus();
                 }
 
