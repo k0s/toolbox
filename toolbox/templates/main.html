@@ -26,10 +26,10 @@ $('#search-text').focus();
 <!-- navigation menu -->
 <ul class="navigation">
   <li><a href="/" title="toolbox">toolbox</a></li>
-  <li><a href="{{link('new')}}" title="add a tool">new</a></li>
   {{if hasAbout}}
   <li><a href="{{link('about')}}" title="about:toolbox">about</a></li>
   {{endif}}
+  <li><a href="{{link('new')}}" title="add a tool">new</a></li>
   {{for field in fields}}
   <li>
     <a class="by-field" href="{{link(field)}}" title="tools by {{field}}">{{field}}</a>
