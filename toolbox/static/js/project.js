@@ -160,6 +160,9 @@ $(document).ready(function(){
                     addMissingField(missing_field, additional_fields);
                 }
                 $(this).find('form.delete').before(additional_fields);
+
+                // change the usage text to something more palatable
+                $(this).find('ul.usage > h2 > a').text("What's this for");
             });
 
     });
