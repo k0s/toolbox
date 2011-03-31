@@ -28,6 +28,18 @@ $(document).ready(function(){
                 function addAutoSuggest(input, field) {
                     // raise NotImplementedError
                     var ul = $(input).parents('ul.field');
+
+                    function postField(data) {
+                        var elem = $(ul).children('li:last');
+                        var li = $('<li><a href="/?' + field + '=' + value + '">' + value + '</a></li>');
+                        
+                        if (elem.length == 0) {
+                            var elem = $(ul).children('h2');
+                        } 
+                        elem.after(li);
+                        addDeleteButton(li);
+                    }
+
                     $(input).autoSuggest('/tags', {selectedItemProp: 'value',
                                 selectedValuesProp: 'value',
                                 searchObjProps: 'value',
@@ -50,6 +62,15 @@ $(document).ready(function(){
                                         addDeleteButton(li);
                                     });
                                 return false;
+                            }
+                        });
+                    $(input).keypress(function(event) {
+                            if (event.which == 13) {
+                                var value = $(this).val();
+                                var data = {};
+                                data[field] = value;
+                                
+                                $(this).val('');
                             }
                         });
                     $(input).focus();
