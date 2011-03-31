@@ -29,7 +29,7 @@ $(document).ready(function(){
                     // raise NotImplementedError
                     var ul = $(input).parents('ul.field');
 
-                    function postField() {
+                    function postField(value) {
                         var elem = $(ul).children('li:last');
                         var li = $('<li><a href="/?' + field + '=' + value + '">' + value + '</a></li>');
                         
@@ -52,7 +52,7 @@ $(document).ready(function(){
                                 var data = {};
                                 data[field] = value;
                                 $.post(url, data, function() {
-                                        postField();
+                                        postField(value);
                                         // var elem = $(ul).children('li:last');
                                         // var li = $('<li><a href="/?' + field + '=' + value + '">' + value + '</a></li>');
 
