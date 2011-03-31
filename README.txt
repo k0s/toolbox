@@ -56,10 +56,10 @@ The list:
   file (e.g. a setup.py) then the project should be notified
 
 
-Thought Farm
-------------
+Links
+-----
 
-Links:
+Types of links should be recorded:
 
 * repository
 * how to report bugs
@@ -83,3 +83,9 @@ So there are a few things worth considering:
 - links could be scraped from the description
 
 - you could have a way of entering links of various types
+
+
+Other Resources
+---------------
+
+* https://wiki.mozilla.org/User:Jprosevear/Tools
