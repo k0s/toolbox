@@ -1,7 +1,8 @@
 toolbox
 =======
 
-a place to find Mozilla software tools
+*a place to find Mozilla software tools*
+
 
 The Story of Toolbox
 --------------------
@@ -12,6 +13,7 @@ not a hosting service -- it is just a listing of packages which can
 live anywhere that are of use to Mozillians.
 
 It could also be used to track:
+
 * smart bookmarks
 * code snippets
 
@@ -46,7 +48,7 @@ This will serve the handlers and static content using the paste
 
 The dispatcher (``toolbox.dispatcher:Dispatcher``) is the central
 webapp that designates per-request to a number of handlers (from
-``handlers.py``).  The dispatcher has a few options::
+``handlers.py``).  The dispatcher has a few options:
 
 * template_dirs: extra directories (in order) to look for templates
 * model_type: type of backend to use

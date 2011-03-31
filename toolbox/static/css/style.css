@@ -72,6 +72,10 @@ ul {
 list-style: none;
 }
 
+ul.simple {
+list-style: disc;
+}
+
 ul.navigation {
 display: inline;
 }
@@ -198,4 +202,8 @@ background: yellow;
 
 .hide {
 display: none;
+}
+
+tt,pre {
+font-family: monospace;
 }
