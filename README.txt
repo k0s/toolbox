@@ -49,8 +49,11 @@ has a number of classifier tags.  Out of the box, these fields are
 * author: who wrote and/or maintains the software?
 
 
-Running 
--------
+Running Toolbox
+---------------
+
+You can download and run the toolbox software yourself:
+http://github.com/k0s/toolbox
 
 To serve in baseline mode, install the software and run::
 
