@@ -31,9 +31,6 @@ class ProjectsModel(object):
     reserved.update(['modified'])
 
     def __init__(self, directory):
-        """
-        - directory: directory of projects
-        """
         self.directory = directory
         self.modified = {}
         self.files = {}
@@ -121,6 +118,7 @@ class ProjectsModel(object):
     def delete(self, project):
         raise NotImplementedError
 
+
 class MemoryCache(ProjectsModel):
     """
     sample implementation keeping everything in memory
@@ -128,6 +126,7 @@ class MemoryCache(ProjectsModel):
 
     def __init__(self, directory, fields=None):
         """
+        - directory: directory of .json tool files
         - fields : list of fields to use, or None to calculate dynamically
         """
         ProjectsModel.__init__(self, directory)
