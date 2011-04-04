@@ -67,7 +67,6 @@ $(document).ready(function(){
                                 $(this).val('');
                             }
                         });
-                    //                    $(input).focus();
                 }
 
                 // add an add fields button
