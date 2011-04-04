@@ -168,17 +168,10 @@ color: red;
 }
 
 .add-field {
-width: 5em;
-margin-left: auto;
-margin-right: auto;
 display: block;
-}
-
-button.add-field {
-background: white;
-text-align: center;
-width: 5em;
-border: 3px inset black;
+margin-left: 0;
+margin-right: auto;
+width: 7em;
 }
 
 ul.field {
