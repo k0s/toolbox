@@ -26,7 +26,6 @@ $(document).ready(function(){
 
                 // function to add auto suggest to an input
                 function addAutoSuggest(input, field) {
-                    // raise NotImplementedError
                     var ul = $(input).parents('ul.field');
 
                     function postField(value) {

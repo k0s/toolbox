@@ -42,7 +42,7 @@
   {{for field in fields}}
   <div>
     <label for="{{field}}">{{field.title()}}</label>
-    <input type="text" name="{{field}}"/>
+    <input class="field-input" type="text" name="{{field}}"/>
 
     <!-- display errors -->
     {{if field in errors}}

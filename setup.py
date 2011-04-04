@@ -5,7 +5,7 @@ try:
 except IOError: 
     description = ''
 
-version = "0.0"
+version = "0.1"
 
 # dependencies
 dependencies = [
@@ -24,7 +24,7 @@ except ImportError:
 
 setup(name='toolbox',
       version=version,
-      description="a place to put Mozilla software tools",
+      description="a place to list Mozilla software tools",
       long_description=description,
       classifiers=[], # Get strings from http://www.python.org/pypi?%3Aaction=list_classifiers
       author='Jeff Hammel',
