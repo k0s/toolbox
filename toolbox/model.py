@@ -126,18 +126,25 @@ class MemoryCache(ProjectsModel):
     sample implementation keeping everything in memory
     """
 
-    def __init__(self, directory, fields=()):
+    def __init__(self, directory, fields=None):
+        """
+        - fields : list of fields to use, or None to calculate dynamically
+        """
         ProjectsModel.__init__(self, directory)
         self._projects = {}
-        self._fields = set()
+        self._fields = fields
+        self.field_set = set(fields or ())
         self.index = {}
         self.load()
 
     def update(self, project):
         self._projects[project['name']] = project
-        fields = [i for i in project if i not in self.reserved]
-        self._fields.update(fields)
+        if self._fields is None:
+            fields = [i for i in project if i not in self.reserved]
+            self.field_set.update(fields)
         for field in fields:
+            if field not in project:
+                continue
             index = self.index.setdefault(field, {})
             values = project[field]
             if isinstance(values, basestring):
@@ -165,6 +172,8 @@ class MemoryCache(ProjectsModel):
         return [self._projects[project] for project in results]
 
     def fields(self):
+        if self._fields == None:
+            return list(self.field_set)
         return self._fields
 
     def project(self, name):
