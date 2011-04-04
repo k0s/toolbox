@@ -25,14 +25,17 @@ class Dispatcher(object):
 
     ### class level variables
     defaults = { 'template_dirs': '',
+                 'about': None,
                  'model_type': 'memory_cache',
-                 'about': None }
+                 'fields': None
+                 }
+
 
     def __init__(self, directory, **kw):
 
         # set instance parameters from kw and defaults
         for key in self.defaults:
-            setattr(self, key, kw.get(key, self.defaults[key]))
+            setattr(self, key, kw.pop(key, self.defaults[key]))
 
         # JSON blob directory
         assert os.path.exists(directory) and os.path.isdir(directory)
