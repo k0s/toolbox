@@ -45,7 +45,7 @@ class Dispatcher(object):
         # request handlers in order they will be tried
         self.handlers = [ TagsView, CreateProjectView, FieldView, ProjectView, QueryView, DeleteProjectHandler ]
 
-        # add an about view 
+        # add an about view if file specified
         if self.about:
             about = file(self.about).read()
             import docutils.core
