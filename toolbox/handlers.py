@@ -168,7 +168,7 @@ class QueryView(ProjectsView):
     """general view to query all projects"""
     
     template = 'index.html'
-    methods=set(['GET'])
+    methods = set(['GET'])
 
     def __init__(self, app, request):
         ProjectsView.__init__(self, app, request)
@@ -302,6 +302,9 @@ class CreateProjectView(TempitaHandler):
     template = 'new.html'
     methods = set(['GET', 'POST'])
     handler_path = ['new']
+    js = TempitaHandler.js[:]
+    js.extend(['/js/jquery.autoSuggest.js',
+               '/js/new.js'])
 
     def __init__(self, app, request):
         TempitaHandler.__init__(self, app, request)
@@ -321,10 +324,12 @@ class CreateProjectView(TempitaHandler):
             location = self.link(self.request.path_info) + self.query_string([('missing', i) for i in missing])
             return self.redirect(location)
         # TODO check for duplicate project name
+        # and other url namespace collisions
 
         project = dict([(i, post_data[i]) for i in required]) 
         for field in self.app.model.fields():
             value = post_data.get(field, '').strip()
+            values = [i.strip() for i in value.split(',') if i.strip()]
             if not value:
                 continue
             project[field] = value.split()
@@ -388,6 +393,7 @@ class TagsView(TempitaHandler):
 
     def get_json(self):
         return self.data['tags']
+
 
 class AboutView(TempitaHandler):
     """the obligatory about page"""
