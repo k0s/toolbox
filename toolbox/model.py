@@ -13,6 +13,11 @@ try:
 except ImportError:
     import simplejson as json
 
+# TODO: types of fields:
+# - string: a single string: {'type': 'string', 'name': 'name', 'required': True}
+# - field: a list of strings: {'type': 'field', 'name', 'usage'}
+# - dict: a subclassifier: {'type': '???', 'name': 'url', 'required': True}
+
 class ProjectsModel(object):
     """
     abstract base class for toolbox projects
@@ -121,7 +126,7 @@ class MemoryCache(ProjectsModel):
     sample implementation keeping everything in memory
     """
 
-    def __init__(self, directory):
+    def __init__(self, directory, fields=()):
         ProjectsModel.__init__(self, directory)
         self._projects = {}
         self._fields = set()
