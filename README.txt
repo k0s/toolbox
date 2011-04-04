@@ -77,16 +77,14 @@ TODO
 
 The list:
 
-* add this file to /about
-* make fields configurable if specified
-* cleanup model; ensure couch works
+* cleanup couch model and ensure it works
 * add (e.g.) selenium tests
 * add import functionality to couch backend and make sure it works
 * keep track of which URLs projects cant use
-* make /new more AJAXy
-* setup.py scraper
-* AMO scraper
-* mozdev scraper
+* add scrapers:
+** setup.py 
+** AMO 
+** mozdev 
 * allow projects to point to a setup.py or AMO URL
 * URLs in the description should be made links
 * dependencies should link appropriately (e.g. to toolbox if possible)
@@ -136,6 +134,8 @@ So there are a few things worth considering:
 
 Other Resources
 ---------------
+
+Mozilla tools are recorded on other sites too.
 
 * http://www.mozdev.org/
 * https://wiki.mozilla.org/User:Jprosevear/Tools
