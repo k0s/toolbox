@@ -40,7 +40,7 @@ class Dispatcher(object):
         # model: backend storage and accessors
         if self.model_type not in models:
             raise AssertionError("model_type '%s' not found in %s" % (self.model_type, models.keys()))
-        self.model = models[self.model_type](directory)
+        self.model = models[self.model_type](**kw)
 
         # request handlers in order they will be tried
         self.handlers = [ TagsView, CreateProjectView, FieldView, ProjectView, QueryView, DeleteProjectHandler ]
