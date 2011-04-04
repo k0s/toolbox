@@ -23,46 +23,18 @@ class ProjectsModel(object):
     abstract base class for toolbox projects
     """
 
-    # required fields
-    required = set(['name', 'description', 'url'])
+    def __init__(self, required=('name', 'description', 'url')):
+        """
+        - required : required data (strings)
+        """
+        self.required = set(required)
 
-    # reserved fields
-    reserved = required.copy()
-    reserved.update(['modified'])
-
-    def __init__(self, directory):
-        self.directory = directory
+        # reserved fields        
+        self.reserved = self.required.copy()
+        self.reserved.update(['modified']) 
         self.modified = {}
-        self.files = {}
         self.search = WhooshSearch()
 
-    def load(self):
-        """load JSON from the directory"""
-        for i in os.listdir(self.directory):
-            if not i.endswith('.json'):
-                continue
-            filename = os.path.join(self.directory, i)
-            mtime = os.path.getmtime(filename)
-            if mtime > self.modified.get(i, -1):
-                self.modified[i] = mtime
-                try:
-                    project = json.loads(file(filename).read())
-                except:
-                    print 'File: ' + i
-                    raise
-                self.files[project['name']] = i
-                if 'modified' not in project:
-                    project['modified'] = mtime
-                    self.save(project)
-                self.update(project)
-
-    def save(self, project):
-        filename = self.files.get(project['name'])
-        if not filename:
-            filename = str2filename(project['name']) + '.json'
-        filename = os.path.join(self.directory, filename)
-        file(filename, 'w').write(json.dumps(project))
-        # TODO: data integrity checking
 
     def update_fields(self, name, **fields):
         """
@@ -129,7 +101,13 @@ class MemoryCache(ProjectsModel):
         - directory: directory of .json tool files
         - fields : list of fields to use, or None to calculate dynamically
         """
-        ProjectsModel.__init__(self, directory)
+        ProjectsModel.__init__(self)
+
+        # JSON blob directory
+        assert os.path.exists(directory) and os.path.isdir(directory)
+        self.directory = directory
+        
+        self.files = {}
         self._projects = {}
         self._fields = fields
         self.field_set = set(fields or ())
@@ -196,19 +174,50 @@ class MemoryCache(ProjectsModel):
                 value.pop(project)
         os.remove(os.path.join(self.directory, self.files.pop(project)))
 
+    def load(self):
+        """load JSON from the directory"""
+        for i in os.listdir(self.directory):
+            if not i.endswith('.json'):
+                continue
+            filename = os.path.join(self.directory, i)
+            mtime = os.path.getmtime(filename)
+            if mtime > self.modified.get(i, -1):
+                self.modified[i] = mtime
+                try:
+                    project = json.loads(file(filename).read())
+                except:
+                    print 'File: ' + i
+                    raise
+                self.files[project['name']] = i
+                if 'modified' not in project:
+                    project['modified'] = mtime
+                    self.save(project)
+                self.update(project)
+
+    def save(self, project):
+        filename = self.files.get(project['name'])
+        if not filename:
+            filename = str2filename(project['name']) + '.json'
+        filename = os.path.join(self.directory, filename)
+        file(filename, 'w').write(json.dumps(project))
+        # TODO: data integrity checking
+
 class CouchCache(MemoryCache):
     """
     store json files in couchdb
     """
 
-    def __init__(self, directory, server="http://127.0.0.1:5984",
+    def __init__(self,
+                 server="http://127.0.0.1:5984",
                  dbname="toolbox"):
         server = couchdb.Server(server)
         try:
             self.db = server[dbname]
         except:
             self.db = server.create(dbname)
-        MemoryCache.__init__(self, directory)
+
+        # XXX *should* inherit from ABC!
+        MemoryCache.__init__(self)
 
 
     def load(self):

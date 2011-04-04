@@ -31,15 +31,11 @@ class Dispatcher(object):
                  }
 
 
-    def __init__(self, directory, **kw):
+    def __init__(self, **kw):
 
         # set instance parameters from kw and defaults
         for key in self.defaults:
             setattr(self, key, kw.pop(key, self.defaults[key]))
-
-        # JSON blob directory
-        assert os.path.exists(directory) and os.path.isdir(directory)
-        self.directory = directory
 
         # model: backend storage and accessors
         if self.model_type not in models:
