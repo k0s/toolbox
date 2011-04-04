@@ -44,7 +44,7 @@ $(document).ready(function(){
                                 searchObjProps: 'value',
                                 minChars: 0,
                                 emptyText: null,
-                                startText: '',
+                                startText: 'Add ' + field,
                                 resultsHighlight: false,
                                 extraParams: '&format=json&field=' + field + '&omit=' + project,
                                 preSelectionAdded: function(value) {
@@ -67,7 +67,7 @@ $(document).ready(function(){
                                 $(this).val('');
                             }
                         });
-                    $(input).focus();
+                    //                    $(input).focus();
                 }
 
                 // add an add fields button
