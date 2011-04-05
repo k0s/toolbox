@@ -97,6 +97,8 @@ The list:
 * integrate author with community phonebook (and bugzilla)
 * the first time someone edits a description (etc.) from a pointed-to
   file (e.g. a setup.py) then the project should be notified
+* you should be able to edit a field, e.g. author.  Changing one field
+  value should give the option to change all similar field values.
 
 
 Links

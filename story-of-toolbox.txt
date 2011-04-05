@@ -1,0 +1,41 @@
+The Story of Toolbox
+====================
+
+Toolbox is fundamentally a document-oriented approach to information
+indexing.  A "tool" consists three mandatory string fields (name,
+description, and URL) that are generic to a large class of problems as
+well as classifiers, such as author, usage, type, etc. A tool may have
+an arbitrary number of classifier fields as needed.  Each classifier
+consists of a set of values with which a tool is tagged. This gives
+toolbox the flexibility to fit a large number of data models.
+
+
+Architecture
+------------
+
+ Interfaces            Implementations
+
+ +----+              +-+-----+
+ |HTTP|              | |files|
+ +----+---\  +-----+ | +-----+
+           |-|model|-+-+-----+
+ +------+-/  +-----+ | |couch|
+ |script|            | +-----+
+ +------+            +-+---+
+                     | |SQL|
+                     | +---+
+                     +-+---+
+                       |...|
+                       +---+
+
+User Interaction
+----------------
+
+A user will typically interact with Toolbox through the AJAX web interface.
+
+What Toolbox Doesn't Do
+-----------------------
+
+
+
+* versioning: 
