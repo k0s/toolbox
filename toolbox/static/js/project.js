@@ -150,6 +150,7 @@ $(document).ready(function(){
                             elem.after(ul);
                             addAutoSuggest(input, missing_field);
                             $(this).parent().remove();
+                            $(input).focus();
                         });
                     
                 }
