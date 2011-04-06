@@ -85,9 +85,9 @@ The list:
 * add import functionality to couch backend and make sure it works
 * keep track of which URLs projects cant use
 * add scrapers:
-** setup.py 
-** AMO 
-** mozdev 
+  * setup.py 
+  * AMO 
+  * mozdev 
 * allow projects to point to a setup.py or AMO URL
 * URLs in the description should be made links
 * you should be able to rename tools
