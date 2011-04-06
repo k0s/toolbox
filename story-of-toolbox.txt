@@ -7,11 +7,15 @@ description, and URL) that are generic to a large class of problems as
 well as classifiers, such as author, usage, type, etc. A tool may have
 an arbitrary number of classifier fields as needed.  Each classifier
 consists of a set of values with which a tool is tagged. This gives
-toolbox the flexibility to fit a large number of data models.
+toolbox the flexibility to fit a large number of data models, such as
+PYPI, DOAP, and others.
 
 
 Architecture
 ------------
+
+Toolbox uses a fairly simple architecture with a single abstract data
+model allowing an arbitrary number of implementations to be constructed::
 
  Interfaces            Implementations
 
@@ -28,10 +32,31 @@ Architecture
                        |...|
                        +---+
 
+Toolbox was originally intended to use a directory of files, one per project,
+as the backend. These were originally intended to be HTML files as the
+above model may be clearly mapped as HTML::
+
+ <div class="project"><h1><a href="{{url}}">{{name}}</a></h1>
+ <p class="description">{{description}}</p>
+ {{for field in fields}}
+  <ul class="{{field}}">
+  {{for value in values[field]}}
+   <li>{{value}}</li>
+  {{endfor}}
+ {{endfor}}
+ </div>
+
+This microformat approach allows not only easy editing of the HTML
+documents, but the documents may be indepently served and displayed
+without the toolbox server-side.
+
 User Interaction
 ----------------
 
-A user will typically interact with Toolbox through the AJAX web interface.
+A user will typically interact with Toolbox through the AJAX web
+interface.  The server side returns relatively simple (HTML) markup,
+but structured in such a way that JavaScript may be utilized to
+promote rich interaction.
 
 What Toolbox Doesn't Do
 -----------------------
