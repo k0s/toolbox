@@ -90,6 +90,7 @@ The list:
 ** mozdev 
 * allow projects to point to a setup.py or AMO URL
 * URLs in the description should be made links
+* you should be able to rename tools
 * dependencies should link appropriately (e.g. to toolbox if possible)
 * calendar view for projects
 * make the /tags view useful
@@ -99,6 +100,10 @@ The list:
   file (e.g. a setup.py) then the project should be notified
 * you should be able to edit a field, e.g. author.  Changing one field
   value should give the option to change all similar field values.
+* you should be able to drag a field from one classifier to
+  another. Doing so should prompt for doing this for all similar
+  values
+* you should be able to rename classifiers
 
 
 Links
