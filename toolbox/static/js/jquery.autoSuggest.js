@@ -19,6 +19,8 @@
  *   http://www.gnu.org/licenses/gpl.html
  */
 
+var idCtr = 0;
+
 (function($){
     $.fn.autoSuggest = function(data, options) {
         var defaults = { 
@@ -65,7 +67,8 @@
         if((d_type == "object" && d_count > 0) || d_type == "string"){
             return this.each(function(x){
                     if(!opts.asHtmlID){
-                        x = x+""+Math.floor(Math.random()*100); 
+                        x = idCtr++;
+                        // x = x+""+Math.floor(Math.random()*100); 
                         // Original comment:
                         //"this ensures there will be unique IDs on the page if autoSuggest() is called multiple times"
                         // No...this is not true
