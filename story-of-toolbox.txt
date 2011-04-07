@@ -48,7 +48,20 @@ above model may be clearly mapped as HTML::
 
 This microformat approach allows not only easy editing of the HTML
 documents, but the documents may be indepently served and displayed
-without the toolbox server-side.
+without the toolbox server-side. 
+
+The HTML microformat was never implemented (though, since the model
+backend is pluggable, it easily could be). Instead, the original
+implementation used JSON blobs stored in one file per tool.
+
+    |Displayable?|File-based?
+----+------------+-----------
+HTML|Yes         |Yes
+----+------------+----
+JSON|Not really  |Yes
+----+------------+----
+Couch|No         |No
+
 
 User Interaction
 ----------------
