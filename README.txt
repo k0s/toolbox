@@ -40,7 +40,7 @@ Classifiers
 -----------
 
 Outside of the required fields (name, description, and URL), a tool
-has a number of classifier tags.  Out of the box, these fields are
+has a number of classifier tags.  Out of the box, these fields are:
 
 * usage: what the tool is for
 * dependencies
