@@ -65,7 +65,10 @@
         if((d_type == "object" && d_count > 0) || d_type == "string"){
             return this.each(function(x){
                     if(!opts.asHtmlID){
-                        x = x+""+Math.floor(Math.random()*100); //this ensures there will be unique IDs on the page if autoSuggest() is called multiple times
+                        x = x+""+Math.floor(Math.random()*100); 
+                        // Original comment:
+                        //"this ensures there will be unique IDs on the page if autoSuggest() is called multiple times"
+                        // No...this is not true
                         var x_id = "as-input-"+x;
                     } else {
                         x = opts.asHtmlID;
