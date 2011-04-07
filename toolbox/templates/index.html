@@ -9,12 +9,10 @@
 
     <!-- title -->
     <h1>
-      {{if 'url' in project}}
-      <a href="{{project['url']}}">{{project['name']}}</a>
-      {{else}}
-      {{project['name']}}
-      {{endif}}
+      <a href="{{link(project['name'])}}">{{project['name']}}</a> 
+      <!-- TODO: urlescape -->
     </h1>
+    <a class="home" href="{{project['url']}}">{{project['url']}}</a>
 
     <!-- description -->
     <p class="description">{{project.get('description', '')}}</p>
