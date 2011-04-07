@@ -1,1 +1,1 @@
-{"url": "http://hg.mozilla.org/build/tools/file/tip/buildfarm/utils/hgtool.py", "usage": ["hg"], "description": "releng tool to do safe operations with hg. revision/branch on commandline will override those in props-file", "name": "hgtool", "modified": 1298582024.0199025}
+{"description": "releng tool to do safe operations with hg. revision/branch on commandline will override those in props-file", "language": ["python"], "url": "http://hg.mozilla.org/build/tools/file/tip/buildfarm/utils/hgtool.py", "modified": 1298582024.0199025, "usage": ["hg"], "name": "hgtool"}
