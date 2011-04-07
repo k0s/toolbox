@@ -78,7 +78,10 @@ file for your own usage needs.
 TODO
 ----
 
-The list:
+Toolbox features a fairly free form data format (a few required fields
+and an arbitrary number of classifiers). While this is a conceptually
+simplistic base, there is much that can be done with it! Several
+improvements are listed below:
 
 * cleanup couch model and ensure it works
 * add (e.g.) selenium tests
