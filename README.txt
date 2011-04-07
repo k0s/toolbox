@@ -49,6 +49,14 @@ has a number of classifier tags.  Out of the box, these fields are:
 * author: who wrote and/or maintains the software?
 
 
+Tool Sources
+------------
+
+* setup.py
+* addons.mozilla.org
+* OpenWebApps: https://developer.mozilla.org/en/OpenWebApps/The_Manifest
+
+
 Running Toolbox
 ---------------
 
