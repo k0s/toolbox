@@ -116,6 +116,9 @@ improvements are listed below:
   values
 * you should be able to rename classifiers
 * front-ending single-button INSTALL (when applicable)
+* for the addons of particular types, there should be some correlation
+  and some sort of direction/help of what these are and why these are
+
 
 Links
 -----
