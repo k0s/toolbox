@@ -43,7 +43,7 @@ Outside of the required fields (name, description, and URL), a tool
 has a number of classifier tags.  Out of the box, these fields are:
 
 * usage: what the tool is for
-* dependencies
+* dependencies: what does this tool need?
 * type: is the tool a particular definative kind of software?
 * language: which computer languages the tool is
 * author: who wrote and/or maintains the software?
@@ -62,7 +62,7 @@ To serve in baseline mode, install the software and run::
 This will serve the handlers and static content using the paste
 (http://pythonpaste.org) webserver.
 
-The dispatcher (``toolbox.dispatcher:Dispatcher``) is the central
+The dispatcher (``toolbox.dispatcher:Dispatcher``) is the central (WSGI)
 webapp that designates per-request to a number of handlers (from
 ``handlers.py``).  The dispatcher has a few options:
 
@@ -91,14 +91,14 @@ improvements are listed below:
   * setup.py 
   * AMO 
   * mozdev 
+* you should be able to rename tools and change their (main) URL
 * allow projects to point to a setup.py or AMO URL
 * URLs in the description should be made links
-* you should be able to rename tools
 * dependencies should link appropriately (e.g. to toolbox if possible)
 * calendar view for projects
 * make the /tags view useful
 * make fields computationable
-* integrate author with community phonebook (and bugzilla)
+* integrate author with community phonebook (and bugzilla id)
 * the first time someone edits a description (etc.) from a pointed-to
   file (e.g. a setup.py) then the project should be notified
 * you should be able to edit a field, e.g. author.  Changing one field
@@ -107,7 +107,7 @@ improvements are listed below:
   another. Doing so should prompt for doing this for all similar
   values
 * you should be able to rename classifiers
-
+* front-ending single-button INSTALL (when applicable)
 
 Links
 -----
@@ -127,22 +127,6 @@ Several types of links may be recorded:
 * how to report bugs
 * wiki
 * pypi
-
-The current behaviour is that each project has a single link that is
-linked to from its header.  While this is expedient behaviour, there
-are a couple of deficiencies in this:
-
-- if a project has multiple links, there is no way of adding them
-- there is no permalink to the project itself
-
-So there are a few things worth considering:
-
-- the header link could be converted to the permalink to the canonical
-  toolbox URL
-
-- links could be scraped from the description
-
-- you could have a way of entering links of various types
 
 
 Other Resources
