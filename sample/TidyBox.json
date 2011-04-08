@@ -1,0 +1,1 @@
+{"description": "Shrinks Tinderbox, letting you hover instead of scrolling to see information.  If you want to click a link in a popup, click to freeze the popup in place.", "author": ["jesse"], "url": "https://www.squarefree.com/userscripts/tidybox.user.js", "modified": 1302279703.049041, "dependencies": ["greasemonkey", "script"], "name": "TidyBox"}
