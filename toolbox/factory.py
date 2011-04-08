@@ -18,6 +18,7 @@ class PassthroughFileserver(object):
             return self.fileserver(environ, start_response)
         return self.app(environ, start_response)
 
+
 def paste_factory(global_conf, **app_conf):
     """create a webob view and wrap it in middleware"""
 

@@ -92,6 +92,37 @@ parallel to the directory root under consideration (for example,
 
 5. The worker removes the lock
 
+The toolbox web service uses a dispatcher->handler framework.  The
+handlers are loosely pluggable (they are assigned in the dispatcher),
+but could (and probably should) be made completely pluggable.  That
+said, the toolbox web system features an integration of templates,
+static resources (javascript, css, images), and handlers, so true
+pluggability is further away than just supporting pluggable handlers
+in the dispatcher.
+
+Deployment, however, may be tailored as desired.  Any of the given
+templates may be overridden via passing a ``template_dir`` parameter
+with a path to a directory that have templates of the appropriate
+names as found in toolbox's ``templates`` directory. 
+
+Likewise, the static files (css, js, etc.) are served using ``paste``'s 
+``StaticURLParser`` out of toolbox's ``static`` directory. (See
+toolbox's ``factory.py``.) Notably this is *not* done using the WSGI
+app itself.  Doing it with middleware allows the deployment to be
+customizable by writing your own factory.  For example, instead of
+using the ``paste`` webserver and the included ``paste.ini``, you
+could use nginx or apache and ``mod_wsgi`` with a factory file
+invoking ``Dispatcher`` with the desired arguments and serving the
+static files with an arbitrary static file server.
+
+It is common sense, if rarely followed, that deployment should be
+simple.  If you want to get toolbox running on your desktop and/or for
+testing, you should be able to do this easily (see the ``INSTALL.sh``
+for a simple installation using ``bash``; you'll probably want to
+perform these steps by hand for any sort of real-world deployment).
+If you want a highly customized deployment, then this will require
+more expertise and manual setup.
+
 
 User Interaction
 ----------------
@@ -104,8 +135,11 @@ promote rich interaction.
 What Toolbox Doesn't Do
 -----------------------
 
+* versioning: toolbox exposes editing towards a canonical document.
+  It doesn't do versioning.  A model instance may do whatever
+  versioning it desires, and since the 
 
+* authentication: 
 
-* versioning: 
-
-* authentication:
+What Toolbox Would Like To Do
+-----------------------------

@@ -92,6 +92,7 @@ class Handler(object):
         """JSON to serialize if requested for GET"""
         raise NotImplementedError # abstract base class
 
+
 class TempitaHandler(Handler):
     """handler for tempita templates"""
 
@@ -101,6 +102,11 @@ class TempitaHandler(Handler):
     
     def __init__(self, app, request):
         Handler.__init__(self, app, request)
+
+        # add application template_dir if specified
+        if app.template_dir:
+            template_dirs.insert(0, app_template_dir)
+
         self.data = { 'request': request,
                       'link': self.link,
                       'css': self.css,
@@ -109,6 +115,10 @@ class TempitaHandler(Handler):
                       'hasAbout': bool(app.about)}
 
     def find_template(self, template):
+        """find a template of a given name"""
+        # TODO: make this faster; the application should probably cache
+        # a dict of the (loaded) templates unless (e.g.) debug is given
+        
         for d in self.template_dirs:
             path = os.path.join(d, template)
             if os.path.exists(path):

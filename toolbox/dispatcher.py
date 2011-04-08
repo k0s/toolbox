@@ -18,13 +18,15 @@ from model import MemoryCache
 from pkg_resources import resource_filename
 from webob import Request, Response, exc
 
+# storage models
 models = {'memory_cache': MemoryCache,
           'couch': CouchCache}
 
 class Dispatcher(object):
+    """toolbox WSGI app which dispatchers to associated handlers"""
 
     ### class level variables
-    defaults = { 'template_dirs': '',
+    defaults = { 'template_dir': None,
                  'about': None,
                  'model_type': 'memory_cache',
                  'fields': None
@@ -43,7 +45,12 @@ class Dispatcher(object):
         self.model = models[self.model_type](**kw)
 
         # request handlers in order they will be tried
-        self.handlers = [ TagsView, CreateProjectView, FieldView, ProjectView, QueryView, DeleteProjectHandler ]
+        self.handlers = [ TagsView,
+                          CreateProjectView,
+                          FieldView,
+                          ProjectView,
+                          QueryView,
+                          DeleteProjectHandler ]
 
         # add an about view if file specified
         if self.about:
