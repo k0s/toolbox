@@ -1,7 +1,7 @@
 The Story of Toolbox
 ====================
 
-Toolbox is fundamentally a document-oriented approach to information
+Toolbox is fundamentally a document-oriented approach to resource
 indexing.  A "tool" consists three mandatory string fields (name,
 description, and URL) that are generic to a large class of problems as
 well as classifiers, such as author, usage, type, etc. A tool may have
@@ -52,15 +52,45 @@ without the toolbox server-side.
 
 The HTML microformat was never implemented (though, since the model
 backend is pluggable, it easily could be). Instead, the original
-implementation used JSON blobs stored in one file per tool.
+implementation used JSON blobs stored in one file per tool. This
+approach loses the displayable aspect, though since JSON is a defined
+format with several good tools for exploring and manipulating the data
+perhaps this disavantage is offset.
 
-    |Displayable?|File-based?
-----+------------+-----------
-HTML|Yes         |Yes
-----+------------+----
-JSON|Not really  |Yes
-----+------------+----
-Couch|No         |No
+A couch backend was also written.
+
+      +------------+-----------+------------+
+      |Displayable?|File-based?|Concurrency?|
++-----+------------+-----------+------------+
+|HTML |Yes         |Yes        |No          |
++-----+------------+-----------+------------+
+|JSON |Not really  |Yes        |No          |
++-----+------------+-----------+------------+
+|Couch|No          |No         |Yes?        |
++-----+------------+-----------+------------+
+
+The concurrency issue with file-based documennt backends may be
+overcome by using locked files.  Ideally, this is accomplished at the
+filesystem level.  If your filesystem does not promote this
+functionality, it may be introduced programmatically.  A rough cartoon
+of a good implementation is as follows:
+
+1. A worker thread is spawned to write the data asynchronously. The
+data is sent to the worker thread.
+
+2. The worker checks for the presence of a lockfile (herein further
+detailed). If the lockfile exists and is owned by an active process,
+the worker waits until said process is done with it. (For a more
+robust implementation, the worker sends a request to write the file to
+some controller.)
+
+3. The worker owns a lockfile based on its PID in some directory
+parallel to the directory root under consideration (for example,
+``/tmp/toolbox/lock/${PID}-${filename}.lck``).
+
+4. The worker writes to the file.
+
+5. The worker removes the lock
 
 
 User Interaction
@@ -77,3 +107,5 @@ What Toolbox Doesn't Do
 
 
 * versioning: 
+
+* authentication:
