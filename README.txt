@@ -120,7 +120,12 @@ improvements are listed below:
   and some sort of direction/help of what these are and why these are
 * a "Request a tool" link that functions like stack overflow; users
   can request a tool. If it does not exist, it gets turned into a
-  bug. Users should also be able to point to a tool to answer the question
+  bug. Users should also be able to point to a tool to answer the
+  question. Similarly, developers should be able to see a list of
+  requested tools and take ownership of them if desired
+* Similarly, users should be able to note similarity of tools and
+  propose a consolidation strategy
+
 
 Links
 -----
