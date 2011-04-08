@@ -118,7 +118,9 @@ improvements are listed below:
 * front-ending single-button INSTALL (when applicable)
 * for the addons of particular types, there should be some correlation
   and some sort of direction/help of what these are and why these are
-
+* a "Request a tool" link that functions like stack overflow; users
+  can request a tool. If it does not exist, it gets turned into a
+  bug. Users should also be able to point to a tool to answer the question
 
 Links
 -----
