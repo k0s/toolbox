@@ -115,6 +115,7 @@ improvements are listed below:
   another. Doing so should prompt for doing this for all similar
   values
 * you should be able to rename classifiers
+* it would be nice to point the description to a URL
 * front-ending single-button INSTALL (when applicable)
 * for the addons of particular types, there should be some correlation
   and some sort of direction/help of what these are and why these are
