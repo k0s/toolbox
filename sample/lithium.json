@@ -1,0 +1,6 @@
+{"name": "lithium",
+ "description": "Lithium is an automated testcase reduction tool developed by Jesse Ruderman.",
+ "url": "http://www.squarefree.com/lithium/", 
+ "author": ["jesse"],
+ "language": ["python"]
+}
