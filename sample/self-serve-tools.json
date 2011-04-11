@@ -1,6 +1,1 @@
-{"name": "self-serve-tools",
- "description": "Python API to access the self-serve REST API.",
- "url": "http://hg.mozilla.org/users/josh_joshmatthews.net/self-serve-tools/",
- "author": ["Josh Matthews"],
- "language": ["python"],
-}
+{"name": "self-serve-tools", "language": ["python"], "author": ["Josh Matthews"], "url": "http://hg.mozilla.org/users/josh_joshmatthews.net/self-serve-tools/", "modified": 1302545970.29514, "description": "Python API to access the self-serve REST API."}
