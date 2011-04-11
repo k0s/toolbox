@@ -315,6 +315,8 @@ class CreateProjectView(TempitaHandler):
     js = TempitaHandler.js[:]
     js.extend(['/js/jquery.autoSuggest.js',
                '/js/new.js'])
+    css = TempitaHandler.css[:]
+    css.append('/css/new.css')
 
     def __init__(self, app, request):
         TempitaHandler.__init__(self, app, request)
