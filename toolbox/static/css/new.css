@@ -1,3 +1,7 @@
 ul.as-selections {
+display: inline;
+}
 
+li.as-original {
+display: inline;
 }

@@ -15,7 +15,7 @@
     {{endif}}
   </div>
   <div>
-    <label for="Description">Description</label>
+    <label for="description">Description</label>
     <textarea name="description"></textarea>
     {{if 'description' in errors}}
      <ul class="error">
@@ -37,14 +37,12 @@
      </ul>
     {{endif}}
   </div>
+  <div class="separator"></div>
 
-  <!-- optional fields -->
   {{for field in fields}}
   <div>
     <label for="{{field}}">{{field.title()}}</label>
     <input class="field-input" type="text" name="{{field}}"/>
-
-    <!-- display errors -->
     {{if field in errors}}
      <ul class="error">
        {{for error in errors[field]}}
