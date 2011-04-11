@@ -344,7 +344,7 @@ class CreateProjectView(TempitaHandler):
             values = [i.strip() for i in value.split(',') if i.strip()]
             if not value:
                 continue
-            project[field] = value.split()
+            project[field] = value
 
         self.app.model.save(project)
         return self.redirect(project['name'])
