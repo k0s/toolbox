@@ -1,1 +1,1 @@
-{"name": "mozprofile", "language": ["python"], "author": ["ctalbert"], "url": "https://github.com/mozautomation/mozmill/tree/master/mozprofile", "modified": 1298516189.463263, "usage": ["profiles"], "description": "mozprofile manages profiles for automation and test harnesses"}
+{"name": "mozprofile", "language": ["python"], "author": ["ctalbert"], "url": "https://github.com/mozautomation/mozmill/tree/master/mozprofile", "modified": 1298516189.463263, "usage": ["profiles", "addons"], "description": "mozprofile manages profiles for automation and test harnesses"}
