@@ -137,9 +137,47 @@ What Toolbox Doesn't Do
 
 * versioning: toolbox exposes editing towards a canonical document.
   It doesn't do versioning.  A model instance may do whatever
-  versioning it desires, and since the 
+  versioning it desires, and since the models are pluggable, it would
+  be relatively painless to subclass e.g. the file-based model and
+  have a post-save hook which does an e.g. ``hg commit``. Customized
+  templates could be used to display this information.
 
-* authentication: 
+* authentication: the information presented by toolbox is freely
+  readable and editable. This is by intention, as by going to a "wiki"
+  model and presenting a easy to use, context-switching-free interface
+  curation is encouraged (ignoring the possibly imaginary problem of
+  wiki-spam). Access-level auth could be implemented using WSGI
+  middleware (e.g. repoze.who or bitsyauth) or through a front end
+  "webserver" integration layer such as Apache or nginx. Finer grained
+  control of the presentation layer could be realized by using custom
+  templates.
 
-What Toolbox Would Like To Do
------------------------------
+
+
+Evolution
+---------
+
+Often, a piece software is presented as a state out of context (that
+is minus the evolution which led it to be and led it to look further
+out towards beyond the horizon).  While this is an interesting special
+effect for an art project, software being communication this 
+is only conducive to software in the darkest of black-box approaches.
+
+"Beers are like web frameworks: if they're not micro, you don't know
+what you're talking about."
+
+For sites that fit the architecture of a given framework, it may be
+advisable to make use of them.  However, for most webapp/webservice
+categories which have a finite scope and definitive intent, it is
+often easier, more maintainable, and more legible to build a complete
+HTTP->WSGI->app architecture than to try to hammer a framework into
+fitting your problem or redefining the problem to fit the framework.
+This approach was used for toolbox.
+
+The GenshiView template, http://k0s.org/hg/GenshiView, was invoked to
+generate a basic dispatcher->handler system.  The cruft was removed,
+leaving only the basic structure and the TempitaHandler since tempita
+is lightweight and it was envisioned that filesystem tempita templates
+(MakeItSo!) would be used elsewhere in the project.
+
+
