@@ -16,6 +16,7 @@ It could also be used to track:
 
 * smart bookmarks
 * code snippets
+* webapps
 
 
 How to use Toolbox
@@ -33,7 +34,9 @@ will search both the descriptions and all of the fields.
 You can also display results by a particular field by going to that
 field name.  For example, to display tools by author, go to 
 `/author </author>`_ .  You can create a new tool at 
-`/new </new>`_ .
+`/new </new>`_ by providing its name, description, and URL. Upon
+creation, you'll be redirected to the tool's index page where you can
+add whatever classifiers you want.
 
 
 Classifiers
@@ -44,8 +47,8 @@ has a number of classifier tags.  Out of the box, these fields are:
 
 * usage: what the tool is for
 * dependencies: what does this tool need?
-* type: is the tool a particular definative kind of software?
-* language: which computer languages the tool is
+* type: is the tool a particular definative kind of software such as an addon?
+* language: which computer languages the tool is written in
 * author: who wrote and/or maintains the software?
 
 
@@ -55,6 +58,7 @@ Tool Sources
 * setup.py
 * addons.mozilla.org
 * OpenWebApps: https://developer.mozilla.org/en/OpenWebApps/The_Manifest
+* a la https://www.squarefree.com/userscripts/tidybox.user.js
 
 
 Running Toolbox
@@ -156,3 +160,4 @@ Mozilla tools are recorded on other sites too.
 * http://www.mozdev.org/
 * https://wiki.mozilla.org/User:Jprosevear/Tools
 * http://infomonkey.cdleary.com/
+* http://userscripts.org/
