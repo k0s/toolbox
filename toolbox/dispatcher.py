@@ -27,7 +27,7 @@ class Dispatcher(object):
 
     # class defaults
     defaults = { 'about': None, # file path to ReST about page
-                 'fields': None # fields to use for the model; None to introspect the data
+                 'fields': None, # fields to use for the model; None to introspect the data
                  'model_type': 'memory_cache', # type of model to use
                  'reserved': set(['css', 'js', 'img']), # reserved URL namespaces
                  'template_dir': None, # directory for template overrides
