@@ -123,6 +123,26 @@ perform these steps by hand for any sort of real-world deployment).
 If you want a highly customized deployment, then this will require
 more expertise and manual setup.
 
+Toolbox uses several light-footprint libraries:
+
+* whoosh for search.  This pure-python implementation of full-text
+  search is relatively fast (for python) and should scale decently to
+  the target scale of toolbox (1000s or 10000s of tools). While not as
+  fast as lucene, whoosh is easy to deploy and has a good API and
+  preserves toolbox as a deployable software product versus an
+  instance that requires the expert configuration, maintainence, and
+  tuning of several disparate software products that is both
+  non-automatable (cannot be installed with a script) and time-consuming.
+
+* jQuery FTW: jQuery is the best JavaScript library and everyone
+  should use it for everything
+
+* jeditable for AJAXy editing
+
+* something for autocomplete; currently a modified version of 
+  the jQuery autoSuggest plugin is used, but this might be changed by
+  the time you read this
+
 
 User Interaction
 ----------------
@@ -151,7 +171,6 @@ What Toolbox Doesn't Do
   "webserver" integration layer such as Apache or nginx. Finer grained
   control of the presentation layer could be realized by using custom
   templates.
-
 
 
 Evolution
