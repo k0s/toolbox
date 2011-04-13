@@ -25,15 +25,20 @@ models = {'memory_cache': MemoryCache,
 class Dispatcher(object):
     """toolbox WSGI app which dispatchers to associated handlers"""
 
-    ### class level variables
-    defaults = { 'template_dir': None,
-                 'about': None,
-                 'model_type': 'memory_cache',
-                 'fields': None
+    # class defaults
+    defaults = { 'about': None, # file path to ReST about page
+                 'fields': None # fields to use for the model; None to introspect the data
+                 'model_type': 'memory_cache', # type of model to use
+                 'reserved': set(['css', 'js', 'img']), # reserved URL namespaces
+                 'template_dir': None, # directory for template overrides
                  }
 
 
     def __init__(self, **kw):
+        """
+        **kw arguments used to override defaults
+        additional **kw are passed to the model
+        """
 
         # set instance parameters from kw and defaults
         for key in self.defaults:
@@ -59,6 +64,11 @@ class Dispatcher(object):
             about = docutils.core.publish_parts(about, writer_name='html')['body']
             self.about = about
             self.handlers.append(AboutView)
+
+        # extend reserved URLS from handlers
+        for handler in self.handlers:
+            if handler.handler_path:
+                self.reserved.add(handler.handler_path[0])
 
     def __call__(self, environ, start_response):
 

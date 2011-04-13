@@ -175,7 +175,7 @@ class ProjectsView(TempitaHandler):
 
 
 class QueryView(ProjectsView):
-    """general view to query all projects"""
+    """general index view to query projects"""
     
     template = 'index.html'
     methods = set(['GET'])
@@ -269,6 +269,7 @@ class ProjectView(ProjectsView):
     def Delete(self):
         raise NotImplementedError
 
+
 class FieldView(ProjectsView):
     """view of projects sorted by a field"""
 
@@ -325,6 +326,21 @@ class CreateProjectView(TempitaHandler):
         self.data['title'] = 'Add a tool'
         for field in self.request.GET.getall('missing'):
             self.data['errors'].setdefault(field, []).append('Required')
+
+    def check_name(self, name):
+        """
+        checks a project name for validity
+        returns None on success or an error message if invalid
+        """
+        reserved = self.app.reserved.copy()
+        reserved_msg = "'%s' conflicts with a reserved URL" % name
+        if name in reserved:
+            return reserved_msg
+        if name in self.app.model.fields():
+            return reserved_msg
+        # TODO: check projects for conflict
+        if name in self.app.model.get():
+            return '<a href="%s">%s</a> already exists' % (self.link(name), name)
 
     def Post(self):
         post_data = self.post_data()
