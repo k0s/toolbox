@@ -20,7 +20,7 @@ except ImportError:
 
 class ProjectsModel(object):
     """
-    abstract base class for toolbox projects
+    abstract base class for toolbox tools
     """
 
     def __init__(self, required=('name', 'description', 'url')):
@@ -34,7 +34,6 @@ class ProjectsModel(object):
         self.reserved.update(['modified']) 
         self.modified = {}
         self.search = WhooshSearch()
-
 
     def update_fields(self, name, **fields):
         """
@@ -71,7 +70,7 @@ class ProjectsModel(object):
         the query should be key, value pairs to match;
         if the value is single, it should be a string;
         if the value is multiple, it should be a set which will be
-        anded together
+        ANDed together
         """
         raise NotImplementedError
 
@@ -93,7 +92,7 @@ class ProjectsModel(object):
 
 class MemoryCache(ProjectsModel):
     """
-    sample implementation keeping everything in memory
+    sample implementation keeping everything in memory with backing files
     """
 
     def __init__(self, directory, fields=None):
@@ -200,7 +199,7 @@ class MemoryCache(ProjectsModel):
             filename = str2filename(project['name']) + '.json'
         filename = os.path.join(self.directory, filename)
         file(filename, 'w').write(json.dumps(project))
-        # TODO: data integrity checking
+
 
 class CouchCache(MemoryCache):
     """
