@@ -123,6 +123,10 @@ perform these steps by hand for any sort of real-world deployment).
 If you want a highly customized deployment, then this will require
 more expertise and manual setup.
 
+The template data and the JSON are closely tied together.  This has the
+distinct advantage of avoiding data translation steps and avoiding
+code duplication.
+
 Toolbox uses several light-footprint libraries:
 
 * whoosh for search.  This pure-python implementation of full-text
@@ -173,6 +177,22 @@ What Toolbox Doesn't Do
   templates.
 
 
+What Toolbox Would Like To Do
+-----------------------------
+
+Ultimately, toolbox should be as federated as possible.  The basic
+architecture of toolbox as a web service + supporting scripts makes
+this feasible and more self-contained than most proposed federated
+services.  The basic federated model has proved, in practice,
+difficult to achieve through purely the (HTTP) client-server model, as
+without complete federation and adherence to protocol offline cron
+jobs should be utilized to pull external data sources. If a webservice
+only desires to talk to others of its own type and are willing to keep
+a queue of requests for when hosts are offline, entire HTTP federation
+may be implemented with only a configuration-specified discovery
+service to find the nodes.
+
+
 Evolution
 ---------
 
@@ -197,6 +217,28 @@ The GenshiView template, http://k0s.org/hg/GenshiView, was invoked to
 generate a basic dispatcher->handler system.  The cruft was removed,
 leaving only the basic structure and the TempitaHandler since tempita
 is lightweight and it was envisioned that filesystem tempita templates
-(MakeItSo!) would be used elsewhere in the project.
+(MakeItSo!) would be used elsewhere in the project.  The basic
+handlers (projects views, field-sorted view, new, etc.) were written
+and soon a usable interface was constructed.
+
+A ``sample`` directory was created to hold the JSON blobs. Because
+this was done early on, two goals were achieved: 
+1. the software could be dogfooded immediately using actual applicable
+data. This helped expose a number of issues concerning the data format
+right away.
+2. There was a place to put tools before the project reached a
+deployable state (previously, a few had lived in a static state using
+a rough sketch of the HTML microformat discussed above on
+k0s.org). Since the main point of toolbox is to record Mozilla tools,
+the wealth of references mentioned in passing could be put somewhere,
+instead of passed by and forgotten.  One wishes that they do not miss
+the train while purchasing a ticket.
+The original intent, when the file-based JSON blob approach was to be
+the deployed backend, was to have two repositories: one for the code
+and one for the JSON blobs.  When this approach was scrapped, the
+file-based JSON blobs were relegated to the ``sample`` directory, with
+the intent to be to import them into e.g. a couch database on actual
+deployment (using an import script). The samples could then be used
+for testing.
 
 
