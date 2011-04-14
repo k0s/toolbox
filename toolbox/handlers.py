@@ -323,9 +323,13 @@ class CreateProjectView(TempitaHandler):
         TempitaHandler.__init__(self, app, request)
         self.data['title'] = 'Add a tool'
         self.data['fields'] = self.app.model.fields()
+
+        # deal with errors, currently badly contracted in query string
         self.data['errors'] = {}
         for field in self.request.GET.getall('missing'):
             self.data['errors'].setdefault(field, []).append('Required')
+        if 'conflict' in self.request.GET:
+            self.data['errors'].setdefault('name', []).append(self.check_name(self.request.GET('conflict')))
 
     def check_name(self, name):
         """
@@ -359,7 +363,7 @@ class CreateProjectView(TempitaHandler):
         # and other url namespace collisions
         name_conflict = check_name(project['name'])
         if name_conflict:
-            errors['name_conflict'] = [name_conflict]
+            errors['conflict'] = [project['name']]
         if errors:
             error_list = []
             for key in errors:
