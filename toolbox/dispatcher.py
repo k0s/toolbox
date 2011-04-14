@@ -1,5 +1,5 @@
 """
-request dispatcher:
+request dispatcher WSGI app:
 data persisting across requests should go here
 """
 

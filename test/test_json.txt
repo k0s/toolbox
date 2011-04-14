@@ -1,11 +1,18 @@
 Test toolbox JSON handling
 ==========================
 
-The obligatory imports:
+The obligatory imports::
 
-    >>> import toolbox
+    >>> import os
+    >>> import shutil
+    >>> from toolbox.dispatcher import Dispatcher
 
-Run some tests.  This test will fail, please fix it:
+Boilerplate::
 
-    >>> assert True == False
+    >>> json_dir = os.path.join(here, 'test_json')
+    >>> shutil.rmtree(json_dir, ignore_errors=True)
+    >>> os.makedirs(json_dir)
 
+Cleanup::
+
+    >>>> shutil.rmtree(json_dir)
