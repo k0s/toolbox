@@ -97,8 +97,13 @@ class TempitaHandler(Handler):
     """handler for tempita templates"""
 
     template_dirs = [ resource_filename(__name__, 'templates') ]
-    css = ['/css/style.css']
-    js = ['/js/jquery.js']
+    css = ['/css/html5boilerplate.css']
+
+    less = ['/css/style.less']
+
+    js = ['/js/jquery-1.5.2.min.js',
+          '/js/less-1.0.41.min.js',
+          '/js/jquery.timeago.js']
     
     def __init__(self, app, request):
         Handler.__init__(self, app, request)
@@ -110,6 +115,7 @@ class TempitaHandler(Handler):
         self.data = { 'request': request,
                       'link': self.link,
                       'css': self.css,
+                      'less': self.less,
                       'js':  self.js,
                       'title': self.__class__.__name__,
                       'hasAbout': bool(app.about)}
@@ -143,9 +149,16 @@ class ProjectsView(TempitaHandler):
     """abstract base class for view with projects"""
 
     js = TempitaHandler.js[:]
-    js.extend(['/js/jquery.autoSuggest.js',
+    js.extend(['/js/jquery.tokeninput.js',
                '/js/jquery.jeditable.js',
                '/js/project.js'])
+               
+    less = TempitaHandler.less[:]
+    less.extend(['/css/project.less'])
+
+    css = TempitaHandler.css[:]
+    css.extend(['/css/token-input.css',
+                '/css/token-input-facebook.css'])
 
     def __init__(self, app, request):
         """project views specific init"""
@@ -170,8 +183,9 @@ class ProjectsView(TempitaHandler):
 
     def format_date(self, timestamp):
         """return a string representation of a timestamp"""
-        format_string = '%B %-d, %Y - %H:%M'
+        format_string = '%Y-%m-%dT%H:%M:%SZ'
         return datetime.fromtimestamp(timestamp).strftime(format_string)
+
 
 
 class QueryView(ProjectsView):
@@ -250,9 +264,9 @@ class ProjectView(ProjectsView):
                     project[field] = post_data[field]
             for field in self.app.model.fields():
                 if field in post_data:
-                    if 'action' == 'replace':
+                    if action == 'replace':
                         # replace the field from the POST request
-                        raise NotImplementedError
+                        project[field] = post_data[field].split(",")
                     else:
                         # append the items....the default action
                         project.setdefault(field, []).extend(self.request.POST.getall(field))
@@ -313,10 +327,15 @@ class CreateProjectView(TempitaHandler):
     methods = set(['GET', 'POST'])
     handler_path = ['new']
     js = TempitaHandler.js[:]
-    js.extend(['/js/jquery.autoSuggest.js',
+    js.extend(['/js/jquery.tokeninput.js',
                '/js/new.js'])
+               
+    less = TempitaHandler.less[:]
+    less.extend(['/css/new.less'])
+    
     css = TempitaHandler.css[:]
-    css.append('/css/new.css')
+    css.extend(['/css/token-input.css',
+                '/css/token-input-facebook.css'])
 
     def __init__(self, app, request):
         TempitaHandler.__init__(self, app, request)
@@ -344,7 +363,7 @@ class CreateProjectView(TempitaHandler):
             values = [i.strip() for i in value.split(',') if i.strip()]
             if not value:
                 continue
-            project[field] = value
+            project[field] = values or value
 
         self.app.model.save(project)
         return self.redirect(project['name'])
@@ -399,7 +418,7 @@ class TagsView(TempitaHandler):
         tags = []
         for field in field_tags:
             for value, count in field_tags[field].items():
-                tags.append({'field': field, 'value': value, 'count': count})
+                tags.append({'field': field, 'value': value, 'count': count, 'id': value, 'name': value})
         tags.sort(key=lambda x: x['count'], reverse=True)            
         self.data['tags'] = tags
 

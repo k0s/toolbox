@@ -1,62 +1,41 @@
-<h1 id="title">Add a tool</h1>
+<div id="new-container">
+  <h1 id="title">Add a tool</h1>
+  <form id="new" method="post">
+    <!-- required fields -->
+    <table>
+    {{for field in ['name', 'description', 'url']}}
+      <tr>
+        <td for="{{field}}"
+          class="field-name">{{field}}</td>
+        <td>
+          <input type="text" name="{{field}}"/>
+        </td>
+        {{if field in errors}}
+         <td>
+         <ul class="error">
+           {{for error in errors[field]}}
+           <li>{{error}}</li>
+           {{endfor}}
+         </ul>
+         </td>
+        {{endif}}
+      </tr>
+    {{endfor}}
 
-<form id="new" method="post">
-
-  <!-- required fields -->
-  <div>
-    <label for="name">Name</label>
-    <input type="text" name="name"/>
-    {{if 'name' in errors}}
-     <ul class="error">
-       {{for error in errors['name']}}
-       <li>{{error}}</li>
-       {{endfor}}
-     </ul>
-    {{endif}}
-  </div>
-  <div>
-    <label for="description">Description</label>
-    <textarea name="description"></textarea>
-    {{if 'description' in errors}}
-     <ul class="error">
-       {{for error in errors['description']}}
-       <li>{{error}}</li>
-       {{endfor}}
-     </ul>
-    {{endif}}
-  </div>
-  <div class="separator"></div>
-  <div>
-    <label for="url">URL</label>
-    <input type="text" name="url"/>
-    {{if 'url' in errors}}
-     <ul class="error">
-       {{for error in errors['url']}}
-       <li>{{error}}</li>
-       {{endfor}}
-     </ul>
-    {{endif}}
-  </div>
-  <div class="separator"></div>
-
-<!--
-  {{for field in fields}}
-  <div>
-    <label for="{{field}}">{{field.title()}}</label>
-    <input class="field-input" type="text" name="{{field}}"/>
-    {{if field in errors}}
-     <ul class="error">
-       {{for error in errors[field]}}
-       <li>{{error}}</li>
-       {{endfor}}
-     </ul>
-    {{endif}}
-
-  </div>
-  <div class="separator"></div>
-  {{endfor}}
--->
-
-  <input class="submit" type="submit" value="Add it!"/>
-
-</form>
+    {{for field in fields}}
+    <tr>
+      <td for="{{field}}" class="field-name">{{field.title()}} </td>
+      <td class="{{field}}">
+        <input class="field-input" type="text" name="{{field}}"/>
+      </td>
+    </tr>
+    {{endfor}}
+    <tr>
+      <td></td>
+      <td>
+        <input class="submit button" type="submit" value="Add it!"/>
+      </td>      
+    </tr>
+    </table>
+  </form>
+</div>
