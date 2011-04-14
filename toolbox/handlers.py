@@ -344,15 +344,22 @@ class CreateProjectView(TempitaHandler):
 
     def Post(self):
         post_data = self.post_data()
+
+        # check for errors
+        errors = {}
         required = set(['name', 'description', 'url'])
         missing = set([i for i in required
                        if not post_data.get(i, '').strip()])
-
-        if missing:
-            location = self.link(self.request.path_info) + self.query_string([('missing', i) for i in missing])
-            return self.redirect(location)
+        if missing: # missing required fields
+            errors['missing'] = missing
         # TODO check for duplicate project name
         # and other url namespace collisions
+        if errors:
+            error_list = []
+            for key in errors:
+                error_list.extend([(key, i) for i in errors[key]])
+            location = self.link(self.request.path_info) + self.query_string(error_list)
+            return self.redirect(location)
 
         project = dict([(i, post_data[i]) for i in required]) 
         for field in self.app.model.fields():
