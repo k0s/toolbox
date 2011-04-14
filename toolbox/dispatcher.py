@@ -33,7 +33,6 @@ class Dispatcher(object):
                  'template_dir': None, # directory for template overrides
                  }
 
-
     def __init__(self, **kw):
         """
         **kw arguments used to override defaults

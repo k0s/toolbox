@@ -1,18 +1,7 @@
 Test toolbox JSON handling
 ==========================
 
-The obligatory imports::
+Ensure we have no projects::
 
-    >>> import os
-    >>> import shutil
-    >>> from toolbox.dispatcher import Dispatcher
+    >>> app.get('/')
 
-Boilerplate::
-
-    >>> json_dir = os.path.join(here, 'test_json')
-    >>> shutil.rmtree(json_dir, ignore_errors=True)
-    >>> os.makedirs(json_dir)
-
-Cleanup::
-
-    >>> shutil.rmtree(json_dir)
