@@ -26,7 +26,7 @@
     <label for="url">URL</label>
     <input type="text" name="url"/>
     <ul class="error">
-      {{for error in errors('url', ())}}
+      {{for error in errors.get('url', ())}}
       <li>{{error}}</li>
       {{endfor}}
     </ul>
