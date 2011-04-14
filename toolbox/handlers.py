@@ -250,12 +250,15 @@ class ProjectView(ProjectsView):
                     project[field] = post_data[field]
             for field in self.app.model.fields():
                 if field in post_data:
+                    value = post_data[field]
+                    if isinstance(value, basestring):
+                        value = [value]
                     if 'action' == 'replace':
                         # replace the field from the POST request
-                        raise NotImplementedError
+                        project[field] = value
                     else:
                         # append the items....the default action
-                        project.setdefault(field, []).extend(self.request.POST.getall(field))
+                        project.setdefault(field, []).extend(value)
                     
         self.app.model.save(project)
 
