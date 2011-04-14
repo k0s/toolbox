@@ -39,9 +39,8 @@ def run_tests():
         extraglobs = {'here': directory, 'app': app, 'json_dir': json_dir}
         try:
             doctest.testfile(test, extraglobs=extraglobs, raise_on_error=False)
-        except:
+        finally:
             shutil.rmtree(json_dir, ignore_errors=True)
-            raise
 
 if __name__ == '__main__':
     run_tests()
