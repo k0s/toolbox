@@ -6,6 +6,7 @@ doctest runner
 
 import doctest
 import os
+from paste.fixture import TestApp
 
 def run_tests():
     directory = os.path.dirname(os.path.abspath(__file__))

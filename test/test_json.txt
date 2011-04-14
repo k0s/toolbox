@@ -15,4 +15,4 @@ Boilerplate::
 
 Cleanup::
 
-    >>>> shutil.rmtree(json_dir)
+    >>> shutil.rmtree(json_dir)
