@@ -22,6 +22,8 @@ Add some fields to it::
     >>> fields = {'author': 'jhammel'}
     >>> url = '/' + project['name']
     >>> response = app.post(url, params=fields)
-    >>> app.get('/')
+    >>> app.get('/')[0]['author']
+    [u'jhammel']
+    
 
 

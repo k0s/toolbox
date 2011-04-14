@@ -119,7 +119,7 @@ class MemoryCache(ProjectsModel):
             fields = [i for i in project if i not in self.reserved]
             self.field_set.update(fields)
         else:
-            fields = self.field_set
+            fields = self._fields
         for field in fields:
             if field not in project:
                 continue
