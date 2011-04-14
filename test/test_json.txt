@@ -24,6 +24,8 @@ Add some fields to it::
     >>> response = app.post(url, params=fields)
     >>> app.get('/')[0]['author']
     [u'jhammel']
-    
-
+    >>> fields = {'author': 'turing'}
+    >>> response = app.post(url, params=fields)
+    >>> sorted(app.get('/')[0]['author'])
+    [u'jhammel', u'turing']
 
