@@ -321,9 +321,9 @@ class CreateProjectView(TempitaHandler):
 
     def __init__(self, app, request):
         TempitaHandler.__init__(self, app, request)
+        self.data['title'] = 'Add a tool'
         self.data['fields'] = self.app.model.fields()
         self.data['errors'] = {}
-        self.data['title'] = 'Add a tool'
         for field in self.request.GET.getall('missing'):
             self.data['errors'].setdefault(field, []).append('Required')
 
@@ -338,8 +338,8 @@ class CreateProjectView(TempitaHandler):
             return reserved_msg
         if name in self.app.model.fields():
             return reserved_msg
-        # TODO: check projects for conflict
-        if name in self.app.model.get():
+
+        if name in self.app.model.get(): # check projects for conflict
             return '<a href="%s">%s</a> already exists' % (self.link(name), name)
 
     def Post(self):
