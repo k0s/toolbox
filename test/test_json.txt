@@ -119,3 +119,8 @@ Delete some metadata::
     1
     >>> projects[0]['name']
     u'foo'
+    >>> projects = app.get('/', params={'q': 'turing'})
+    >>> len(projects)
+    1
+    >>> projects[0]['name']
+    u'foo'
