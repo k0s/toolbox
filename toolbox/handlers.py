@@ -361,12 +361,13 @@ class CreateProjectView(TempitaHandler):
             errors['missing'] = missing
         # TODO check for duplicate project name
         # and other url namespace collisions
-        name_conflict = check_name(project['name'])
+        name_conflict = self.check_name(project['name'])
         if name_conflict:
             errors['conflict'] = [project['name']]
         if errors:
-            error_list = []
+            error_list = [] 
             for key in errors:
+                # flatten the error dict into a list
                 error_list.extend([(key, i) for i in errors[key]])
             location = self.link(self.request.path_info) + self.query_string(error_list)
             return self.redirect(location)
