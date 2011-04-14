@@ -92,8 +92,30 @@ Add some metadata. Make sure we see it::
     1
     >>> len(app.get('/', params={'author': 'turing'}))
     2
+    >>> len(app.get('/', params={'q': 'turing'}))
+    2
     >>> projects = app.get('/', params={'author': 'turing', 'q': 'downtown'})
     >>> len(projects)
     1
     >>> projects[0]['name'] 
     u'bar'
+
+Add a third project, just for variety::
+
+    >>> response = app.post('/new', params=dict(name='fleem', description='fleem in a building downtown', url='http://example.net'))
+    >>> projects = app.get('/')
+    >>> len(projects)
+    3
+    >>> [i['name'] for i in app.get('/', params=dict(q='downtown'))]
+    [u'fleem', u'bar']
+    >>> [i['name'] for i in app.get('/', params=dict(q='building'))]
+    [u'fleem']
+    
+Delete some metadata::
+
+    >>> response = app.post('/bar', params={'action': 'delete', 'author': 'turing'})
+    >>> projects = app.get('/', params={'author': 'turing'})
+    >>> len(projects)
+    1
+    >>> projects[0]['name']
+    u'foo'

@@ -103,7 +103,9 @@ class MemoryCache(ProjectsModel):
         ProjectsModel.__init__(self)
 
         # JSON blob directory
-        assert os.path.exists(directory) and os.path.isdir(directory)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        assert os.path.isdir(directory)
         self.directory = directory
         
         self.files = {}
@@ -121,6 +123,8 @@ class MemoryCache(ProjectsModel):
         else:
             fields = self._fields
         for field in fields:
+            for _set in self.index.get(field, {}).values():
+                _set.discard(project['name'])
             if field not in project:
                 continue
             index = self.index.setdefault(field, {})
@@ -130,6 +134,7 @@ class MemoryCache(ProjectsModel):
             for value in values:
                 index.setdefault(value, set()).update([project['name']])
         self.update_search(project)
+
 
     def get(self, search=None, **query):
         """
