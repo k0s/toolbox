@@ -343,7 +343,7 @@ class CreateProjectView(TempitaHandler):
         if name in self.app.model.fields(): # check field URLs (XXX incestuous)
             return reserved_msg
 
-        if name in self.app.model.project(name): # check projects for conflict
+        if self.app.model.project(name): # check projects for conflict
             return '<a href="%s">%s</a> already exists' % (self.link(name), name)
 
     def Post(self):
