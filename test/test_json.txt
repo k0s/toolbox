@@ -69,3 +69,26 @@ Now lets add another project::
     >>> jhammels_projects[0]['name']
     u'foo'
     
+Test search::
+
+    >>> projects = app.get('/', params={'q': 'jhammel'})
+    >>> len(projects)
+    1
+    >>> projects[0]['name']
+    u'foo'
+    >>> projects = app.get('/', params={'q': 'downtown'})
+    >>> len(projects)
+    1
+    >>> projects[0]['name']
+    u'bar'
+
+Add some metadata. Make sure we see it::
+
+    >>> url = '/bar'
+    >>> response = app.post(url, {'author': 'turing'})
+    >>> len(app.get())
+    2
+    >>> len(app.get('/', params={'author': 'jhammel'}))
+    1
+    >>> len(app.get('/', params={'author': 'turing'}))
+    2
