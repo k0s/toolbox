@@ -8,7 +8,7 @@ Ensure we have no projects::
 
 Make a project::
 
-    >>> project = {'name': 'foo', 'description': 'bar', 'url': 'http://example.com'}
+    >>> project = {'name': 'foo', 'description': 'foo description', 'url': 'http://example.com'}
     >>> response = app.post('/new', params=project)
     >>> response.status
     303
@@ -51,3 +51,21 @@ Just to show that the search is doing something::
 
     >>> app.get('/', params={'author': 'sauron'})
     []
+
+Now lets add another project::
+    
+    >>> project2 = {'name': 'bar', 'description': 'a bar downtown', 'url': 'http://www.example.com'}
+    >>> response = app.post('/new', params=project2)
+    >>> projects = app.get('/')
+    >>> len(projects)
+    2
+    >>> projects[0]['name']
+    u'bar'
+    >>> projects[1]['name']
+    u'foo'
+    >>> jhammels_projects = app.get('/', params={'author': 'jhammel'})
+    >>> len(jhammels_projects)
+    1
+    >>> jhammels_projects[0]['name']
+    u'foo'
+    
