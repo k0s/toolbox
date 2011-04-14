@@ -329,7 +329,7 @@ class CreateProjectView(TempitaHandler):
         for field in self.request.GET.getall('missing'):
             self.data['errors'].setdefault(field, []).append('Required')
         if 'conflict' in self.request.GET:
-            self.data['errors'].setdefault('name', []).append(self.check_name(self.request.GET('conflict')))
+            self.data['errors'].setdefault('name', []).append(self.check_name(self.request.GET['conflict']))
 
     def check_name(self, name):
         """
