@@ -1,0 +1,11 @@
+Test toolbox JSON handling
+==========================
+
+The obligatory imports:
+
+    >>> import toolbox
+
+Run some tests.  This test will fail, please fix it:
+
+    >>> assert True == False
+
