@@ -8,7 +8,7 @@
     <input type="text" name="name"/>
     <ul class="error">
       {{for error in errors.get('name', ())}}
-      <li>{{error}}</li>
+      <li>{{error | html}}</li>
       {{endfor}}
     </ul>
   </div>
@@ -17,7 +17,7 @@
     <textarea name="description"></textarea>
     <ul class="error">
       {{for error in errors.get('description', ())}}
-      <li>{{error}}</li>
+      <li>{{error | html}}</li>
       {{endfor}}
     </ul>
   </div>
@@ -27,7 +27,7 @@
     <input type="text" name="url"/>
     <ul class="error">
       {{for error in errors.get('url', ())}}
-      <li>{{error}}</li>
+      <li>{{error | html}}</li>
       {{endfor}}
     </ul>
   </div>
