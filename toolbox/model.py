@@ -118,6 +118,8 @@ class MemoryCache(ProjectsModel):
         if self._fields is None:
             fields = [i for i in project if i not in self.reserved]
             self.field_set.update(fields)
+        else:
+            fields = self.field_set
         for field in fields:
             if field not in project:
                 continue
@@ -148,9 +150,7 @@ class MemoryCache(ProjectsModel):
         return [self._projects[project] for project in results]
 
     def fields(self):
-        if self._fields == None:
-            return list(self.field_set)
-        return self._fields
+        return list(self.field_set)
 
     def project(self, name):
         return self._projects.get(name)

@@ -259,7 +259,7 @@ class ProjectView(ProjectsView):
                     else:
                         # append the items....the default action
                         project.setdefault(field, []).extend(value)
-                    
+
         self.app.model.save(project)
 
         # XXX for compatability with jetitable:
