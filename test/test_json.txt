@@ -17,3 +17,7 @@ Make a project::
     >>> project == newproject
     True
 
+Add some fields to it::
+
+    >>> fields = {'author': 'jhammel'}
+
