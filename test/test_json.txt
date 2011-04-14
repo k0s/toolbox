@@ -29,3 +29,25 @@ Add some fields to it::
     >>> sorted(app.get('/')[0]['author'])
     [u'jhammel', u'turing']
 
+Now let's search for the project!::
+
+    >>> authors = app.get('/author')
+    >>> len(authors)
+    2
+    >>> authors['jhammel']
+    [u'foo']
+    >>> authors['turing']
+    [u'foo']
+
+Let's search for it a different way::
+
+    >>> project = app.get('/')[0]
+    >>> projects = app.get('/', params={'author': 'jhammel'})
+    >>> newproject = projects[0]
+    >>> newproject == project
+    True
+
+Just to show that the search is doing something::
+
+    >>> app.get('/', params={'author': 'sauron'})
+    []
