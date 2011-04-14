@@ -24,6 +24,11 @@ class ToolboxTestApp(TestApp):
         app = Dispatcher(fields=('usage', 'author', 'type', 'language', 'dependencies'), directory=json_dir)
         TestApp.__init__(self, app)
 
+    def get(self, url='/', **kwargs):
+        kwargs.setdefault('params', {})['format'] = 'json'
+        response = TestApp.get(self, url, **kwargs)
+        return json.loads(response.body)
+
 def run_tests():
     tests =  [ test for test in os.listdir(directory)
                if test.endswith('.txt') ]
