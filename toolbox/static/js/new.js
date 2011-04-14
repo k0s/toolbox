@@ -22,4 +22,6 @@ $(document).ready(function(){
                             resultsHighlight: false,
                             extraParams: '&format=json&field=' + field});
             });
+
+        $('#submit-new-tool'); // TODO
     });
