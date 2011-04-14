@@ -343,17 +343,23 @@ class CreateProjectView(TempitaHandler):
             return '<a href="%s">%s</a> already exists' % (self.link(name), name)
 
     def Post(self):
+
+        # get some data
+        required = self.app.model.required
         post_data = self.post_data()
+        project = dict([(i, post_data.get(i, '').strip())
+                        for i in required])
 
         # check for errors
         errors = {}
-        required = set(['name', 'description', 'url'])
-        missing = set([i for i in required
-                       if not post_data.get(i, '').strip()])
+        missing = set([i for i in required if not project[i]])
         if missing: # missing required fields
             errors['missing'] = missing
         # TODO check for duplicate project name
         # and other url namespace collisions
+        name_conflict = check_name(project['name'])
+        if name_conflict:
+            errors['name_conflict'] = [name_conflict]
         if errors:
             error_list = []
             for key in errors:
@@ -361,7 +367,8 @@ class CreateProjectView(TempitaHandler):
             location = self.link(self.request.path_info) + self.query_string(error_list)
             return self.redirect(location)
 
-        project = dict([(i, post_data[i]) for i in required]) 
+        # add fields to the project
+        # currently used only for JSON requests
         for field in self.app.model.fields():
             value = post_data.get(field, '').strip()
             values = [i.strip() for i in value.split(',') if i.strip()]
