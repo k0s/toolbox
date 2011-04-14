@@ -92,3 +92,8 @@ Add some metadata. Make sure we see it::
     1
     >>> len(app.get('/', params={'author': 'turing'}))
     2
+    >>> projects = app.get('/', params={'author': 'turing', 'q': 'downtown'})
+    >>> len(projects)
+    1
+    >>> projects[0]['name'] 
+    u'bar'
