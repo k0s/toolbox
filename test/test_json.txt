@@ -6,3 +6,14 @@ Ensure we have no projects::
     >>> app.get('/')
     []
 
+Make a project::
+
+    >>> project = {'name': 'foo', 'description': 'bar', 'url': 'http://example.com'}
+    >>> response = app.post('/new', params=project)
+    >>> response.status
+    303
+    >>> newproject = app.get('/')[0]
+    >>> modified = newproject.pop('modified')
+    >>> project == newproject
+    True
+
