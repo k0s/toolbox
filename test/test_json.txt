@@ -124,3 +124,10 @@ Delete some metadata::
     1
     >>> projects[0]['name']
     u'foo'
+
+Delete a project::
+
+    >>> response = app.post('/delete', params={'project': 'foo'})
+    >>> len(app.get('/'))
+    2
+        

@@ -269,10 +269,6 @@ class ProjectView(ProjectsView):
 
         return self.Get()
 
-    def Delete(self):
-        raise NotImplementedError
-
-
 class FieldView(ProjectsView):
     """view of projects sorted by a field"""
 
