@@ -234,6 +234,7 @@ class ProjectView(ProjectsView):
 
         action = post_data.pop('action', None)
         project = self.data['projects'][0]
+        old_name = project['name']
         if action == 'delete':
             for field in self.app.model.fields():
                 if field in post_data and field in project:
@@ -260,7 +261,6 @@ class ProjectView(ProjectsView):
                         # append the items....the default action
                         project.setdefault(field, []).extend(value)
 
-        old_name = self.request.path_info.strip('/') # TODO: URL quotes issue
         if 'name' in post_data and post_data['name'] != old_name:
             self.app.model.delete(old_name)
 
