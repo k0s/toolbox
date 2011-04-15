@@ -134,4 +134,5 @@ Delete a project::
     2
     >>> len(app.get('/', params={'author': 'jhammel'}))
     0
-
+    >>> results = app.get('/', params={'q': 'jhammel'})
+    >>> len(results)
