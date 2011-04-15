@@ -130,4 +130,5 @@ Delete a project::
     >>> response = app.post('/delete', params={'project': 'foo'})
     >>> len(app.get('/'))
     2
-        
+    >>> len(app.get('/', params={'author': 'jhammel'}))
+    0
