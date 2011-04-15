@@ -58,6 +58,7 @@ $(document).ready(function(){
                                             if (newlink != link) {
                                                 var throbber = $('<img class="throbber" src="/img/indicator.gif"/>');
                                                 $(this).after(throbber);
+                                                $(this).hide();
                                                 $.post(url, {"url": newlink}, function(data) {
                                                         $(throbber).remove();
                                                         var a = $(wrapper).children('a');
