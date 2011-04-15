@@ -25,21 +25,27 @@ $(document).ready(function(){
                             });
 
                 // make the name and url editable [TODO]
-                $(this).find('h1').hover(function(eventObject) { 
-                        var img = $('<img class="UEB" src="/img/UEB16.png"/>');
-                        $(this).append(img);
-                        var header = this;
-                        $(img).click(function() {
-                                var link = $(header).children('a');
-                                var text = $(link).html();
-                                //                                var input = $('<input type="text" name="name" value="' + text + '"/>');
-                                var form = $('<form method="POST" action="' + url + '"><input type="text" name="name" value="' + text +'"/><button class="cancel">Cancel</button><input type="submit" value="Rename"/></form>');
-                                $(form).css('display', 'block');
-                                $(header).replaceWith(form);
-                                $(form).find('input[type=text]').focus();
-                            });
-                    },
-                    function(eventObject) { $(this).children('img.UEB').remove(); });
+                function nameHover(eventObject) {
+                    var img = $('<img class="UEB" src="/img/UEB16.png"/>');
+                    $(this).append(img);
+                    var header = this;
+                    $(img).click(function() {
+                            var link = $(header).children('a');
+                            var text = $(link).html();
+                            var form = $('<form method="POST" action="' + url + '"><input type="text" name="name" value="' + text +'"/><button class="cancel">Cancel</button><input type="submit" value="Rename"/></form>');
+                            $(form).css('display', 'block');
+                            $(header).replaceWith(form);
+                            $(form).find('button.cancel').click(function(){
+                                    $(header).find('img.UEB').remove();
+                                    $(header).hover(nameHover,
+                                                    function(eventObject) { $(this).children('img.UEB').remove(); });
+                                    $(form).replaceWith(header);
+                                });
+                            $(form).find('input[type=text]').focus();
+                        });
+                }
+                $(this).find('h1').hover(nameHover,
+                                         function(eventObject) { $(this).children('img.UEB').remove(); });
                 $(this).find('a.home').each(function() {
                         var home = this;
                         $(this).wrap('<span/>');
