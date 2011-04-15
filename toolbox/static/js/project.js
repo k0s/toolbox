@@ -62,7 +62,7 @@ $(document).ready(function(){
                                                         var a = $(wrapper).children('a');
                                                         a.attr('href', newlink);
                                                         a.html(newlink);
-                                                    }
+                                                    });
                                             }
                                             else {
                                                 $(wrapper).children('img.UEB').remove();
