@@ -32,10 +32,11 @@ $(document).ready(function(){
                         $(img).click(function() {
                                 var link = $(header).children('a');
                                 var text = $(link).html();
-                                var input = $('<input type="text" name="name" value="' + text + '"/>');
-                                var form = $('<form></form>');
-                                $(input).css('display', 'block');
-                                $(header).replaceWith(input);
+                                //                                var input = $('<input type="text" name="name" value="' + text + '"/>');
+                                var form = $('<form method="POST" action="' + url + '"><input type="text" name="name" value="' + text +'"/><button class="cancel">Cancel</button><input type="submit" value="Rename"/></form>');
+                                $(form).css('display', 'block');
+                                $(header).replaceWith(form);
+                                $(form).find('input[type=text]').focus();
                             });
                     },
                     function(eventObject) { $(this).children('img.UEB').remove(); });
