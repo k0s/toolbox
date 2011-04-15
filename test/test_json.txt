@@ -187,5 +187,13 @@ Now try renaming a tool::
    >>> songs = app.get('/')
    >>> len(songs)
    2
+   >>> projects = app.get('/', params={'q': 'star'})
+   >>> len(projects)
+   1
+   >>> star = projects[0]
+   >>> star['name']
+   u'star'
+   >>> star['type']
+   [u'song']
 
    
