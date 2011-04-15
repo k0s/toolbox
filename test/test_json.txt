@@ -90,6 +90,8 @@ Add some metadata. Make sure we see it::
     2
     >>> len(app.get('/', params={'author': 'jhammel'}))
     1
+    >>> len(app.get('/', params={'q': 'jhammel'}))
+    1
     >>> len(app.get('/', params={'author': 'turing'}))
     2
     >>> len(app.get('/', params={'q': 'turing'}))
@@ -132,3 +134,4 @@ Delete a project::
     2
     >>> len(app.get('/', params={'author': 'jhammel'}))
     0
+
