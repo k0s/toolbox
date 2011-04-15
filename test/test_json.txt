@@ -196,4 +196,11 @@ Now try renaming a tool::
    >>> star['type']
    [u'song']
 
-   
+You should not be allowed to rename a tool if another tool has the
+same name::
+
+   >>> sorted([i['name'] for i in app.get('/')])
+   [u'fleem', u'star']
+   >>> response = app.post('/star', params={'name': 'fleem'})
+   >>> sorted([i['name'] for i in app.get('/')])
+   [u'fleem', u'star']
