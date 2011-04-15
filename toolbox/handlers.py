@@ -268,7 +268,7 @@ class ProjectView(ProjectsView):
         if 'name' in post_data and post_data['name'] != old_name:
             self.app.model.delete(old_name)
             self.app.model.save(project)
-            return self.redirect(project['name'])
+            return self.redirect(self.request.get('referer', self.link(project['name'])))
 
         self.app.model.save(project)
 
