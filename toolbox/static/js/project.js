@@ -55,13 +55,20 @@ $(document).ready(function(){
                                             var newlink = $(this).val();
                                             newlink = newlink.trim();
                                             if (newlink != link) {
-                                                var a = $(wrapper).children('a');
-                                                a.attr('href', newlink);
-                                                a.html(newlink);
+                                                var throbber = $('<img class="throbber" src="/img/indicator.gif"/>');
+                                                $(this).after(throbber);
+                                                $.post(url, {"url": newlink}, function(data) {
+                                                        
+                                                        var a = $(wrapper).children('a');
+                                                        a.attr('href', newlink);
+                                                        a.html(newlink);
+                                                    }
                                             }
-                                            $(wrapper).children('img.UEB').remove();
-                                            wrapper.hover(urlHover, function(eventObject) { $(this).children('img.UEB').remove(); })
-                                            $(this).replaceWith(wrapper);
+                                            else {
+                                                $(wrapper).children('img.UEB').remove();
+                                                wrapper.hover(urlHover, function(eventObject) { $(this).children('img.UEB').remove(); });
+                                                $(this).replaceWith(wrapper);
+                                            }
                                     }
                                     $(input).blur(urlEditBlur);
                                     $(input).keypress(function(event) {
