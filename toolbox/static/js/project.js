@@ -53,15 +53,19 @@ $(document).ready(function(){
                                     function urlEditBlur() {
                                             // TODO: also add this function on keypress = enter
                                             var newlink = $(this).val();
+                                            var that = this;
                                             newlink = newlink.trim();
                                             if (newlink != link) {
                                                 var throbber = $('<img class="throbber" src="/img/indicator.gif"/>');
                                                 $(this).after(throbber);
                                                 $.post(url, {"url": newlink}, function(data) {
-                                                        
+                                                        $(throbber).remove();
                                                         var a = $(wrapper).children('a');
                                                         a.attr('href', newlink);
                                                         a.html(newlink);
+                                                        $(wrapper).children('img.UEB').remove();
+                                                        wrapper.hover(urlHover, function(eventObject) { $(this).children('img.UEB').remove(); });
+                                                        $(that).replaceWith(wrapper);
                                                     });
                                             }
                                             else {
