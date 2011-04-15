@@ -225,6 +225,9 @@ class ProjectView(ProjectsView):
         self.data['projects'] = [project]
         self.data['title'] = project['name']
 
+    def get_json(self):
+        return self.data['projects'][0]
+
     def Post(self):
 
         post_data = self.post_data()
