@@ -264,8 +264,11 @@ class ProjectView(ProjectsView):
                         # append the items....the default action
                         project.setdefault(field, []).extend(value)
 
+        # rename handling
         if 'name' in post_data and post_data['name'] != old_name:
             self.app.model.delete(old_name)
+            self.app.model.save(project)
+            return self.redirect(project['name'])
 
         self.app.model.save(project)
 
