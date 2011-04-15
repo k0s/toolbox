@@ -41,25 +41,38 @@ $(document).ready(function(){
                         var home = this;
                         $(this).wrap('<span/>');
                         var wrapper = $(this).parent();
-                        wrapper.hover(function(eventObject) {
-                                var img = $('<img class="UEB" src="/img/UEB16.png"/>');
-                                $(this).append(img);
-                                $(img).click(function() {
-                                        var link = $(home).attr('href');
-                                        var size = link.length;
-                                        var input = $('<input type="text" value="' + link + '" size="' + size + '"/>');
-                                        $(wrapper).replaceWith(input);
-                                        $(input).blur(function() {
-                                                // TODO: also add this function on keypress = enter
-                                                var newlink = $(this).val();
-                                                newlink = newlink.trim();
-                                                alert(newlink);
-                                                //                                                $(this).replace('<span
-                                            });
-                                        $(input).focus();
-                                    });
-                            },
-                            function(eventObject) { $(this).children('img.UEB').remove(); });
+                        function urlHover(eventObject) {
+                            var img = $('<img class="UEB" src="/img/UEB16.png"/>');
+                            $(this).append(img);
+                            $(img).click(function() {
+                                    var link = $(home).attr('href');
+                                    var size = link.length;
+                                    var input = $('<input type="text" value="' + link + '" size="' + size + '"/>');
+                                    $(wrapper).replaceWith(input);
+
+                                    function urlEditBlur() {
+                                            // TODO: also add this function on keypress = enter
+                                            var newlink = $(this).val();
+                                            newlink = newlink.trim();
+                                            if (newlink != link) {
+                                                var a = $(wrapper).children('a');
+                                                a.attr('href', newlink);
+                                                a.html(newlink);
+                                            }
+                                            $(wrapper).children('img.UEB').remove();
+                                            wrapper.hover(urlHover, function(eventObject) { $(this).children('img.UEB').remove(); })
+                                            $(this).replaceWith(wrapper);
+                                    }
+                                    $(input).blur(urlEditBlur);
+                                    $(input).keypress(function(event) {
+                                            if (event.which == 13) {
+                                                $(this).blur();
+                                            }
+                                        });
+                                    $(input).focus();
+                                });
+                        }
+                        wrapper.hover(urlHover, function(eventObject) { $(this).children('img.UEB').remove(); });
                     });
 
                 // function to add auto suggest to an input
