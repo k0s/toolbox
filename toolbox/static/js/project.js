@@ -50,7 +50,11 @@ $(document).ready(function(){
                                         var input = $('<input type="text" value="' + link + '" size="' + size + '"/>');
                                         $(wrapper).replaceWith(input);
                                         $(input).blur(function() {
-                                                // TODO
+                                                // TODO: also add this function on keypress = enter
+                                                var newlink = $(this).val();
+                                                newlink = newlink.trim();
+                                                alert(newlink);
+                                                //                                                $(this).replace('<span
                                             });
                                         $(input).focus();
                                     });
