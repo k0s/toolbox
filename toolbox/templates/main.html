@@ -33,7 +33,7 @@
 <!-- text search form -->
 <form id="search" action="{{link()}}">
   <input id="search-text" type="text" name="q" value="{{request.GET.get('q', '')}}"/>
-  <input id="search-submit" type="submit" value=""/>
+  <input id="search-submit" type="submit" title="search" value=""/>
 </form>
 
 {{content | html}}

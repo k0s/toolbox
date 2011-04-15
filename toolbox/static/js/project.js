@@ -32,7 +32,9 @@ $(document).ready(function(){
                         $(img).click(function() {
                                 var link = $(header).children('a');
                                 var text = $(link).html();
-                                var input = $('<input type="text" value="' + text + '"/>');
+                                var input = $('<input type="text" name="name" value="' + text + '"/>');
+                                var form = $('<form></form>');
+                                $(input).css('display', 'block');
                                 $(header).replaceWith(input);
                             });
                     },
