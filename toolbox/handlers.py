@@ -279,6 +279,7 @@ class ProjectView(ProjectsView):
 
         return self.Get()
 
+
 class FieldView(ProjectsView):
     """view of projects sorted by a field"""
 
