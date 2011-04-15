@@ -23,5 +23,8 @@ $(document).ready(function(){
                             extraParams: '&format=json&field=' + field});
             });
 
-        $('#submit-new-tool'); // TODO
+        $('#submit-new-tool'); // TODO: on-screen error checking
+
+        // focus the input
+        $("input[name=name]").focus();
     });
