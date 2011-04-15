@@ -136,3 +136,49 @@ Delete a project::
     0
     >>> results = app.get('/', params={'q': 'jhammel'})
     >>> len(results)
+    0
+
+You're back to two basic projects without much metadata.  Let's give them some!::
+
+   >>> projects = app.get('/')
+   >>> [sorted(project.keys()) for project in projects]
+   [[u'description', u'modified', u'name', u'url'], [u'description', u'modified', u'name', u'url']]
+   >>> [project['name'] for project in projects]
+   [u'fleem', u'bar']
+   >>> description = 'You could be swining on a star'
+   >>> response = app.post('/bar', params=dict(description=description))
+   >>> projects = app.get('/', params={'q': 'star'})
+   >>> len(projects)
+   1
+   >>> projects[0]['description'] == description
+   True
+   >>> response = app.post('/bar', params={'type': 'song', 'usage': 'music', 'author': 'Sinatra'})
+   >>> songs = app.get('/', params={'type': 'song'})
+   >>> len(songs)
+   1
+   >>> songs[0]['name'] == 'bar'
+   True
+   >>> songs = app.get('/', params={'q': 'song'})
+   >>> len(songs)
+   1
+   >>> songs[0]['name'] == 'bar'
+   True
+   >>> response = app.post('/fleem', params={'type': 'song', 'description': 'Cotton Eye Joe', 'author': 'Rednex'})
+   >>> songs = app.get('/', params={'type': 'song'})
+   >>> len(songs)
+   2
+   >>> songs = app.get('/', params={'q': 'song'})
+   >>> len(songs)
+   2
+   >>> songs = app.get('/', params={'type': 'song', 'q': 'star'})
+   >>> len(songs)
+   1
+   >>> songs[0]['name']
+   u'bar'
+   >>> songs = app.get('/', params={'type': 'song', 'author': 'Sinatra'})
+   >>> len(songs)
+   1
+   >>> songs[0]['name']
+   u'bar'
+
+   

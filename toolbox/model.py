@@ -176,6 +176,7 @@ class MemoryCache(ProjectsModel):
                 if len(value) == 1:
                     self._fields.pop(key)
                 value.pop(project)
+        self.search.delete(project)
         os.remove(os.path.join(self.directory, self.files.pop(project)))
 
     def load(self):
