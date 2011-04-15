@@ -24,6 +24,40 @@ $(document).ready(function(){
                             'tooltip': 'click to edit description'
                             });
 
+                // make the name and url editable [TODO]
+                $(this).find('h1').hover(function(eventObject) { 
+                        var img = $('<img class="UEB" src="/img/UEB16.png"/>');
+                        $(this).append(img);
+                        var header = this;
+                        $(img).click(function() {
+                                var link = $(header).children('a');
+                                var text = $(link).html();
+                                var input = $('<input type="text" value="' + text + '"/>');
+                                $(header).replaceWith(input);
+                            });
+                    },
+                    function(eventObject) { $(this).children('img.UEB').remove(); });
+                $(this).find('a.home').each(function() {
+                        var home = this;
+                        $(this).wrap('<span/>');
+                        var wrapper = $(this).parent();
+                        wrapper.hover(function(eventObject) {
+                                var img = $('<img class="UEB" src="/img/UEB16.png"/>');
+                                $(this).append(img);
+                                $(img).click(function() {
+                                        var link = $(home).attr('href');
+                                        var size = link.length;
+                                        var input = $('<input type="text" value="' + link + '" size="' + size + '"/>');
+                                        $(wrapper).replaceWith(input);
+                                        $(input).blur(function() {
+                                                // TODO
+                                            });
+                                        $(input).focus();
+                                    });
+                            },
+                            function(eventObject) { $(this).children('img.UEB').remove(); });
+                    });
+
                 // function to add auto suggest to an input
                 function addAutoSuggest(input, field) {
                     var ul = $(input).parents('ul.field');
@@ -163,5 +197,5 @@ $(document).ready(function(){
                 // change the usage text to something more palatable
                 $(this).find('ul.usage > h2 > a').text("What's this for");
             });
-
+        
     });

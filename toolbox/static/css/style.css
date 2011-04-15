@@ -200,3 +200,13 @@ display: none;
 tt,pre {
 font-family: monospace;
 }
+
+img.UEB {
+display: inline;
+margin: 0;
+padding: 0;
+}
+
+img.UEB:hover {
+    box-shadow: 0em 0.1em 0.2em 0.0em #5C9EC0;
+}
