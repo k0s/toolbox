@@ -181,4 +181,11 @@ You're back to two basic projects without much metadata.  Let's give them some!:
    >>> songs[0]['name']
    u'bar'
 
+Now try renaming a tool::
+
+   >>> response = app.post('/bar', params={'name': 'star'})
+   >>> songs = app.get('/')
+   >>> len(songs)
+   2
+
    

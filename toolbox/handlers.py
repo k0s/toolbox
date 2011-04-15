@@ -260,6 +260,10 @@ class ProjectView(ProjectsView):
                         # append the items....the default action
                         project.setdefault(field, []).extend(value)
 
+        old_name = self.request.path_info.strip('/') # TODO: URL quotes issue
+        if 'name' in post_data and post_data['name'] != old_name:
+            self.app.model.delete(old_name)
+
         self.app.model.save(project)
 
         # XXX for compatability with jetitable:
