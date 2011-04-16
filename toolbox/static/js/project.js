@@ -24,7 +24,7 @@ $(document).ready(function(){
                             'tooltip': 'click to edit description'
                             });
 
-                // make the name and url editable [TODO]
+                // make the name and url editable
                 function nameHover(eventObject) {
                     var img = $('<img class="UEB" src="/img/UEB16.png"/>');
                     $(this).append(img);
