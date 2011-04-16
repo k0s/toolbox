@@ -151,6 +151,7 @@ class ProjectsView(TempitaHandler):
         """project views specific init"""
         TempitaHandler.__init__(self, app, request)
         self.data['fields'] = self.app.model.fields()
+        self.data['error'] = None
         if not self.json:
             self.data['format_date'] = self.format_date
 
@@ -237,7 +238,12 @@ class ProjectView(ProjectsView):
         # don't allow overiding other projects with your fancy rename
         if 'name' in post_data and post_data['name'] != project['name']:
             if self.app.model.project(post_data['name']):
-                return exc.HTTPForbidden("You can already has this project")
+                self.data['content'] = self.render(self.template, **self.data)
+                self.data['title'] = '%s -> %s: Rename error' % (project['name'], post_data['name'])
+                self.data['error'] = 'Cannot rename over existing project: <a href="%s">%s</a>' % (link(post_data['name']), post_data['name'] )
+                return Response(content_type='text/html',
+                                status=403,
+                                body=self.render('main.html', **self.data))
 
         # XXX for compatability with jetitable:
         id = post_data.pop('id', None)
