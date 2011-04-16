@@ -230,13 +230,19 @@ class ProjectView(ProjectsView):
 
     def Post(self):
 
+        # data
         post_data = self.post_data()
+        project = self.data['projects'][0]
+
+        # don't allow overiding other projects with your fancy rename
+        if 'name' in post_data and post_data['name'] != project['name']:
+            if self.app.model.project(post_data['name']):
+                return exc.HTTPForbidden("You can already has this project")
 
         # XXX for compatability with jetitable:
         id = post_data.pop('id', None)
 
         action = post_data.pop('action', None)
-        project = self.data['projects'][0]
         old_name = project['name']
         if action == 'delete':
             for field in self.app.model.fields():

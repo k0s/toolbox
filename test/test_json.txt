@@ -182,7 +182,8 @@ You're back to two basic projects without much metadata.  Let's give them some!:
    u'bar'
 
 Now try renaming a tool::
-
+   >>> [i['name'] for i in app.get('/')]
+   [u'fleem', u'bar']
    >>> response = app.post('/bar', params={'name': 'star'})
    >>> songs = app.get('/')
    >>> len(songs)
@@ -201,6 +202,6 @@ same name::
 
    >>> sorted([i['name'] for i in app.get('/')])
    [u'fleem', u'star']
-   >>> response = app.post('/star', params={'name': 'fleem'})
+   >>> response = app.post('/star', params={'name': 'fleem'}, status=403) # Forbidden
    >>> sorted([i['name'] for i in app.get('/')])
    [u'fleem', u'star']
