@@ -41,6 +41,11 @@ $(document).ready(function(){
                                                     function(eventObject) { $(this).children('img.UEB').remove(); });
                                     $(form).replaceWith(header);
                                 });
+                            $(form).find('input[type=text]').keypress(function(event) {
+                                            if (event.which == 13) {
+                                                $(form).submit();
+                                            }
+                                });
                             $(form).find('input[type=text]').focus();
                         });
                 }
