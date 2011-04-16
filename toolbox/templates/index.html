@@ -4,6 +4,9 @@
 {{if not len(projects)}}
 <h1 id="title">No tools found</h1>
 {{endif}}
+{{if error}}
+<h1 id="title">{{error | html}}</h1>
+{{endif}}
 
 {{for project in projects}}
   <div class="project" id="{{project['name']}}">
