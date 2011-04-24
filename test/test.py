@@ -20,6 +20,8 @@ directory = os.path.dirname(os.path.abspath(__file__))
 json_dir = os.path.join(directory, 'test_json')
 
 class ToolboxTestApp(TestApp):
+    """WSGI app wrapper for testing JSON responses"""
+    
     def __init__(self):
         app = Dispatcher(fields=('usage', 'author', 'type', 'language', 'dependencies'), directory=json_dir)
         TestApp.__init__(self, app)
@@ -28,6 +30,9 @@ class ToolboxTestApp(TestApp):
         kwargs.setdefault('params', {})['format'] = 'json'
         response = TestApp.get(self, url, **kwargs)
         return json.loads(response.body)
+
+class MemoryCacheTestApp(ToolboxTestApp):
+    """test the MemoryCache file-backed backend"""
 
 def run_tests():
     tests =  [ test for test in os.listdir(directory)

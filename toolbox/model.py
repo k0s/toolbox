@@ -100,6 +100,8 @@ class MemoryCache(ProjectsModel):
         - directory: directory of .json tool files
         - fields : list of fields to use, or None to calculate dynamically
         """
+        # XXX fields should be passed to ABC, not to an implementor
+        
         ProjectsModel.__init__(self)
 
         # JSON blob directory
