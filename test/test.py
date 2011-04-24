@@ -8,6 +8,7 @@ import doctest
 import os
 import shutil
 import sys
+from optparse import OptionParser
 from paste.fixture import TestApp
 from toolbox.dispatcher import Dispatcher
 
@@ -52,7 +53,11 @@ def run_tests(cleanup=True):
     return results
 
 def main(args=sys.argv[1:]):
-    results = run_tests()
+    parser = OptionParser()
+    parser.add_option('--cleanup', default=False, action='store_true',
+                      help="cleanup following the tests")
+    options, args = parser.parse_args(args)
+    results = run_tests(cleanup=options.cleanup)
     if sum([i.failed for i in results.values()]):
         sys.exit(1) # error
 
