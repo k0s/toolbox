@@ -46,7 +46,13 @@ def run_tests(raise_on_error=False, cleanup=True):
         app = ToolboxTestApp()
         extraglobs = {'here': directory, 'app': app, 'json_dir': json_dir}
         try:
-            results[test] = doctest.testfile(test, extraglobs=extraglobs, raise_on_error=raise_on_error)
+            results[test] = doctest.testfile(test, extraglobs=extraglobs, raise_on_error=raise_on_error,
+                                             optionflags=doctest.REPORT_ONLY_FIRST_FAILURE)
+        except doctest.UnexpectedException, failure:
+            return {}
+            import pdb
+            raise failure.exc_info[0], failure.exc_info[1], failure.exc_info[2]
+            pdb.set_trace()
         finally:
             if cleanup:
                 shutil.rmtree(json_dir, ignore_errors=True)
