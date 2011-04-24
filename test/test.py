@@ -7,6 +7,7 @@ doctest runner
 import doctest
 import os
 import shutil
+import sys
 from paste.fixture import TestApp
 from toolbox.dispatcher import Dispatcher
 
@@ -34,19 +35,27 @@ class ToolboxTestApp(TestApp):
 class MemoryCacheTestApp(ToolboxTestApp):
     """test the MemoryCache file-backed backend"""
 
-def run_tests():
+def run_tests(cleanup=True):
     tests =  [ test for test in os.listdir(directory)
                if test.endswith('.txt') ]
+    results = {}
     for test in tests:
         shutil.rmtree(json_dir, ignore_errors=True)
         os.makedirs(json_dir)
         app = ToolboxTestApp()
         extraglobs = {'here': directory, 'app': app, 'json_dir': json_dir}
         try:
-            doctest.testfile(test, extraglobs=extraglobs, raise_on_error=False)
+            results[test] = doctest.testfile(test, extraglobs=extraglobs, raise_on_error=False)
         finally:
-            shutil.rmtree(json_dir, ignore_errors=True)
+            if cleanup:
+                shutil.rmtree(json_dir, ignore_errors=True)
+    return results
+
+def main(args=sys.argv[1:]):
+    results = run_tests()
+    if sum([i.failed for i in results.values()]):
+        sys.exit(1) # error
 
 if __name__ == '__main__':
-    run_tests()
+    main()
 
