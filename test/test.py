@@ -36,7 +36,7 @@ class ToolboxTestApp(TestApp):
 class MemoryCacheTestApp(ToolboxTestApp):
     """test the MemoryCache file-backed backend"""
 
-def run_tests(cleanup=True):
+def run_tests(raise_on_error=False, cleanup=True):
     tests =  [ test for test in os.listdir(directory)
                if test.endswith('.txt') ]
     results = {}
@@ -46,7 +46,7 @@ def run_tests(cleanup=True):
         app = ToolboxTestApp()
         extraglobs = {'here': directory, 'app': app, 'json_dir': json_dir}
         try:
-            results[test] = doctest.testfile(test, extraglobs=extraglobs, raise_on_error=False)
+            results[test] = doctest.testfile(test, extraglobs=extraglobs, raise_on_error=raise_on_error)
         finally:
             if cleanup:
                 shutil.rmtree(json_dir, ignore_errors=True)
@@ -54,10 +54,14 @@ def run_tests(cleanup=True):
 
 def main(args=sys.argv[1:]):
     parser = OptionParser()
-    parser.add_option('--cleanup', default=False, action='store_true',
+    parser.add_option('--cleanup', dest='cleanup',
+                      default=False, action='store_true',
                       help="cleanup following the tests")
+    parser.add_option('--raise', dest='raise_on_error',
+                      default=False, action='store_true',
+                      help="raise on first error")
     options, args = parser.parse_args(args)
-    results = run_tests(cleanup=options.cleanup)
+    results = run_tests(raise_on_error=options.raise_on_error, cleanup=options.cleanup)
     if sum([i.failed for i in results.values()]):
         sys.exit(1) # error
 
