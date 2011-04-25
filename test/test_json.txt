@@ -39,7 +39,7 @@ Add some fields to it::
     >>> app.get('/')[0]['author']
     [u'jhammel']
     >>> app.get('/author')
-    {u'jhammel': set(['foo'])}
+    {u'jhammel': [u'foo']}
     >>> fields = {'author': 'turing'}
     >>> response = app.post(url, params=fields)
     >>> sorted(app.get('/')[0]['author'])
