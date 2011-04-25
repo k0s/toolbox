@@ -6,6 +6,12 @@ Ensure we have no projects::
     >>> app.get('/')
     []
 
+Also no authors::
+
+    >>> authors = app.get('/author')
+    >>> authors
+    {}
+
 Make a project::
 
     >>> project = {'name': 'foo', 'description': 'foo description', 'url': 'http://example.com'}
@@ -15,6 +21,14 @@ Make a project::
     >>> newproject = app.get('/')[0]
     >>> modified = newproject.pop('modified')
     >>> project == newproject
+    True
+
+Get the project by name::
+
+    >>> foo = app.get('/foo')
+    >>> modified == foo.pop('modified')
+    True
+    >>> foo == project
     True
 
 Add some fields to it::
