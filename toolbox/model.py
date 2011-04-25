@@ -203,6 +203,11 @@ class MemoryCache(ProjectsModel):
                 self.update(project)
 
     def save(self, project):
+
+        # TODO: save with mod time
+#        project['modified'] = time()
+#        self.modified[project['name']] = project['modified']
+        
         filename = self.files.get(project['name'])
         if not filename:
             filename = str2filename(project['name']) + '.json'
