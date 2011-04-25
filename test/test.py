@@ -44,12 +44,21 @@ class MemoryCacheTestApp(ToolboxTestApp):
         self.json_dir = os.path.join(directory, 'test_json')
         shutil.rmtree(self.json_dir, ignore_errors=True)
         os.makedirs(self.json_dir)
-        ToolboxTestApp.__init__(self, directory=self.json_dir)
+        ToolboxTestApp.__init__(self, model_type='memory_cache', directory=self.json_dir)
 
     def cleanup(self):
         shutil.rmtree(self.json_dir, ignore_errors=True)
 
-def run_tests(raise_on_error=False, cleanup=True, report_first=False):
+class CouchTestApp(ToolboxTestApp):
+    """test the MemoryCache file-backed backend"""
+
+    def __init__(self):
+        ToolboxTestApp.__init__(self, model_type='couch', dbname='test_json')
+
+app_classes = {'memory_cache': MemoryCacheTestApp,
+               'couch': CouchTestApp}
+
+def run_tests(raise_on_error=False, cleanup=True, report_first=False, app_class=MemoryCacheTestApp):
 
     results = {}
 
@@ -94,10 +103,20 @@ def main(args=sys.argv[1:]):
     parser.add_option('--report-first', dest='report_first',
                       default=False, action='store_true',
                       help="report the first error only (all tests will still run)")
+    parser.add_option('--model', dest='model', default=None, 
+                      help="model to use")
     options, args = parser.parse_args(args)
 
+    # get arguments to run_tests
+    kw = dict([(i, getattr(options, i)) for i in ('raise_on_error', 'cleanup', 'report_first')])
+    if options.model is not None:
+        try:
+            kw['app_class'] = app_classes[options.model]
+        except KeyError:
+            parser.error("Model '%s' unknown (choose from: %s)" % (options.model, app_classes.keys()))
+
     # run the tests
-    results = run_tests(raise_on_error=options.raise_on_error, cleanup=options.cleanup, report_first=options.report_first)
+    results = run_tests(**kw)
     if sum([i.failed for i in results.values()]):
         sys.exit(1) # error
 
