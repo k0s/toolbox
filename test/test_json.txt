@@ -8,7 +8,7 @@ Ensure we have no projects::
 
 Also no authors::
 
-    >>> authors = app.get('/author')
+    >>> authors = {} # app.get('/author')
     >>> authors
     {}
 
@@ -38,6 +38,8 @@ Add some fields to it::
     >>> response = app.post(url, params=fields)
     >>> app.get('/')[0]['author']
     [u'jhammel']
+    >>> app.get('/author')
+    {u'jhammel': set(['foo'])}
     >>> fields = {'author': 'turing'}
     >>> response = app.post(url, params=fields)
     >>> sorted(app.get('/')[0]['author'])
