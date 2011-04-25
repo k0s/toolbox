@@ -323,7 +323,7 @@ class FieldView(ProjectsView):
         ProjectsView.__init__(self, app, request)
         projects = self.app.model.field_query(field)
         if projects is None:
-            projects = []
+            projects = {}
         self.data['field'] = field
         self.data['projects'] = projects
         self.data['title'] = 'Tools by %s' % field
