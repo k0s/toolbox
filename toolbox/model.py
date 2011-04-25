@@ -219,6 +219,8 @@ class CouchCache(MemoryCache):
                  server="http://127.0.0.1:5984",
                  dbname="toolbox",
                  fields=None):
+
+        # TODO: check if server is running
         server = couchdb.Server(server)
         try:
             self.db = server[dbname]
