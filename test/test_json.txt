@@ -10,7 +10,7 @@ Also no authors::
 
     >>> authors = app.get('/author')
     >>> authors
-    []
+    {}
 
 Make a project::
 
