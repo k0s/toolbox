@@ -69,7 +69,7 @@ def run_tests(raise_on_error=False, cleanup=True, report_first=False, app_class=
     for test in tests:
 
         # create an app
-        app = MemoryCacheTestApp()
+        app = app_class()
 
         # doctest arguments
         extraglobs = {'here': directory, 'app': app}
