@@ -71,7 +71,8 @@ def run_tests(raise_on_error=False, cleanup=True, report_first=False):
         # run the test
         try:
             results[test] = doctest.testfile(test, **doctest_args)
-                                             
+        except doctest.DocTestFailure, failure:
+            raise
         except doctest.UnexpectedException, failure:
             raise failure.exc_info[0], failure.exc_info[1], failure.exc_info[2]
         finally:
