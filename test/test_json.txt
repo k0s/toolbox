@@ -27,6 +27,7 @@ Get the project by name::
 
     >>> foo = app.get('/foo')
     >>> modified == foo.pop('modified')
+    True
     >>> foo == project
     True
 
