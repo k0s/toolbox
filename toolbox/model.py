@@ -109,7 +109,8 @@ class MemoryCache(ProjectsModel):
             os.makedirs(directory)
         assert os.path.isdir(directory)
         self.directory = directory
-        
+
+        # indices
         self.files = {}
         self._projects = {}
         self._fields = fields
