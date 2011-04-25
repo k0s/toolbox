@@ -217,7 +217,8 @@ class CouchCache(MemoryCache):
 
     def __init__(self,
                  server="http://127.0.0.1:5984",
-                 dbname="toolbox"):
+                 dbname="toolbox",
+                 fields=None):
         server = couchdb.Server(server)
         try:
             self.db = server[dbname]
@@ -225,7 +226,7 @@ class CouchCache(MemoryCache):
             self.db = server.create(dbname)
 
         # XXX *should* inherit from ABC!
-        MemoryCache.__init__(self)
+        MemoryCache.__init__(self, fields=fields)
 
 
     def load(self):
