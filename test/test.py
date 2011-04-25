@@ -96,7 +96,7 @@ def main(args=sys.argv[1:]):
     options, args = parser.parse_args(args)
 
     # run the tests
-    results = run_tests(raise_on_error=options.raise_on_error, cleanup=options.cleanup)
+    results = run_tests(raise_on_error=options.raise_on_error, cleanup=options.cleanup, report_first=options.report_first)
     if sum([i.failed for i in results.values()]):
         sys.exit(1) # error
 

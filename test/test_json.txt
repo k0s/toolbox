@@ -6,6 +6,12 @@ Ensure we have no projects::
     >>> app.get('/')
     []
 
+Also no authors::
+
+    >>> authors = app.get('/author')
+    >>> authors
+    []
+
 Make a project::
 
     >>> project = {'name': 'foo', 'description': 'foo description', 'url': 'http://example.com'}
