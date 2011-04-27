@@ -8,8 +8,7 @@ Ensure we have no projects::
 
 Also no authors::
 
-    >>> authors = {} # app.get('/author')
-    >>> authors
+    >>> app.get('/author')
     {}
 
 Make a project::

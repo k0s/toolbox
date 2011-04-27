@@ -4,6 +4,7 @@ models for toolbox
 
 import couchdb
 import os
+from copy import deepcopy
 from search import WhooshSearch
 from time import time
 from util import str2filename
@@ -67,7 +68,7 @@ class ProjectsModel(object):
         """update a project"""
         raise NotImplementedError
 
-    def get(self, **query):
+    def get(self, search=None, **query):
         """
         get a list of projects matching a query
         the query should be key, value pairs to match;
@@ -122,7 +123,11 @@ class MemoryCache(ProjectsModel):
         self.load()
 
     def update(self, project):
-        self._projects[project['name']] = project
+        
+        if project['name'] in self._projects and project == self._projects[project['name']]:
+            return # nothing to do
+
+        self._projects[project['name']] = deepcopy(project)
         if self._fields is None:
             fields = [i for i in project if i not in self.reserved]
             self.field_set.update(fields)
@@ -158,13 +163,14 @@ class MemoryCache(ProjectsModel):
         if order:
             # preserve search order
             results = sorted(list(results), key=lambda x: order[x])
-        return [self._projects[project] for project in results]
+        return [deepcopy(self._projects[project]) for project in results]
 
     def fields(self):
         return list(self.field_set)
 
     def project(self, name):
-        return self._projects.get(name)
+        if name in self._projects:
+            return deepcopy(self._projects[name])
 
     def field_query(self, field):
         return self.index.get(field)
