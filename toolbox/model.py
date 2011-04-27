@@ -132,7 +132,8 @@ class MemoryCache(ProjectsModel):
             for value in values:
                 index.setdefault(value, set()).update([project['name']])
         self.update_search(project)
-        self.save(project)
+        if not load:
+            self.save(project)
 
     def get(self, search=None, **query):
         """
@@ -191,9 +192,7 @@ class MemoryCache(ProjectsModel):
                 print 'File: ' + i
                 raise
             self.files[project['name']] = i
-            if 'modified' not in project:
-                project['modified'] = time()
-            self.update(project, load=True)
+            self.update(project, load='modified' in project)
 
     def save(self, project):
 
