@@ -244,7 +244,7 @@ class CouchCache(MemoryCache):
         for id in self.db:
             doc = self.db[id]
             project = doc['project']
-            self.update(project)
+            self.update(project, load=True)
             
     def save(self, project):
         name = project['name']
@@ -253,7 +253,6 @@ class CouchCache(MemoryCache):
         except:
              updated = {}
         updated['project'] = project
-        updated['project']['modified'] = time()
         self.db[name] = updated
 
 # directory of available models
