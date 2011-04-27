@@ -279,10 +279,10 @@ class ProjectView(ProjectsView):
         # rename handling
         if 'name' in post_data and post_data['name'] != old_name:
             self.app.model.delete(old_name)
-            self.app.model.save(project)
+            self.app.model.update(project)
             return self.redirect(self.link(project['name']))
 
-        self.app.model.save(project)
+        self.app.model.update(project)
 
         # XXX for compatability with jetitable:
         if id is not None:
@@ -404,7 +404,7 @@ class CreateProjectView(TempitaHandler):
                 continue
             project[field] = value
 
-        self.app.model.save(project)
+        self.app.model.update(project)
         return self.redirect(project['name'])
 
 

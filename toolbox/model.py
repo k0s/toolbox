@@ -108,12 +108,12 @@ class MemoryCache(ProjectsModel):
         self.index = {}
         self.load()
 
-    def update(self, project):
+    def update(self, project, load=False):
         
         if project['name'] in self._projects and project == self._projects[project['name']]:
             return # nothing to do
-
-        project['modified'] = time()
+        if not load:
+            project['modified'] = time()
         self._projects[project['name']] = deepcopy(project)
         if self._fields is None:
             fields = [i for i in project if i not in self.reserved]
@@ -137,6 +137,7 @@ class MemoryCache(ProjectsModel):
     def get(self, search=None, **query):
         """
         - search: text search
+        - query: fields to match
         """
         order = None
         if search:
@@ -190,7 +191,9 @@ class MemoryCache(ProjectsModel):
                 print 'File: ' + i
                 raise
             self.files[project['name']] = i
-            self.update(project)
+            if 'modified' not in project:
+                project['modified'] = time()
+            self.update(project, load=True)
 
     def save(self, project):
 

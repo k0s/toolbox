@@ -160,6 +160,10 @@ You're back to two basic projects without much metadata.  Let's give them some!:
    >>> projects = app.get('/')
    >>> [sorted(project.keys()) for project in projects]
    [[u'description', u'modified', u'name', u'url'], [u'description', u'modified', u'name', u'url']]
+   >>> bar_modified_last = projects[0]['modified'] 
+   >>> fleem_modified_earlier = projects[1]['modified']
+   >>> bar_modified_last > fleem_modified_earlier
+   True
    >>> [project['name'] for project in projects]
    [u'bar', u'fleem']
    >>> description = 'You could be swining on a star'
