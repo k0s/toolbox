@@ -25,7 +25,7 @@ class ProjectsModel(object):
     abstract base class for toolbox tools
     """
 
-    def __init__(self, required=('name', 'description', 'url')):
+    def __init__(self, fields=None, required=('name', 'description', 'url')):
         """
         - required : required data (strings)
         """
@@ -35,6 +35,10 @@ class ProjectsModel(object):
         self.reserved = self.required.copy()
         self.reserved.update(['modified']) # last modified, a computed value
         self.search = WhooshSearch()
+
+        # classifier fields
+        self._fields = fields
+        self.field_set = set(fields or ())
 
     def update_search(self, project):
         """update the search index"""
@@ -47,6 +51,10 @@ class ProjectsModel(object):
         f = dict([(str(i), j) for i, j in fields.items()])
 
         self.search.update(name=project['name'], description=project['description'], **f)
+
+    def fields(self):
+        """what fields does the model support?"""
+        return list(self.field_set)
 
     ### implementor methods
 
@@ -62,10 +70,6 @@ class ProjectsModel(object):
         if the value is multiple, it should be a set which will be
         ANDed together
         """
-        raise NotImplementedError
-
-    def fields(self):
-        """what fields does the model support?"""
         raise NotImplementedError
 
     def project(self, name):
@@ -92,7 +96,7 @@ class MemoryCache(ProjectsModel):
         """
         # XXX fields should be passed to ABC, not to an implementor
         
-        ProjectsModel.__init__(self)
+        ProjectsModel.__init__(self, fields=fields)
 
         # JSON blob directory
         if not os.path.exists(directory):
@@ -103,8 +107,6 @@ class MemoryCache(ProjectsModel):
         # indices
         self.files = {}
         self._projects = {}
-        self._fields = fields
-        self.field_set = set(fields or ())
         self.index = {}
         self.load()
 
@@ -154,8 +156,6 @@ class MemoryCache(ProjectsModel):
             results = sorted(list(results), key=lambda x: order[x])
         return [deepcopy(self._projects[project]) for project in results]
 
-    def fields(self):
-        return list(self.field_set)
 
     def project(self, name):
         if name in self._projects:
