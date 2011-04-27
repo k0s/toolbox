@@ -161,7 +161,7 @@ You're back to two basic projects without much metadata.  Let's give them some!:
    >>> [sorted(project.keys()) for project in projects]
    [[u'description', u'modified', u'name', u'url'], [u'description', u'modified', u'name', u'url']]
    >>> [project['name'] for project in projects]
-   [u'fleem', u'bar']
+   [u'bar', u'fleem']
    >>> description = 'You could be swining on a star'
    >>> response = app.post('/bar', params=dict(description=description))
    >>> projects = app.get('/', params={'q': 'star'})
