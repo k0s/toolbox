@@ -18,6 +18,7 @@ except ImportError:
 # - string: a single string: {'type': 'string', 'name': 'name', 'required': True}
 # - field: a list of strings: {'type': 'field', 'name', 'usage'}
 # - dict: a subclassifier: {'type': '???', 'name': 'url', 'required': True}
+# - computed values, such as modified
 
 class ProjectsModel(object):
     """
@@ -32,23 +33,8 @@ class ProjectsModel(object):
 
         # reserved fields        
         self.reserved = self.required.copy()
-        self.reserved.update(['modified']) 
-        self.modified = {}
+        self.reserved.update(['modified']) # last modified, a computed value
         self.search = WhooshSearch()
-
-    # XXX unused
-    # def update_fields(self, name, **fields):
-    #     """
-    #     update the fields of a particular project
-    #     """
-    #     project = self.project(name)
-    #     for field in required:
-    #         value = fields.pop(field)
-    #         if value is not None:
-    #             project[field] = value
-    #     for field, value in fields.items():
-    #         project[field] = value
-    #     self.update(project)
 
     def update_search(self, project):
         """update the search index"""
@@ -127,6 +113,7 @@ class MemoryCache(ProjectsModel):
         if project['name'] in self._projects and project == self._projects[project['name']]:
             return # nothing to do
 
+        project['modified'] = time()
         self._projects[project['name']] = deepcopy(project)
         if self._fields is None:
             fields = [i for i in project if i not in self.reserved]
@@ -145,7 +132,6 @@ class MemoryCache(ProjectsModel):
             for value in values:
                 index.setdefault(value, set()).update([project['name']])
         self.update_search(project)
-
 
     def get(self, search=None, **query):
         """
@@ -197,26 +183,19 @@ class MemoryCache(ProjectsModel):
             if not i.endswith('.json'):
                 continue
             filename = os.path.join(self.directory, i)
-            mtime = os.path.getmtime(filename)
-            if mtime > 0: # self.modified.get(i, -1):
-                self.modified[i] = mtime
-                try:
-                    project = json.loads(file(filename).read())
-                except:
-                    print 'File: ' + i
-                    raise
-                self.files[project['name']] = i
-                if project.get('modified', -1) < mtime:
-                    project['modified'] = mtime
-                    self.save(project)
-                self.update(project)
+            try:
+                project = json.loads(file(filename).read())
+            except:
+                print 'File: ' + i
+                raise
+            self.files[project['name']] = i
+            if 'modified' not in project:
+                project['modified'] = os.path.getmtime(filename)
+                self.save(project)
+            self.update(project)
 
     def save(self, project):
 
-        # TODO: save with mod time
-#        project['modified'] = time()
-#        self.modified[project['name']] = project['modified']
-        
         filename = self.files.get(project['name'])
         if not filename:
             filename = str2filename(project['name']) + '.json'
