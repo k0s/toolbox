@@ -35,18 +35,19 @@ class ProjectsModel(object):
         self.modified = {}
         self.search = WhooshSearch()
 
-    def update_fields(self, name, **fields):
-        """
-        update the fields of a particular project
-        """
-        project = self.project(name)
-        for field in required:
-            value = fields.pop(field)
-            if value is not None:
-                project[field] = value
-        for field, value in fields.items():
-            project[field] = value
-        self.update(project)
+    # XXX unused
+    # def update_fields(self, name, **fields):
+    #     """
+    #     update the fields of a particular project
+    #     """
+    #     project = self.project(name)
+    #     for field in required:
+    #         value = fields.pop(field)
+    #         if value is not None:
+    #             project[field] = value
+    #     for field, value in fields.items():
+    #         project[field] = value
+    #     self.update(project)
 
     def update_search(self, project):
         """update the search index"""
@@ -59,6 +60,8 @@ class ProjectsModel(object):
         f = dict([(str(i), j) for i, j in fields.items()])
 
         self.search.update(name=project['name'], description=project['description'], **f)
+
+    ### implementor methods
 
     def update(self, project):
         """update a project"""
