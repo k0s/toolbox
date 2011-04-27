@@ -27,6 +27,7 @@ class ProjectsModel(object):
 
     def __init__(self, fields=None, required=('name', 'description', 'url')):
         """
+        - fields : list of fields to use, or None to calculate dynamically
         - required : required data (strings)
         """
         self.required = set(required)
@@ -86,23 +87,12 @@ class ProjectsModel(object):
 
 class MemoryCache(ProjectsModel):
     """
-    sample implementation keeping everything in memory with backing files
+    sample implementation keeping everything in memory
     """
 
-    def __init__(self, directory, fields=None):
-        """
-        - directory: directory of .json tool files
-        - fields : list of fields to use, or None to calculate dynamically
-        """
-        # XXX fields should be passed to ABC, not to an implementor
+    def __init__(self, fields=None):
         
         ProjectsModel.__init__(self, fields=fields)
-
-        # JSON blob directory
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-        assert os.path.isdir(directory)
-        self.directory = directory
 
         # indices
         self.files = {}
@@ -178,6 +168,31 @@ class MemoryCache(ProjectsModel):
                     self._fields.pop(key)
                 value.pop(project)
         self.search.delete(project)
+        
+    def load(self):
+        """for subclasses; in memory, load nothing"""
+
+    def save(self, project):
+        """for subclasses; in memory, save nothing"""
+
+
+class FileCache(MemoryCache):
+    """save in JSON blob directory"""
+
+    def __init__(self, directory, fields=None):
+        """
+        - directory: directory of .json tool files
+        """
+        # JSON blob directory
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        assert os.path.isdir(directory)
+        self.directory = directory
+        
+        MemoryCache.__init__(self, fields=fields)
+
+    def delete(self, project):
+        MemoryCache.delete(self, project)
         os.remove(os.path.join(self.directory, self.files.pop(project)))
 
     def load(self):
@@ -240,3 +255,9 @@ class CouchCache(MemoryCache):
         updated['project'] = project
         updated['project']['modified'] = time()
         self.db[name] = updated
+
+# directory of available models
+models = {'memory_cache': MemoryCache,
+          'file_cache': FileCache,
+          'couch': CouchCache}
+

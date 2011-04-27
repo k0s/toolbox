@@ -24,7 +24,7 @@ class ToolboxTestApp(TestApp):
     """WSGI app wrapper for testing JSON responses"""
     
     def __init__(self, **kw):
-        dispatcher_args = dict(fields=('usage', 'author', 'type', 'language', 'dependencies'))
+        dispatcher_args = dict(model_type='memory_cache', fields=('usage', 'author', 'type', 'language', 'dependencies'))
         dispatcher_args.update(kw)
         app = Dispatcher(**dispatcher_args)
         TestApp.__init__(self, app)
@@ -37,14 +37,14 @@ class ToolboxTestApp(TestApp):
     def cleanup(self):
         pass
 
-class MemoryCacheTestApp(ToolboxTestApp):
+class FileCacheTestApp(ToolboxTestApp):
     """test the MemoryCache file-backed backend"""
 
     def __init__(self):
         self.json_dir = os.path.join(directory, 'test_json')
         shutil.rmtree(self.json_dir, ignore_errors=True)
         os.makedirs(self.json_dir)
-        ToolboxTestApp.__init__(self, model_type='memory_cache', directory=self.json_dir)
+        ToolboxTestApp.__init__(self, model_type='file_cache', directory=self.json_dir)
 
     def cleanup(self):
         shutil.rmtree(self.json_dir, ignore_errors=True)
@@ -55,10 +55,11 @@ class CouchTestApp(ToolboxTestApp):
     def __init__(self):
         ToolboxTestApp.__init__(self, model_type='couch', dbname='test_json')
 
-app_classes = {'memory_cache': MemoryCacheTestApp,
+app_classes = {'memory_cache': ToolboxTestApp,
+               'file_cache': FileCacheTestApp,
                'couch': CouchTestApp}
 
-def run_tests(raise_on_error=False, cleanup=True, report_first=False, app_class=MemoryCacheTestApp):
+def run_tests(app_class, raise_on_error=False, cleanup=True, report_first=False):
 
     results = {}
 
@@ -103,7 +104,7 @@ def main(args=sys.argv[1:]):
     parser.add_option('--report-first', dest='report_first',
                       default=False, action='store_true',
                       help="report the first error only (all tests will still run)")
-    parser.add_option('--model', dest='model', default=None, 
+    parser.add_option('--model', dest='model', default='file_cache', 
                       help="model to use")
     options, args = parser.parse_args(args)
 

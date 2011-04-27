@@ -13,14 +13,11 @@ from handlers import QueryView
 from handlers import TagsView
 from handlers import AboutView
 
-from model import CouchCache
-from model import MemoryCache
+from model import models
 from pkg_resources import resource_filename
 from webob import Request, Response, exc
 
 # storage models
-models = {'memory_cache': MemoryCache,
-          'couch': CouchCache}
 
 class Dispatcher(object):
     """toolbox WSGI app which dispatchers to associated handlers"""
