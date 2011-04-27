@@ -140,7 +140,7 @@ class TempitaHandler(Handler):
                         body=self.render('main.html', **self.data))
 
 class ProjectsView(TempitaHandler):
-    """abstract base class for view with projects"""
+    """abstract base class for views of projects"""
 
     js = TempitaHandler.js[:]
     js.extend(['/js/jquery.autoSuggest.js',
@@ -289,6 +289,7 @@ class ProjectView(ProjectsView):
             return Response(content_type='text/plain',
                             body=project['description'])
 
+        # XXX should redirect instead
         return self.Get()
 
 

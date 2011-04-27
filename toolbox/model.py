@@ -198,7 +198,7 @@ class MemoryCache(ProjectsModel):
                 continue
             filename = os.path.join(self.directory, i)
             mtime = os.path.getmtime(filename)
-            if mtime > self.modified.get(i, -1):
+            if mtime > 0: # self.modified.get(i, -1):
                 self.modified[i] = mtime
                 try:
                     project = json.loads(file(filename).read())
@@ -206,7 +206,7 @@ class MemoryCache(ProjectsModel):
                     print 'File: ' + i
                     raise
                 self.files[project['name']] = i
-                if 'modified' not in project:
+                if project.get('modified', -1) < mtime:
                     project['modified'] = mtime
                     self.save(project)
                 self.update(project)
