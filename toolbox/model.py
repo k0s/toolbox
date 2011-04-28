@@ -335,7 +335,7 @@ def convert(args=sys.argv[1:]):
 
     # instantiate models
     from_model = models[_models[0]](**sects[0])
-    to_model = models[_models[1]](**sects[0])
+    to_model = models[_models[1]](**sects[1])
 
     # convert the data
     from_model.export(to_model)
