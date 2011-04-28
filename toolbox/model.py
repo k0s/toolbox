@@ -238,9 +238,7 @@ class CouchCache(MemoryCache):
             self.db = server[dbname]
         except:
             self.db = server.create(dbname)
-
         MemoryCache.__init__(self, fields=fields)
-
 
     def load(self):
         """load JSON objects from CouchDB docs"""
