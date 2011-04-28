@@ -272,7 +272,7 @@ models = {'memory_cache': MemoryCache,
           'file_cache': FileCache,
           'couch': CouchCache}
 
-def covert(args=sys.argv[1:]):
+def convert(args=sys.argv[1:]):
     """CLI front-end for model conversion"""
     from optparse import OptionParser
     usage = '%prog [global-options] from_model [options] to_model [options]'
