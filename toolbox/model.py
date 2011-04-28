@@ -299,10 +299,10 @@ def convert(args=sys.argv[1:]):
         ctor = models[options.list_args].__init__
         import inspect
         argspec = inspect.getargspec(ctor)
-        arguments = argspec.args[1:] # ignore self
-        defaults = [[i, None] for i in arguments]
+        defaults = [[i, None] for i in argspec.args[1:]] # ignore self
         for index, value in enumerate(reversed(argspec.defaults), 1):
             defaults[-index][-1] = value
+        defaults = [[i,j] for i, j in defaults if i != 'fields']
         print '%s arguments:' % options.list_args
         for arg, value in defaults:
             print ' -%s %s' % (arg, value or '')
