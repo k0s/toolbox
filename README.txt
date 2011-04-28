@@ -18,14 +18,16 @@ It could also be used to track:
 * code snippets
 * webapps
 
-An index item will always have
+A tool will always have
 
 * a *name* that uniquely identifies the tool
 * a text *description* of the tool
 * a canonical *URL* where you can find the tool
 
-An addition, classifiers may be added to tools, allowing tools to be
-organized by type and purpose.
+Tools can also have a 'usage' for what it applies to
+(e.g. 'bugzilla'), a 'type' for what type of tool it is (e.g. 'addon'
+or 'webapp'), 'authors' with the names and links of the authors, and
+'languages' for what programming language the tool is written in.
 
 
 How to use Toolbox
