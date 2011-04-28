@@ -289,7 +289,9 @@ def convert(args=sys.argv[1:]):
 
     # process global options
     if options.list_models:
-        pass
+        for name in sorted(models.keys()):
+            print name # could conceivably print docstring
+        parser.exit()
 
     # parse models and their ctor args
     sects = [[]]
