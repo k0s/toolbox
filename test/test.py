@@ -58,8 +58,9 @@ class CouchTestApp(ToolboxTestApp):
             self.app.model.delete(project)
 
     def cleanup(self):
-        for id in self.app.model.db:
-            self.app.model.db.delete(id)
+        for project in self.app.model.projects():
+            self.app.model.delete(project)
+
 
 app_classes = {'memory_cache': ToolboxTestApp,
                'file_cache': FileCacheTestApp,
