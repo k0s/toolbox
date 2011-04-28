@@ -276,7 +276,8 @@ def convert(args=sys.argv[1:]):
     """CLI front-end for model conversion"""
     from optparse import OptionParser
     usage = '%prog [global-options] from_model [options] to_model [options]'
-    parser = OptionParser(usage=usage)
+    description = "export data from one model to another"
+    parser = OptionParser(usage=usage, description=description)
     parser.disable_interspersed_args()
     parser.add_option('-l', '--list-models', dest='list_models',
                       action='store_true', default=False,
@@ -292,7 +293,6 @@ def convert(args=sys.argv[1:]):
         for name in sorted(models.keys()):
             print name # could conceivably print docstring
         parser.exit()
-
     if options.list_args:
         if not options.list_args in models:
             parser.error("Model '%s' not found. (Choose from: %s)" % (options.list_args, models.keys()))
@@ -309,7 +309,7 @@ def convert(args=sys.argv[1:]):
         parser.exit()
 
     # parse models and their ctor args
-    sects = [[]]
+    sects = []
     _models = []
     for arg in args:
         if arg.startswith('-'):
@@ -329,8 +329,16 @@ def convert(args=sys.argv[1:]):
     # require an equals sign
     # XXX hacky but much easier to parse
     if [ True for sect in sects
-         if ['=' not in i for i in sect] ]:
+         if [i for i in sect if '=' not in i] ]:
         parser.error("All arguments must be `key=value`")
+    sects = [dict([i.split('=', 1) for i in sect]) for sect in sects]
+
+    # instantiate models
+    from_model = models[_models[0]](**sects[0])
+    to_model = models[_models[1]](**sects[0])
+
+    # convert the data
+    from_model.export(to_model)
 
 if __name__ == '__main__':
     convert()
