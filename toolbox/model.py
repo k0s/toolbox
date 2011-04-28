@@ -258,6 +258,7 @@ class CouchCache(MemoryCache):
 
     def delete(self, project):
         MemoryCache.delete(self, project)
+        project = self.project(project)
         self.db.delete(project)
 
 # directory of available models

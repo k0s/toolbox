@@ -54,12 +54,12 @@ class CouchTestApp(ToolboxTestApp):
 
     def __init__(self):
         ToolboxTestApp.__init__(self, model_type='couch', dbname='test_json')
-        for id in self.app.model.db:
-            self.app.model.delete(id)
+        for project in self.app.model.projects():
+            self.app.model.delete(project)
 
     def cleanup(self):
         for id in self.app.model.db:
-            self.app.model.delete(id)
+            self.app.model.db.delete(id)
 
 app_classes = {'memory_cache': ToolboxTestApp,
                'file_cache': FileCacheTestApp,
