@@ -4,6 +4,7 @@ models for toolbox
 
 import couchdb
 import os
+import sys
 from copy import deepcopy
 from search import WhooshSearch
 from time import time
@@ -271,3 +272,43 @@ models = {'memory_cache': MemoryCache,
           'file_cache': FileCache,
           'couch': CouchCache}
 
+def covert(args=sys.argv[1:]):
+    """CLI front-end for model conversion"""
+    from optparse import OptionParser
+    usage = '%prog [global-options] from_model [options] to_model [options]'
+    parser = OptionParser(usage=usage, allow_interspersed_args=False)
+    parser.add_option('-l', '--list-models', dest='list_models',
+                      action='store_true', default=False,
+                      help="list available models")
+    parser.add_option('-a', '--list-args', dest='list_args',
+                      help="list arguments for a model")
+
+    options, args = parser.parse_args(args)
+    # TODO: deal with global args
+
+    # parse models and their ctor args
+    sects = [[]]
+    _models = []
+    for arg in args:
+        if arg.startswith('-'):
+            sects[-1].append(arg)
+        else:
+            _models.append(arg)
+            sects.append([])
+
+    # check models
+    if len(_models) != 2:
+        parser.error("Please provide two models. (You gave: %s)" % _models)
+    if not set(_models).issubset(models):
+        parser.error("Please use these models: %s (You gave: %s)" % (models, _models))
+
+    sects = [ [i.lstrip('-') for i in sect ] for sect in sects ]
+
+    # require an equals sign
+    # XXX hacky but much easier to parse
+    if [ True for sect in sects
+         if ['=' not in i for i in sect] ]:
+        parser.error("All arguments must be `key=value`")
+
+if __name__ == '__main__':
+    convert()
