@@ -10,6 +10,39 @@ consists of a set of values with which a tool is tagged. This gives
 toolbox the flexibility to fit a large number of data models, such as
 PYPI, DOAP, and others.
 
+Tool Sources
+------------
+
+* setup.py
+* addons.mozilla.org
+* OpenWebApps: https://developer.mozilla.org/en/OpenWebApps/The_Manifest
+* a la https://www.squarefree.com/userscripts/tidybox.user.js
+
+
+Running Toolbox
+---------------
+
+You can download and run the toolbox software yourself:
+http://github.com/k0s/toolbox
+
+To serve in baseline mode, install the software and run::
+
+ paster serve paste.ini
+
+This will serve the handlers and static content using the paste
+(http://pythonpaste.org) webserver.
+
+The dispatcher (``toolbox.dispatcher:Dispatcher``) is the central (WSGI)
+webapp that designates per-request to a number of handlers (from
+``handlers.py``).  The dispatcher has a few options:
+
+* template_dirs: extra directories (in order) to look for templates
+* model_type: type of backend to use
+
+These may be configured in the ``paste.ini`` file in the
+``[app:toolbox]`` section by prepending with the namespace
+``toolbox.``. It is advisable that you copy the example ``paste.ini``
+file for your own usage needs.
 
 Architecture
 ------------
@@ -241,4 +274,23 @@ the intent to be to import them into e.g. a couch database on actual
 deployment (using an import script). The samples could then be used
 for testing.
 
+
+Links
+-----
+
+A big TODO item is links.  Currently, each tool has a canonical URL.
+Since toolbox is an index, this has the distinct advantage of
+associating a single URL with the project.  It is assumed that the
+linked-to resource should point to auxilliary resources as necessary.
+
+However, as an index is useful for correlating information --
+connecting the dots -- allowing a variety of links both allows the
+browser to have information at their fingertips, but also to allow
+mapping and intelligent manipulation of tools by their link types.
+Several types of links may be recorded:
+
+* repository
+* how to report bugs
+* wiki
+* pypi
 
