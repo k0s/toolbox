@@ -104,9 +104,9 @@ class MemoryCache(ProjectsModel):
         ProjectsModel.__init__(self, fields=fields)
 
         # indices
-        self.files = {}
         self._projects = {}
         self.index = {}
+        
         self.load()
 
     def update(self, project, load=False):
@@ -197,7 +197,8 @@ class FileCache(MemoryCache):
             os.makedirs(directory)
         assert os.path.isdir(directory)
         self.directory = directory
-        
+
+        self.files = {}
         MemoryCache.__init__(self, fields=fields)
 
     def delete(self, project):
