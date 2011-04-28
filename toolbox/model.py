@@ -293,6 +293,21 @@ def convert(args=sys.argv[1:]):
             print name # could conceivably print docstring
         parser.exit()
 
+    if options.list_args:
+        if not options.list_args in models:
+            parser.error("Model '%s' not found. (Choose from: %s)" % (options.list_args, models.keys()))
+        ctor = models[options.list_args].__init__
+        import inspect
+        argspec = inspect.getargspec(ctor)
+        arguments = argspec.args[1:] # ignore self
+        defaults = [[i, None] for i in arguments]
+        for index, value in enumerate(reversed(argspec.defaults), 1):
+            defaults[-index][-1] = value
+        print '%s arguments:' % options.list_args
+        for arg, value in defaults:
+            print ' -%s %s' % (arg, value or '')
+        parser.exit()
+
     # parse models and their ctor args
     sects = [[]]
     _models = []
