@@ -276,15 +276,20 @@ def convert(args=sys.argv[1:]):
     """CLI front-end for model conversion"""
     from optparse import OptionParser
     usage = '%prog [global-options] from_model [options] to_model [options]'
-    parser = OptionParser(usage=usage, allow_interspersed_args=False)
+    parser = OptionParser(usage=usage)
+    parser.disable_interspersed_args()
     parser.add_option('-l', '--list-models', dest='list_models',
                       action='store_true', default=False,
                       help="list available models")
     parser.add_option('-a', '--list-args', dest='list_args',
+                      metavar='MODEL',
                       help="list arguments for a model")
 
     options, args = parser.parse_args(args)
-    # TODO: deal with global args
+
+    # process global options
+    if options.list_models:
+        pass
 
     # parse models and their ctor args
     sects = [[]]
