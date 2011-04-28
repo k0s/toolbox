@@ -61,6 +61,11 @@ class ProjectsModel(object):
         """list of all projects"""
         return [i['name'] for i in self.get()]
 
+    def export(self, other):
+        """export the current model to another model instance"""
+        for project in self.get():
+            other.update(project)
+
     ### implementor methods
 
     def update(self, project):
