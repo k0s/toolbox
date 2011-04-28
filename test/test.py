@@ -55,9 +55,14 @@ class CouchTestApp(ToolboxTestApp):
     def __init__(self):
         ToolboxTestApp.__init__(self, model_type='couch', dbname='test_json')
 
+    def cleanup(self):
+        for project in self.app.model.projects():
+            self.app.model.delete(project)
+
 app_classes = {'memory_cache': ToolboxTestApp,
                'file_cache': FileCacheTestApp,
                'couch': CouchTestApp}
+
 
 def run_tests(app_class, raise_on_error=False, cleanup=True, report_first=False):
 

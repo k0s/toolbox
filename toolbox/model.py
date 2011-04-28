@@ -57,6 +57,10 @@ class ProjectsModel(object):
         """what fields does the model support?"""
         return list(self.field_set)
 
+    def projects(self):
+        """list of all projects"""
+        return [i['name'] for i in self.get()]
+
     ### implementor methods
 
     def update(self, project):
@@ -235,7 +239,6 @@ class CouchCache(MemoryCache):
         except:
             self.db = server.create(dbname)
 
-        # XXX *should* inherit from ABC!
         MemoryCache.__init__(self, fields=fields)
 
 
@@ -254,6 +257,10 @@ class CouchCache(MemoryCache):
              updated = {}
         updated['project'] = project
         self.db[name] = updated
+
+    def delete(self, project):
+        MemoryCache.delete(self, project)
+        self.db.delete(project)
 
 # directory of available models
 models = {'memory_cache': MemoryCache,
