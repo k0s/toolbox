@@ -90,7 +90,7 @@ class TempitaHandler(Handler):
 
         # add application template_dir if specified
         if app.template_dir:
-            self.template_dirs = self.template_dirs + app.template_dir
+            self.template_dirs = self.template_dirs[:] + [app.template_dir]
 
         self.data = { 'request': request,
                       'css': self.css,
