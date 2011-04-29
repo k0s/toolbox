@@ -11,14 +11,14 @@ $(document).ready(function(){
         $('div.project').each(function(){
                 var project = $(this).attr('id');
                 var project_div = $(this);
-                var url = '/' + project; // TODO: urlquote
+                var url = project; // TODO: urlquote
 
                 // make description editable with jeditable
                 $(this).find('p.description').editable(url, {
                         'type': 'textarea',
                             'rows': 7,
                             'cols': 80,
-                            'indicator': '<img src="/img/indicator.gif"/>',
+                            'indicator': '<img src="img/indicator.gif"/>',
                             'onblur': 'submit',
                             'name': 'description',
                             'tooltip': 'click to edit description'
@@ -56,7 +56,7 @@ $(document).ready(function(){
                         $(this).wrap('<span/>');
                         var wrapper = $(this).parent();
                         function urlHover(eventObject) {
-                            var img = $('<img class="UEB" src="/img/UEB16.png"/>');
+                            var img = $('<img class="UEB" src="img/UEB16.png"/>');
                             $(this).append(img);
                             $(img).click(function() {
                                     var link = $(home).attr('href');
@@ -70,7 +70,7 @@ $(document).ready(function(){
                                             var that = this;
                                             newlink = newlink.trim();
                                             if (newlink != link) {
-                                                var throbber = $('<img class="throbber" src="/img/indicator.gif"/>');
+                                                var throbber = $('<img class="throbber" src="img/indicator.gif"/>');
                                                 $(this).after(throbber);
                                                 $(this).hide();
                                                 $.post(url, {"url": newlink}, function(data) {
@@ -107,7 +107,7 @@ $(document).ready(function(){
 
                     function postField(value) {
                         var elem = $(ul).children('li:last');
-                        var li = $('<li><a href="/?' + field + '=' + value + '">' + value + '</a></li>');
+                        var li = $('<li><a href="./?' + field + '=' + value + '">' + value + '</a></li>');
                         
                         if (elem.length == 0) {
                             var elem = $(ul).children('h2');
@@ -116,7 +116,7 @@ $(document).ready(function(){
                         addDeleteButton(li);
                     }
 
-                    $(input).autoSuggest('/tags', {selectedItemProp: 'value',
+                    $(input).autoSuggest('tags', {selectedItemProp: 'value',
                                 selectedValuesProp: 'value',
                                 searchObjProps: 'value',
                                 minChars: 0,
