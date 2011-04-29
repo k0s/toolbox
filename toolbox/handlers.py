@@ -234,7 +234,7 @@ class ProjectView(ProjectsView):
         if 'name' in post_data and post_data['name'] != project['name']:
             if self.app.model.project(post_data['name']):
                 self.data['title'] = '%s -> %s: Rename error' % (project['name'], post_data['name'])
-                self.data['error'] = 'Cannot rename over existing project: <a href="%s">%s</a>' % (self.link(post_data['name']), post_data['name'] )
+                self.data['error'] = 'Cannot rename over existing project: <a href="%s">%s</a>' % (post_data['name'], post_data['name'] )
                 self.data['content'] = self.render(self.template, **self.data)
                 return Response(content_type='text/html',
                                 status=403,
@@ -275,7 +275,7 @@ class ProjectView(ProjectsView):
         if 'name' in post_data and post_data['name'] != old_name:
             self.app.model.delete(old_name)
             self.app.model.update(project)
-            return self.redirect(self.link(project['name']))
+            return self.redirect(project['name'])
 
         self.app.model.update(project)
 
@@ -362,7 +362,7 @@ class CreateProjectView(TempitaHandler):
             return reserved_msg
 
         if self.app.model.project(name): # check projects for conflict
-            return '<a href="%s">%s</a> already exists' % (self.link(name), name)
+            return '<a href="%s">%s</a> already exists' % (name, name)
 
     def Post(self):
 
@@ -387,7 +387,7 @@ class CreateProjectView(TempitaHandler):
             for key in errors:
                 # flatten the error dict into a list
                 error_list.extend([(key, i) for i in errors[key]])
-            location = self.link(self.request.path_info) + self.query_string(error_list)
+            location = self.request.path_info.strip('/') + self.query_string(error_list)
             return self.redirect(location)
 
         # add fields to the project
@@ -415,7 +415,7 @@ class DeleteProjectHandler(Handler):
             self.app.model.delete(project)
 
         # redirect to query view
-        return self.redirect(location=self.link())
+        return self.redirect(location='./')
 
 
 class TagsView(TempitaHandler):

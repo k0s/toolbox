@@ -6,11 +6,11 @@
 <title>{{title}}</title>
 
 {{for sheet in css}}
-<link href="{{link(sheet)}}" rel="stylesheet" type="text/css" />
+<link href="{{sheet}}" rel="stylesheet" type="text/css" />
 {{endfor}}
 
 {{for script in js}}
-<script src="{{link(script)}}"></script>
+<script src="{{script}}"></script>
 {{endfor}}
 
 </head>
@@ -18,20 +18,20 @@
 
 <!-- navigation menu -->
 <ul class="navigation">
-  <li><a href="/" title="toolbox">toolbox</a></li>
+  <li><a href="./" title="toolbox">toolbox</a></li>
   {{if hasAbout}}
-  <li><a href="{{link('about')}}" title="about:toolbox">about</a></li>
+  <li><a href="about" title="about:toolbox">about</a></li>
   {{endif}}
-  <li><a href="{{link('new')}}" title="add a tool">new</a></li>
+  <li><a href="new" title="add a tool">new</a></li>
   {{for field in fields}}
   <li>
-    <a class="by-field" href="{{link(field)}}" title="tools by {{field}}">{{field}}</a>
+    <a class="by-field" href="{{field}}" title="tools by {{field}}">{{field}}</a>
   </li>
   {{endfor}}
 </ul>
 
 <!-- text search form -->
-<form id="search" action="{{link()}}">
+<form id="search" action="./">
   <input id="search-text" type="text" name="q" value="{{request.GET.get('q', '')}}"/>
   <input id="search-submit" type="submit" title="search" value=""/>
 </form>
