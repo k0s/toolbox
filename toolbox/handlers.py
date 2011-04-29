@@ -50,16 +50,6 @@ class Handler(object):
     def __call__(self):
         return getattr(self, self.request.method.title())()
 
-    def link(self, path=(), permanant=False):
-        """create a link relative to the site root"""
-        if isinstance(path, basestring):
-            path = [ path ]
-        path = [ i.strip('/') for i in path ]
-        path = ['..' for i in self.request.environ['path']] + path
-        if path == ['']:
-            return '/'
-        return '/'.join(path)
-
     def redirect(self, location):
         return exc.HTTPSeeOther(location=location)
 
@@ -100,10 +90,9 @@ class TempitaHandler(Handler):
 
         # add application template_dir if specified
         if app.template_dir:
-            template_dirs.insert(0, app_template_dir)
+            self.template_dirs = self.template_dirs + app.template_dir
 
         self.data = { 'request': request,
-                      'link': self.link,
                       'css': self.css,
                       'js':  self.js,
                       'title': self.__class__.__name__,
