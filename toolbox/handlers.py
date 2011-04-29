@@ -45,22 +45,17 @@ class Handler(object):
     def __init__(self, app, request):
         self.app = app
         self.request = request
-        self.application_path = urlparse(request.application_url)[2]
         self.check_json() # is this a JSON request?
 
     def __call__(self):
         return getattr(self, self.request.method.title())()
 
     def link(self, path=(), permanant=False):
-        """create a link"""
+        """create a link relative to the site root"""
         if isinstance(path, basestring):
             path = [ path ]
         path = [ i.strip('/') for i in path ]
-        if permanant:
-            application_url = self.request.application_url
-        else:
-            application_url = self.application_path
-        path = [ application_url ] + path
+        path = ['..' for i in self.request.environ['path']] + path
         if path == ['']:
             return '/'
         return '/'.join(path)
@@ -97,8 +92,8 @@ class TempitaHandler(Handler):
     """handler for tempita templates"""
 
     template_dirs = [ resource_filename(__name__, 'templates') ]
-    css = ['/css/style.css']
-    js = ['/js/jquery.js', '/js/main.js']
+    css = ['css/style.css']
+    js = ['js/jquery.js', 'js/main.js']
     
     def __init__(self, app, request):
         Handler.__init__(self, app, request)
@@ -143,9 +138,9 @@ class ProjectsView(TempitaHandler):
     """abstract base class for views of projects"""
 
     js = TempitaHandler.js[:]
-    js.extend(['/js/jquery.autoSuggest.js',
-               '/js/jquery.jeditable.js',
-               '/js/project.js'])
+    js.extend(['js/jquery.autoSuggest.js',
+               'js/jquery.jeditable.js',
+               'js/project.js'])
 
     def __init__(self, app, request):
         """project views specific init"""
@@ -337,10 +332,10 @@ class CreateProjectView(TempitaHandler):
     methods = set(['GET', 'POST'])
     handler_path = ['new']
     js = TempitaHandler.js[:]
-    js.extend(['/js/jquery.autoSuggest.js',
-               '/js/new.js'])
+    js.extend(['js/jquery.autoSuggest.js',
+               'js/new.js'])
     css = TempitaHandler.css[:]
-    css.append('/css/new.css')
+    css.append('css/new.css')
 
     def __init__(self, app, request):
         TempitaHandler.__init__(self, app, request)
