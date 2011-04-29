@@ -400,7 +400,7 @@ class CreateProjectView(TempitaHandler):
             project[field] = value
 
         self.app.model.update(project)
-        return self.redirect(project['name'])
+        return self.redirect('/' + project['name'])
 
 
 class DeleteProjectHandler(Handler):
@@ -415,7 +415,7 @@ class DeleteProjectHandler(Handler):
             self.app.model.delete(project)
 
         # redirect to query view
-        return self.redirect(location='./')
+        return self.redirect(location='/')
 
 
 class TagsView(TempitaHandler):
