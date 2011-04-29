@@ -56,6 +56,8 @@ class ProjectsModel(object):
 
     def fields(self):
         """what fields does the model support?"""
+        if self._fields is not None:
+            return self._fields
         return list(self.field_set)
 
     def projects(self):
