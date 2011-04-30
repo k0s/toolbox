@@ -26,17 +26,19 @@ class ProjectsModel(object):
     abstract base class for toolbox tools
     """
 
-    def __init__(self, fields=None, required=('name', 'description', 'url')):
+    def __init__(self, fields=None, required=('name', 'description', 'url'),
+                 whoosh_index=None):
         """
         - fields : list of fields to use, or None to calculate dynamically
         - required : required data (strings)
+        - whoosh_index : directory to keep whoosh index in
         """
         self.required = set(required)
 
         # reserved fields        
         self.reserved = self.required.copy()
         self.reserved.update(['modified']) # last modified, a computed value
-        self.search = WhooshSearch()
+        self.search = WhooshSearch(whoosh_index=whoosh_index)
 
         # classifier fields
         self._fields = fields
@@ -102,9 +104,9 @@ class MemoryCache(ProjectsModel):
     sample implementation keeping everything in memory
     """
 
-    def __init__(self, fields=None):
+    def __init__(self, fields=None, whoosh_index=None):
         
-        ProjectsModel.__init__(self, fields=fields)
+        ProjectsModel.__init__(self, fields=fields, whoosh_index=whoosh_index)
 
         # indices
         self._projects = {}
@@ -191,7 +193,7 @@ class MemoryCache(ProjectsModel):
 class FileCache(MemoryCache):
     """save in JSON blob directory"""
 
-    def __init__(self, directory, fields=None):
+    def __init__(self, directory, fields=None, whoosh_index=None):
         """
         - directory: directory of .json tool files
         """
@@ -202,7 +204,7 @@ class FileCache(MemoryCache):
         self.directory = directory
 
         self.files = {}
-        MemoryCache.__init__(self, fields=fields)
+        MemoryCache.__init__(self, fields=fields, whoosh_index=whoosh_index)
 
     def delete(self, project):
         MemoryCache.delete(self, project)
@@ -239,7 +241,8 @@ class CouchCache(MemoryCache):
     def __init__(self,
                  server="http://127.0.0.1:5984",
                  dbname="toolbox",
-                 fields=None):
+                 fields=None,
+                 whoosh_index=None):
 
         # TODO: check if server is running
         server = couchdb.Server(server)
@@ -247,7 +250,7 @@ class CouchCache(MemoryCache):
             self.db = server[dbname]
         except:
             self.db = server.create(dbname)
-        MemoryCache.__init__(self, fields=fields)
+        MemoryCache.__init__(self, fields=fields, whoosh_index=whoosh_index)
 
     def load(self):
         """load JSON objects from CouchDB docs"""
