@@ -33,22 +33,22 @@ or 'webapp'), 'authors' with the names and links of the authors, and
 How to use Toolbox
 ------------------
 
-The `index page </>`_ of toolbox lists all tools with the most
+The `index page <./>`_ of toolbox lists all tools with the most
 recently updated first.  A tool has a name, a description, a URL, and a
 number of classifier fields.  Most everything is clickable.  Clicking on the
 description lets you edit the description which will be saved on
 blur. Hovering over the tool title or URL will display an
 `edit button <http://universaleditbutton.org/>`_ which on clicking
 will allow you to edit the appropriate data.
-Clicking a URL, like `?author=harth </?author=harth>`_ will give
+Clicking a URL, like `?author=harth <./?author=harth>`_ will give
 you the tools that ``harth`` wrote. There is also full text search
-using the ``?q=`` parameter (like `?q=firefox </?q=firefox>`_ ) which
+using the ``?q=`` parameter (like `?q=firefox <./?q=firefox>`_ ) which
 will search both the descriptions and all of the fields.
 
 You can also display results by a particular field by going to that
 field name.  For example, to display tools by author, go to 
-`/author </author>`_ .  You can add a new tool at 
-`/new </new>`_ by providing its name, description, and URL. Upon
+`/author <author>`_ .  You can add a new tool at 
+`/new <new>`_ by providing its name, description, and URL. Upon
 creation, you'll be redirected to the tool's index page where you can
 add whatever classifiers you want.
 
@@ -76,7 +76,7 @@ and an arbitrary number of classifiers). While this is a conceptually
 simplistic base, there is much that can be done with it! Several
 improvements are listed below:
 
-* add scrapers:
+* add scrapers for hosted tools:
   * setup.py 
   * AMO 
   * mozdev 
