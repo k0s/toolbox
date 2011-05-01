@@ -29,6 +29,20 @@ def paste_factory(global_conf, **app_conf):
     app = Dispatcher(**args)
     return PassthroughFileserver(app, resource_filename(__name__, 'static'))
 
+try:
+    from relocator import Relocator
+    def relocator_factory(global_conf, **app_conf):
+        """
+        create a toolbox app that uses relocator to set outgoing Location headers:
+        http://k0s.org/hg/relocator
+        """
+        baseurl = app_conf.pop('baseurl')
+        app = paste_factory(global_conf, **app_conf)
+        return Relocator(app, baseurl)
+    
+except ImportError:
+    pass # relocator unvailable
+
 def wsgiref_factory(host='0.0.0.0', port=8080):
     # for testing only
     here = os.path.dirname(os.path.abspath(__file__))
