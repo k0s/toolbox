@@ -294,6 +294,32 @@ the intent to be to import them into e.g. a couch database on actual
 deployment (using an import script). The samples could then be used
 for testing.
 
+The model has a single "setter" function, ``def update``, used for
+both creating and updating projects.  Due to this and due to the fact
+the model was ABC/pluggable from the beginning, a converter ``export
+function could be trivially written at the ABC-level::
+
+    def export(self, other):
+        """export the current model to another model instance"""
+        for project in self.get():
+            other.update(project)
+
+This with an accompanying CLI utility was used to migrate from JSON
+blob files in the ``sample`` directory to the couch instance.  This
+particular methodology as applied to an unexpected problem (the
+unanticipated switch from JSON blobs to couch) is a good example of
+the power of using a problem to drive the software forward (in this
+case, creation of a universal export function and associated command
+line utility). The alternative, a one-off manual data migration, would
+have been just as time consuming, would not be repeatable, would not
+have extended toolbox, and may have (like many one-offs do) infected
+the code base with associated semi-permanant vestiges.  In general,
+problems should be used to drive innovation.  This can only be done if
+the software is kept in a reasonably good state.  Otherwise
+considerable (though probably worthwhile) refactoring should be done
+prior to feature extension which will become cost-prohibitive in
+time-critical situations where a one-off is (more) likely to be employed.
+
 
 Links
 -----
