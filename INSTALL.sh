@@ -11,4 +11,4 @@ cd toolbox
 python setup.py develop
 # now run: 
 # paster serve paste.ini
-# from the toolbox virtualenv
+# from the toolbox virtualenv to serve the sample app
