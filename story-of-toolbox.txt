@@ -3,7 +3,7 @@ The Story of Toolbox
 
 Toolbox is fundamentally a document-oriented approach to resource
 indexing.  A "tool" consists three mandatory string fields (name,
-description, and URL) that are generic to a large class of problems as
+description, and URL) that are generic to a large class of problems, as
 well as classifiers, such as author, usage, type, etc. A tool may have
 an arbitrary number of classifier fields as needed.  Each classifier
 consists of a set of values with which a tool is tagged. This gives
@@ -43,6 +43,7 @@ These may be configured in the ``paste.ini`` file in the
 ``[app:toolbox]`` section by prepending with the namespace
 ``toolbox.``. It is advisable that you copy the example ``paste.ini``
 file for your own usage needs.
+
 
 Architecture
 ------------
@@ -162,6 +163,10 @@ code duplication.
 
 Toolbox uses several light-footprint libraries:
 
+* webob for Request/Response handling
+
+* tempita for (HTML) templates
+
 * whoosh for search.  This pure-python implementation of full-text
   search is relatively fast (for python) and should scale decently to
   the target scale of toolbox (1000s or 10000s of tools). While not as
@@ -187,7 +192,22 @@ User Interaction
 A user will typically interact with Toolbox through the AJAX web
 interface.  The server side returns relatively simple (HTML) markup,
 but structured in such a way that JavaScript may be utilized to
-promote rich interaction.
+promote rich interaction.  The simple HTML + complex JS manifests
+several things:
+
+1. The document is a document. The tools HTML presented to the user (with
+the current objectionable exception of the per-project Delete button)
+is a document form of the data. It can be clearly and easily
+translated to data (for e.g. import/export) or simply marked up using
+(e.g.) JS to add functionality. By keeping concerns seperate
+(presentation layer vs. interaction layer) a self-evident clarity is
+maintained.
+
+2. Computation is shifted client-side. Often, an otherwise lightweight
+webapp loses considerable performance rendering complex templates. By
+keeping the templates light-weight and doing control presentation and
+handling in JS, high performance is preserved.
+
 
 What Toolbox Doesn't Do
 -----------------------
