@@ -1,3 +1,5 @@
+#!/usr/bin/fdp -Tpng
+
 graph architecture {
  rankdir=LR;
  dispatcher -- templates;
