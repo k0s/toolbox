@@ -16,7 +16,8 @@ dependencies = [
     'whoosh',
     'couchdb',
     'docutils',
-    'relocator' # technically optional, but here for ease of install
+    'relocator', # technically optional, but here for ease of install
+    'pyloader'
     ]
 try:
     import json
