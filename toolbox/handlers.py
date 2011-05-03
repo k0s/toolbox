@@ -87,7 +87,7 @@ class TempitaHandler(Handler):
 
     less = ['/css/style.less']
 
-    js = ['/js/jquery-1.5.2.min.js',
+    js = ['/js/jquery-1.6.min.js',
           '/js/less-1.0.41.min.js',
           '/js/jquery.timeago.js',
           '/js/main.js']

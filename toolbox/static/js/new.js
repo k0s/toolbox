@@ -6,10 +6,9 @@ $(document).ready(function(){
         $(this).tokenInput("/tags?format=json&field=" + field, {
             theme: 'facebook',
             submitOnEnter: false,
-            submitOnBlur: false,
+            closeOnBlur: true,
             hintText: false,
-            onSubmit : function() {
-              alert('submitted ):');
+            onSubmit: function() {
             }
         });
     });
