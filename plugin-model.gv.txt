@@ -1,0 +1,12 @@
+graph architecture {
+ rankdir=LR;
+ dispatcher -- templates;
+ dispatcher -- about;
+ dispatcher -- model;
+ model -- model_backends [label="plugin"];
+ dispatcher -- handlers [label="plugin"];
+ templates [shape=folder];
+ about [shape=note];
+ model_backends [shape=record label="memory_cache|file_cache|couch" rankdir=TB];
+ handlers [shape=record label="handlers|...|...|"];
+}
