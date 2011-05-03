@@ -14,10 +14,9 @@ from handlers import TagsView
 from handlers import AboutView
 
 from model import models
-from pkg_resources import resource_filename
 from webob import Request, Response, exc
 
-# storage models
+here = os.path.dirname(os.path.abspath(__file__))
 
 class Dispatcher(object):
     """toolbox WSGI app which dispatchers to associated handlers"""
@@ -39,12 +38,22 @@ class Dispatcher(object):
         for key in self.defaults:
             setattr(self, key, kw.pop(key, self.defaults[key]))
 
-        # model: backend storage and accessors
-        if self.model_type not in models:
-            raise AssertionError("model_type '%s' not found in %s" % (self.model_type, models.keys()))
+
+        # model: backend storage and associated methods
         if 'fields' in kw and isinstance(kw['fields'], basestring):
+            # split fields if given as a string
             kw['fields'] = kw['fields'].split()
-        self.model = models[self.model_type](**kw)
+        if hasattr(self.model_type, '__call__'):
+            model = self.model_type
+        elif self.model_type in models:
+            model = models[self.model_type]
+        else:
+            try:
+                import pyloader
+                model = pyloader.load(self.model_type)
+            except ImportError:
+                raise AssertionError("model_type '%s' not found in %s" % (self.model_type, models.keys()))
+        self.model = model(**kw)
 
         # request handlers in order they will be tried
         self.handlers = [ TagsView,
