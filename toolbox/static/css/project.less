@@ -1,0 +1,107 @@
+@greyed: #999;
+@greyed-out: #aaa;
+
+.project {
+  background-color: white;
+  border: thin solid black;
+  border-radius: 1em;
+  margin-top: 0.5em;
+  box-shadow: 0em 0.2em 0.3em 0.0em black;
+  padding: 1em;
+  overflow: auto;
+  
+  .description {
+    margin-top: .2em;
+  }
+}
+
+.project-title {
+  font-size: 1.4em;
+}
+
+.date {
+  font-style: italic;
+  float: right;
+}
+
+.fields {
+  margin-top: 10px;
+  line-height: 18px;
+}
+
+.field-name {
+  display: inline;
+  float: left;
+  width: 14%;
+  font-weight: normal;
+  a {
+    color: inherit;
+  }
+}
+
+.field-none {
+  color: @greyed-out;
+}
+
+.field-value-container {
+  width: 86%;
+
+  &:hover {
+	  background-color: #D9FFD1;
+	}
+}
+
+.field-value-item:not(:last-child) {
+  &:after {
+    content: ", ";
+    color: @greyed-out;
+  }
+}
+
+.field-edit {
+  width: 86%;
+  display: inline-block;
+
+  input {
+    display: inline-block;
+  }
+}
+
+.field-value {
+  margin: 0;
+  display: inline;
+
+  li {
+    display: inline;
+  }
+}
+
+.edit-value {
+  display: inline-block;
+  width: 60%;
+
+	&:hover {
+	  cursor: pointer;
+	}
+}
+
+.edit-message {
+  display: inline-block;
+  width: 100%;
+
+	 &:hover {
+    &:before {
+	     content: "edit field";
+	     margin-left: 24px;
+	     color: @greyed-out;
+	  }
+  }
+}
+
+.comma {
+  color: @greyed;
+}
+
+.delete {
+  float: right;
+}
