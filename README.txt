@@ -357,6 +357,38 @@ Several types of links may be recorded:
 * pypi
 
 
+TODO: Directory Structure
+-------------------------
+
+Each function should live in its own module::
+
+ .
+ +-README.txt
+ +-ABOUT.txt
+ +-INSTALL.sh
+ +-setup.py
+ +-paste.ini
+ |
+ toolbox
+  |
+  +-web.py
+  +-factory.py
+  +-json.py
+  |
+  handler
+  ||
+  |...
+  |
+  model
+  ||
+  |...
+  |
+  static
+  ||
+  |...
+  |
+  templates
+
 Resources
 ---------
 
