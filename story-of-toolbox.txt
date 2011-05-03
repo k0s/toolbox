@@ -2,21 +2,13 @@ The Story of Toolbox
 ====================
 
 Toolbox is fundamentally a document-oriented approach to resource
-indexing.  A "tool" consists three mandatory string fields (name,
-description, and URL) that are generic to a large class of problems, as
-well as classifiers, such as author, usage, type, etc. A tool may have
-an arbitrary number of classifier fields as needed.  Each classifier
-consists of a set of values with which a tool is tagged. This gives
-toolbox the flexibility to fit a large number of data models, such as
-PYPI, DOAP, and others.
-
-Tool Sources
-------------
-
-* setup.py
-* addons.mozilla.org
-* OpenWebApps: https://developer.mozilla.org/en/OpenWebApps/The_Manifest
-* a la https://www.squarefree.com/userscripts/tidybox.user.js
+indexing.  A "tool" consists three mandatory string fields -- name,
+description, and URL -- that are generic to the large class of problems
+of web resources, as well as classifiers, such as author, usage, type,
+etc. A tool may have an arbitrary number of classifier fields as
+needed.  Each classifier consists of a set of values with which a tool
+is tagged. This gives toolbox the flexibility to fit a large number of
+data models, such as PYPI, DOAP, and others.
 
 
 Running Toolbox
@@ -30,19 +22,24 @@ To serve in baseline mode, install the software and run::
  paster serve paste.ini
 
 This will serve the handlers and static content using the paste
-(http://pythonpaste.org) webserver.
+(http://pythonpaste.org) webserver using ``README.txt`` as the
+``/about`` page and serving the data in ``sample``.
 
 The dispatcher (``toolbox.dispatcher:Dispatcher``) is the central (WSGI)
 webapp that designates per-request to a number of handlers (from
 ``handlers.py``).  The dispatcher has a few options:
 
-* template_dirs: extra directories (in order) to look for templates
-* model_type: type of backend to use
+* about: path to a restructured text file to serve at ``/about``
+* model_type: name of the backend to use (memory_cache, file_cache, or couch)
+* template_dir: extra directory to look for templates
 
 These may be configured in the ``paste.ini`` file in the
 ``[app:toolbox]`` section by prepending with the namespace
 ``toolbox.``. It is advisable that you copy the example ``paste.ini``
-file for your own usage needs.
+file for your own usage needs.  Additional ``toolbox.``-namespaced
+arguments will be passed to the model.  For instance, to specify the
+directory for the ``file_cache`` model, the provided ``paste.ini`` uses
+``toolbox.directory = %(here)s/sample``.
 
 
 Architecture
@@ -59,9 +56,9 @@ model allowing an arbitrary number of implementations to be constructed::
            |-|model|-+-+-----+
  +------+-/  +-----+ | |couch|
  |script|            | +-----+
- +------+            +-+---+
-                     | |SQL|
-                     | +---+
+ +------+            +-+------+
+                     | |memory|
+                     | +------+
                      +-+---+
                        |...|
                        +---+
@@ -163,9 +160,9 @@ code duplication.
 
 Toolbox uses several light-footprint libraries:
 
-* webob for Request/Response handling
+* webob for Request/Response handling: http://pythonpaste.org/webob/
 
-* tempita for (HTML) templates
+* tempita for (HTML) templates: http://pythonpaste.org/tempita/
 
 * whoosh for search.  This pure-python implementation of full-text
   search is relatively fast (for python) and should scale decently to
@@ -174,16 +171,17 @@ Toolbox uses several light-footprint libraries:
   preserves toolbox as a deployable software product versus an
   instance that requires the expert configuration, maintainence, and
   tuning of several disparate software products that is both
-  non-automatable (cannot be installed with a script) and time-consuming.
+  non-automatable (cannot be installed with a script) and
+  time-consuming. http://packages.python.org/Whoosh/
 
-* jQuery FTW: jQuery is the best JavaScript library and everyone
-  should use it for everything
+* jQuery: jQuery is the best JavaScript library and everyone
+  should use it. http://jquery.com/
 
-* jeditable for AJAXy editing
+* jeditable for AJAXy editing: http://www.appelsiini.net/projects/jeditable
 
-* something for autocomplete; currently a modified version of 
-  the jQuery autoSuggest plugin is used, but this might be changed by
-  the time you read this
+* jquery-token for autocomplete: http://loopj.com/jquery-tokeninput/
+
+* less for dynamic stylesheets: http://lesscss.org/
 
 
 User Interaction
@@ -256,7 +254,7 @@ effect for an art project, software being communication this
 is only conducive to software in the darkest of black-box approaches.
 
 "Beers are like web frameworks: if they're not micro, you don't know
-what you're talking about."
+what you're talking about." - hipsterhacker
 
 For sites that fit the architecture of a given framework, it may be
 advisable to make use of them.  However, for most webapp/webservice
@@ -276,9 +274,11 @@ and soon a usable interface was constructed.
 
 A ``sample`` directory was created to hold the JSON blobs. Because
 this was done early on, two goals were achieved: 
+
 1. the software could be dogfooded immediately using actual applicable
 data. This helped expose a number of issues concerning the data format
 right away.
+
 2. There was a place to put tools before the project reached a
 deployable state (previously, a few had lived in a static state using
 a rough sketch of the HTML microformat discussed above on
@@ -286,6 +286,7 @@ k0s.org). Since the main point of toolbox is to record Mozilla tools,
 the wealth of references mentioned in passing could be put somewhere,
 instead of passed by and forgotten.  One wishes that they do not miss
 the train while purchasing a ticket.
+
 The original intent, when the file-based JSON blob approach was to be
 the deployed backend, was to have two repositories: one for the code
 and one for the JSON blobs.  When this approach was scrapped, the
@@ -296,7 +297,7 @@ for testing.
 
 The model has a single "setter" function, ``def update``, used for
 both creating and updating projects.  Due to this and due to the fact
-the model was ABC/pluggable from the beginning, a converter ``export
+the model was ABC/pluggable from the beginning, a converter ``export``
 function could be trivially written at the ABC-level::
 
     def export(self, other):
@@ -321,10 +322,25 @@ prior to feature extension which will become cost-prohibitive in
 time-critical situations where a one-off is (more) likely to be employed.
 
 
-Links
------
+TODO: Tool Sources
+------------------
 
-A big TODO item is links.  Currently, each tool has a canonical URL.
+In addition to manually indexed tools, toolbox is intended to harvest
+index data from distributed sources.  Several scrapers should be
+written and run on a scheduled basis (i.e. with a cron job or
+preferably something that could actually be reliably depended on and
+automatable via python).  Useful project sources are:
+
+* setup.py for python projects
+* addons.mozilla.org pages
+* OpenWebApps: https://developer.mozilla.org/en/OpenWebApps/The_Manifest
+* userscripts: e.g. https://www.squarefree.com/userscripts/tidybox.user.js
+
+
+TODO: (Alternate) Links
+-----------------------
+
+Currently, each tool has one canonical URL.
 Since toolbox is an index, this has the distinct advantage of
 associating a single URL with the project.  It is assumed that the
 linked-to resource should point to auxilliary resources as necessary.
@@ -340,3 +356,8 @@ Several types of links may be recorded:
 * wiki
 * pypi
 
+
+Resources
+---------
+
+* http://readthedocs.org/
