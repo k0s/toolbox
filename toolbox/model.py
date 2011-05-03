@@ -245,11 +245,13 @@ class CouchCache(MemoryCache):
                  whoosh_index=None):
 
         # TODO: check if server is running
-        server = couchdb.Server(server)
+        couchserver = couchdb.Server(server)
         try:
-            self.db = server[dbname]
-        except: # XXX should not be a blanket except!
-            self.db = server.create(dbname)
+            self.db = couchserver[dbname]
+        except couchdb.ResourceNotFound: # XXX should not be a blanket except!
+            self.db = couchserver.create(dbname)
+        except:
+            raise Exception("Could not connect to couch instance. Make sure that you have couch running at %s and that you have database create priveleges if '%s' does not exist" % (server, dbname))
         MemoryCache.__init__(self, fields=fields, whoosh_index=whoosh_index)
 
     def load(self):
