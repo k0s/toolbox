@@ -28,6 +28,9 @@ $(document).ready(function(){
           prePopulate: tokenData,
           autoFocus: true,
           submitOnBlur: true,
+          canBlur: function(elem) {
+            return !container.find($(elem)).length;
+          },
           hintText: false,
           onSubmit: function(tokens) {
             edit.hide();

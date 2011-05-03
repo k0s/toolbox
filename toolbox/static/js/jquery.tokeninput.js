@@ -32,7 +32,9 @@ var DEFAULT_SETTINGS = {
     onDelete: null,
     onSubmit: null,
     submitOnEnter: true,
-    submitOnBlur: false
+    submitOnBlur: false,
+    closeOnBlur: true,
+    canBlur: function() { return true; }
 };
 
 // Default classes to use when theming
@@ -324,14 +326,20 @@ $.TokenList = function (input, url_or_data, settings) {
       input_box.focus();
       
     // submit on blur
-    if(settings.submitOnBlur) {
+    if(settings.submitOnBlur || settings.closeOnBlur) {
       $(document).click(function(event) {
-        if(!$(event.target).parents('.token-input-list-facebook').length &&
-           !$(event.target).parents('.token-input-dropdown-facebook').length &&
-           !$(event.target).hasClass('edit-message')) {    
-          submit();
-          $(document).unbind(event);
-        }
+          if(!$(token_list).find($(event.target)).length &&
+             !$(dropdown).find($(event.target)).length &&
+             settings.canBlur(event.target)) 
+          {
+              if(settings.submitOnBlur) {
+                submit();
+                $(document).unbind(event);            
+              }
+              else if(settings.closeOnBlur) {
+                hide_dropdown();
+              }
+          }
       });
     }
     //
