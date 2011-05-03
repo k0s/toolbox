@@ -248,7 +248,7 @@ class CouchCache(MemoryCache):
         server = couchdb.Server(server)
         try:
             self.db = server[dbname]
-        except:
+        except: # XXX should not be a blanket except!
             self.db = server.create(dbname)
         MemoryCache.__init__(self, fields=fields, whoosh_index=whoosh_index)
 
