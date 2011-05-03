@@ -1,1 +1,1 @@
-{"description": "Perl script", "language": ["python", "perl"], "author": ["peterv", "harth", "atul"], "url": "https://bug466157.bugzilla.mozilla.org/attachment.cgi?id=468818", "modified": 1302553294.18314, "dependencies": [""], "type": ["greasemonkey script"], "name": "find-roots.pl"}
+{"description": "Perl script to analyze cycle collector edge log", "language": ["perl"], "author": ["peterv"], "url": "https://bug466157.bugzilla.mozilla.org/attachment.cgi?id=468818", "modified": 1302553294.18314, "type": ["script"], "name": "find-roots.pl"}

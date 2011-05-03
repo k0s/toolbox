@@ -45,25 +45,10 @@ class Handler(object):
     def __init__(self, app, request):
         self.app = app
         self.request = request
-        self.application_path = urlparse(request.application_url)[2]
         self.check_json() # is this a JSON request?
 
     def __call__(self):
         return getattr(self, self.request.method.title())()
-
-    def link(self, path=(), permanant=False):
-        """create a link"""
-        if isinstance(path, basestring):
-            path = [ path ]
-        path = [ i.strip('/') for i in path ]
-        if permanant:
-            application_url = self.request.application_url
-        else:
-            application_url = self.application_path
-        path = [ application_url ] + path
-        if path == ['']:
-            return '/'
-        return '/'.join(path)
 
     def redirect(self, location):
         return exc.HTTPSeeOther(location=location)
@@ -97,23 +82,24 @@ class TempitaHandler(Handler):
     """handler for tempita templates"""
 
     template_dirs = [ resource_filename(__name__, 'templates') ]
+
     css = ['/css/html5boilerplate.css']
 
     less = ['/css/style.less']
 
     js = ['/js/jquery-1.5.2.min.js',
           '/js/less-1.0.41.min.js',
-          '/js/jquery.timeago.js']
+          '/js/jquery.timeago.js',
+          '/js/main.js']
     
     def __init__(self, app, request):
         Handler.__init__(self, app, request)
 
         # add application template_dir if specified
         if app.template_dir:
-            template_dirs.insert(0, app_template_dir)
+            self.template_dirs = self.template_dirs[:] + [app.template_dir]
 
         self.data = { 'request': request,
-                      'link': self.link,
                       'css': self.css,
                       'less': self.less,
                       'js':  self.js,
@@ -146,7 +132,7 @@ class TempitaHandler(Handler):
                         body=self.render('main.html', **self.data))
 
 class ProjectsView(TempitaHandler):
-    """abstract base class for view with projects"""
+    """abstract base class for views of projects"""
 
     js = TempitaHandler.js[:]
     js.extend(['/js/jquery.tokeninput.js',
@@ -164,6 +150,7 @@ class ProjectsView(TempitaHandler):
         """project views specific init"""
         TempitaHandler.__init__(self, app, request)
         self.data['fields'] = self.app.model.fields()
+        self.data['error'] = None
         if not self.json:
             self.data['format_date'] = self.format_date
 
@@ -189,7 +176,7 @@ class ProjectsView(TempitaHandler):
 
 
 class QueryView(ProjectsView):
-    """general view to query all projects"""
+    """general index view to query projects"""
     
     template = 'index.html'
     methods = set(['GET'])
@@ -239,15 +226,30 @@ class ProjectView(ProjectsView):
         self.data['projects'] = [project]
         self.data['title'] = project['name']
 
+    def get_json(self):
+        return self.data['projects'][0]
+
     def Post(self):
 
+        # data
         post_data = self.post_data()
+        project = self.data['projects'][0]
+
+        # don't allow overiding other projects with your fancy rename
+        if 'name' in post_data and post_data['name'] != project['name']:
+            if self.app.model.project(post_data['name']):
+                self.data['title'] = '%s -> %s: Rename error' % (project['name'], post_data['name'])
+                self.data['error'] = 'Cannot rename over existing project: <a href="%s">%s</a>' % (post_data['name'], post_data['name'] )
+                self.data['content'] = self.render(self.template, **self.data)
+                return Response(content_type='text/html',
+                                status=403,
+                                body=self.render('main.html', **self.data))
 
         # XXX for compatability with jetitable:
         id = post_data.pop('id', None)
 
         action = post_data.pop('action', None)
-        project = self.data['projects'][0]
+        old_name = project['name']
         if action == 'delete':
             for field in self.app.model.fields():
                 if field in post_data and field in project:
@@ -264,24 +266,36 @@ class ProjectView(ProjectsView):
                     project[field] = post_data[field]
             for field in self.app.model.fields():
                 if field in post_data:
+                    value = post_data[field]
+                    if isinstance(value, basestring):
+                        if value == '':
+                            value = []
+                        else:
+                            value = value.split(",")
                     if action == 'replace':
+                        print value
                         # replace the field from the POST request
-                        project[field] = post_data[field].split(",")
+                        project[field] = value
                     else:
                         # append the items....the default action
-                        project.setdefault(field, []).extend(self.request.POST.getall(field))
-                    
-        self.app.model.save(project)
+                        project.setdefault(field, []).extend(value)
+
+        # rename handling
+        if 'name' in post_data and post_data['name'] != old_name:
+            self.app.model.delete(old_name)
+            self.app.model.update(project)
+            return self.redirect(project['name'])
+
+        self.app.model.update(project)
 
         # XXX for compatability with jetitable:
         if id is not None:
             return Response(content_type='text/plain',
                             body=project['description'])
 
+        # XXX should redirect instead
         return self.Get()
 
-    def Delete(self):
-        raise NotImplementedError
 
 class FieldView(ProjectsView):
     """view of projects sorted by a field"""
@@ -314,7 +328,7 @@ class FieldView(ProjectsView):
         ProjectsView.__init__(self, app, request)
         projects = self.app.model.field_query(field)
         if projects is None:
-            raise HandlerMatchException
+            projects = {}
         self.data['field'] = field
         self.data['projects'] = projects
         self.data['title'] = 'Tools by %s' % field
@@ -339,25 +353,59 @@ class CreateProjectView(TempitaHandler):
 
     def __init__(self, app, request):
         TempitaHandler.__init__(self, app, request)
-        self.data['fields'] = self.app.model.fields()
-        self.data['errors'] = {}
         self.data['title'] = 'Add a tool'
+        self.data['fields'] = self.app.model.fields()
+
+        # deal with errors, currently badly contracted in query string
+        self.data['errors'] = {}
         for field in self.request.GET.getall('missing'):
             self.data['errors'].setdefault(field, []).append('Required')
+        if 'conflict' in self.request.GET:
+            self.data['errors'].setdefault('name', []).append(self.check_name(self.request.GET['conflict']))
+
+    def check_name(self, name):
+        """
+        checks a project name for validity
+        returns None on success or an error message if invalid
+        """
+        reserved = self.app.reserved.copy()
+        reserved_msg = "'%s' conflicts with a reserved URL" % name
+        if name in reserved: # check application-level reserved URLS
+            return reserved_msg
+        if name in self.app.model.fields(): # check field URLs (XXX incestuous)
+            return reserved_msg
+
+        if self.app.model.project(name): # check projects for conflict
+            return '<a href="%s">%s</a> already exists' % (name, name)
 
     def Post(self):
-        post_data = self.post_data()
-        required = set(['name', 'description', 'url'])
-        missing = set([i for i in required
-                       if not post_data.get(i, '').strip()])
 
-        if missing:
-            location = self.link(self.request.path_info) + self.query_string([('missing', i) for i in missing])
-            return self.redirect(location)
+        # get some data
+        required = self.app.model.required
+        post_data = self.post_data()
+        project = dict([(i, post_data.get(i, '').strip())
+                        for i in required])
+
+        # check for errors
+        errors = {}
+        missing = set([i for i in required if not project[i]])
+        if missing: # missing required fields
+            errors['missing'] = missing
         # TODO check for duplicate project name
         # and other url namespace collisions
+        name_conflict = self.check_name(project['name'])
+        if name_conflict:
+            errors['conflict'] = [project['name']]
+        if errors:
+            error_list = [] 
+            for key in errors:
+                # flatten the error dict into a list
+                error_list.extend([(key, i) for i in errors[key]])
+            location = self.request.path_info.strip('/') + self.query_string(error_list)
+            return self.redirect(location)
 
-        project = dict([(i, post_data[i]) for i in required]) 
+        # add fields to the project
+        # currently used only for JSON requests
         for field in self.app.model.fields():
             value = post_data.get(field, '').strip()
             values = [i.strip() for i in value.split(',') if i.strip()]
@@ -365,8 +413,8 @@ class CreateProjectView(TempitaHandler):
                 continue
             project[field] = values or value
 
-        self.app.model.save(project)
-        return self.redirect(project['name'])
+        self.app.model.update(project)
+        return self.redirect('/' + project['name'])
 
 
 class DeleteProjectHandler(Handler):
@@ -381,7 +429,7 @@ class DeleteProjectHandler(Handler):
             self.app.model.delete(project)
 
         # redirect to query view
-        return self.redirect(location=self.link())
+        return self.redirect(location='/')
 
 
 class TagsView(TempitaHandler):

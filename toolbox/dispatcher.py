@@ -1,5 +1,5 @@
 """
-request dispatcher:
+request dispatcher WSGI app:
 data persisting across requests should go here
 """
 
@@ -13,27 +13,27 @@ from handlers import QueryView
 from handlers import TagsView
 from handlers import AboutView
 
-from model import CouchCache
-from model import MemoryCache
+from model import models
 from pkg_resources import resource_filename
 from webob import Request, Response, exc
 
 # storage models
-models = {'memory_cache': MemoryCache,
-          'couch': CouchCache}
 
 class Dispatcher(object):
     """toolbox WSGI app which dispatchers to associated handlers"""
 
-    ### class level variables
-    defaults = { 'template_dir': None,
-                 'about': None,
-                 'model_type': 'memory_cache',
-                 'fields': None
+    # class defaults
+    defaults = { 'about': None, # file path to ReST about page
+                 'model_type': 'memory_cache', # type of model to use
+                 'reserved': set(['css', 'js', 'img']), # reserved URL namespaces
+                 'template_dir': None, # directory for template overrides
                  }
 
-
     def __init__(self, **kw):
+        """
+        **kw arguments used to override defaults
+        additional **kw are passed to the model
+        """
 
         # set instance parameters from kw and defaults
         for key in self.defaults:
@@ -42,6 +42,8 @@ class Dispatcher(object):
         # model: backend storage and accessors
         if self.model_type not in models:
             raise AssertionError("model_type '%s' not found in %s" % (self.model_type, models.keys()))
+        if 'fields' in kw and isinstance(kw['fields'], basestring):
+            kw['fields'] = kw['fields'].split()
         self.model = models[self.model_type](**kw)
 
         # request handlers in order they will be tried
@@ -59,6 +61,11 @@ class Dispatcher(object):
             about = docutils.core.publish_parts(about, writer_name='html')['body']
             self.about = about
             self.handlers.append(AboutView)
+
+        # extend reserved URLS from handlers
+        for handler in self.handlers:
+            if handler.handler_path:
+                self.reserved.add(handler.handler_path[0])
 
     def __call__(self, environ, start_response):
 

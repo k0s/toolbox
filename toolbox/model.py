@@ -4,6 +4,8 @@ models for toolbox
 
 import couchdb
 import os
+import sys
+from copy import deepcopy
 from search import WhooshSearch
 from time import time
 from util import str2filename
@@ -17,37 +19,30 @@ except ImportError:
 # - string: a single string: {'type': 'string', 'name': 'name', 'required': True}
 # - field: a list of strings: {'type': 'field', 'name', 'usage'}
 # - dict: a subclassifier: {'type': '???', 'name': 'url', 'required': True}
+# - computed values, such as modified
 
 class ProjectsModel(object):
     """
-    abstract base class for toolbox projects
+    abstract base class for toolbox tools
     """
 
-    def __init__(self, required=('name', 'description', 'url')):
+    def __init__(self, fields=None, required=('name', 'description', 'url'),
+                 whoosh_index=None):
         """
+        - fields : list of fields to use, or None to calculate dynamically
         - required : required data (strings)
+        - whoosh_index : directory to keep whoosh index in
         """
         self.required = set(required)
 
         # reserved fields        
         self.reserved = self.required.copy()
-        self.reserved.update(['modified']) 
-        self.modified = {}
-        self.search = WhooshSearch()
+        self.reserved.update(['modified']) # last modified, a computed value
+        self.search = WhooshSearch(whoosh_index=whoosh_index)
 
-
-    def update_fields(self, name, **fields):
-        """
-        update the fields of a particular project
-        """
-        project = self.project(name)
-        for field in required:
-            value = fields.pop(field)
-            if value is not None:
-                project[field] = value
-        for field, value in fields.items():
-            project[field] = value
-        self.update(project)
+        # classifier fields
+        self._fields = fields
+        self.field_set = set(fields or ())
 
     def update_search(self, project):
         """update the search index"""
@@ -61,22 +56,35 @@ class ProjectsModel(object):
 
         self.search.update(name=project['name'], description=project['description'], **f)
 
+    def fields(self):
+        """what fields does the model support?"""
+        if self._fields is not None:
+            return self._fields
+        return list(self.field_set)
+
+    def projects(self):
+        """list of all projects"""
+        return [i['name'] for i in self.get()]
+
+    def export(self, other):
+        """export the current model to another model instance"""
+        for project in self.get():
+            other.update(project)
+
+    ### implementor methods
+
     def update(self, project):
         """update a project"""
         raise NotImplementedError
 
-    def get(self, **query):
+    def get(self, search=None, **query):
         """
         get a list of projects matching a query
         the query should be key, value pairs to match;
         if the value is single, it should be a string;
         if the value is multiple, it should be a set which will be
-        anded together
+        ANDed together
         """
-        raise NotImplementedError
-
-    def fields(self):
-        """what fields does the model support?"""
         raise NotImplementedError
 
     def project(self, name):
@@ -96,30 +104,31 @@ class MemoryCache(ProjectsModel):
     sample implementation keeping everything in memory
     """
 
-    def __init__(self, directory, fields=None):
-        """
-        - directory: directory of .json tool files
-        - fields : list of fields to use, or None to calculate dynamically
-        """
-        ProjectsModel.__init__(self)
-
-        # JSON blob directory
-        assert os.path.exists(directory) and os.path.isdir(directory)
-        self.directory = directory
+    def __init__(self, fields=None, whoosh_index=None):
         
-        self.files = {}
+        ProjectsModel.__init__(self, fields=fields, whoosh_index=whoosh_index)
+
+        # indices
         self._projects = {}
-        self._fields = fields
-        self.field_set = set(fields or ())
         self.index = {}
+        
         self.load()
 
-    def update(self, project):
-        self._projects[project['name']] = project
+    def update(self, project, load=False):
+        
+        if project['name'] in self._projects and project == self._projects[project['name']]:
+            return # nothing to do
+        if not load:
+            project['modified'] = time()
+        self._projects[project['name']] = deepcopy(project)
         if self._fields is None:
             fields = [i for i in project if i not in self.reserved]
             self.field_set.update(fields)
+        else:
+            fields = self._fields
         for field in fields:
+            for _set in self.index.get(field, {}).values():
+                _set.discard(project['name'])
             if field not in project:
                 continue
             index = self.index.setdefault(field, {})
@@ -129,10 +138,13 @@ class MemoryCache(ProjectsModel):
             for value in values:
                 index.setdefault(value, set()).update([project['name']])
         self.update_search(project)
+        if not load:
+            self.save(project)
 
     def get(self, search=None, **query):
         """
         - search: text search
+        - query: fields to match
         """
         order = None
         if search:
@@ -146,15 +158,12 @@ class MemoryCache(ProjectsModel):
         if order:
             # preserve search order
             results = sorted(list(results), key=lambda x: order[x])
-        return [self._projects[project] for project in results]
+        return [deepcopy(self._projects[project]) for project in results]
 
-    def fields(self):
-        if self._fields == None:
-            return list(self.field_set)
-        return self._fields
 
     def project(self, name):
-        return self._projects.get(name)
+        if name in self._projects:
+            return deepcopy(self._projects[name])
 
     def field_query(self, field):
         return self.index.get(field)
@@ -172,6 +181,33 @@ class MemoryCache(ProjectsModel):
                 if len(value) == 1:
                     self._fields.pop(key)
                 value.pop(project)
+        self.search.delete(project)
+        
+    def load(self):
+        """for subclasses; in memory, load nothing"""
+
+    def save(self, project):
+        """for subclasses; in memory, save nothing"""
+
+
+class FileCache(MemoryCache):
+    """save in JSON blob directory"""
+
+    def __init__(self, directory, fields=None, whoosh_index=None):
+        """
+        - directory: directory of .json tool files
+        """
+        # JSON blob directory
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        assert os.path.isdir(directory)
+        self.directory = directory
+
+        self.files = {}
+        MemoryCache.__init__(self, fields=fields, whoosh_index=whoosh_index)
+
+    def delete(self, project):
+        MemoryCache.delete(self, project)
         os.remove(os.path.join(self.directory, self.files.pop(project)))
 
     def load(self):
@@ -180,27 +216,22 @@ class MemoryCache(ProjectsModel):
             if not i.endswith('.json'):
                 continue
             filename = os.path.join(self.directory, i)
-            mtime = os.path.getmtime(filename)
-            if mtime > self.modified.get(i, -1):
-                self.modified[i] = mtime
-                try:
-                    project = json.loads(file(filename).read())
-                except:
-                    print 'File: ' + i
-                    raise
-                self.files[project['name']] = i
-                if 'modified' not in project:
-                    project['modified'] = mtime
-                    self.save(project)
-                self.update(project)
+            try:
+                project = json.loads(file(filename).read())
+            except:
+                print 'File: ' + i
+                raise
+            self.files[project['name']] = i
+            self.update(project, load='modified' in project)
 
     def save(self, project):
+
         filename = self.files.get(project['name'])
         if not filename:
             filename = str2filename(project['name']) + '.json'
         filename = os.path.join(self.directory, filename)
         file(filename, 'w').write(json.dumps(project))
-        # TODO: data integrity checking
+
 
 class CouchCache(MemoryCache):
     """
@@ -209,23 +240,24 @@ class CouchCache(MemoryCache):
 
     def __init__(self,
                  server="http://127.0.0.1:5984",
-                 dbname="toolbox"):
+                 dbname="toolbox",
+                 fields=None,
+                 whoosh_index=None):
+
+        # TODO: check if server is running
         server = couchdb.Server(server)
         try:
             self.db = server[dbname]
         except:
             self.db = server.create(dbname)
-
-        # XXX *should* inherit from ABC!
-        MemoryCache.__init__(self)
-
+        MemoryCache.__init__(self, fields=fields, whoosh_index=whoosh_index)
 
     def load(self):
         """load JSON objects from CouchDB docs"""
         for id in self.db:
             doc = self.db[id]
             project = doc['project']
-            self.update(project)
+            self.update(project, load=True)
             
     def save(self, project):
         name = project['name']
@@ -234,5 +266,84 @@ class CouchCache(MemoryCache):
         except:
              updated = {}
         updated['project'] = project
-        updated['project']['modified'] = time()
         self.db[name] = updated
+
+    def delete(self, project):
+        MemoryCache.delete(self, project)
+        del self.db[project]
+
+# directory of available models
+models = {'memory_cache': MemoryCache,
+          'file_cache': FileCache,
+          'couch': CouchCache}
+
+def convert(args=sys.argv[1:]):
+    """CLI front-end for model conversion"""
+    from optparse import OptionParser
+    usage = '%prog [global-options] from_model [options] to_model [options]'
+    description = "export data from one model to another"
+    parser = OptionParser(usage=usage, description=description)
+    parser.disable_interspersed_args()
+    parser.add_option('-l', '--list-models', dest='list_models',
+                      action='store_true', default=False,
+                      help="list available models")
+    parser.add_option('-a', '--list-args', dest='list_args',
+                      metavar='MODEL',
+                      help="list arguments for a model")
+
+    options, args = parser.parse_args(args)
+
+    # process global options
+    if options.list_models:
+        for name in sorted(models.keys()):
+            print name # could conceivably print docstring
+        parser.exit()
+    if options.list_args:
+        if not options.list_args in models:
+            parser.error("Model '%s' not found. (Choose from: %s)" % (options.list_args, models.keys()))
+        ctor = models[options.list_args].__init__
+        import inspect
+        argspec = inspect.getargspec(ctor)
+        defaults = [[i, None] for i in argspec.args[1:]] # ignore self
+        for index, value in enumerate(reversed(argspec.defaults), 1):
+            defaults[-index][-1] = value
+        defaults = [[i,j] for i, j in defaults if i != 'fields']
+        print '%s arguments:' % options.list_args
+        for arg, value in defaults:
+            print ' -%s %s' % (arg, value or '')
+        parser.exit()
+
+    # parse models and their ctor args
+    sects = []
+    _models = []
+    for arg in args:
+        if arg.startswith('-'):
+            sects[-1].append(arg)
+        else:
+            _models.append(arg)
+            sects.append([])
+
+    # check models
+    if len(_models) != 2:
+        parser.error("Please provide two models. (You gave: %s)" % _models)
+    if not set(_models).issubset(models):
+        parser.error("Please use these models: %s (You gave: %s)" % (models, _models))
+
+    sects = [ [i.lstrip('-') for i in sect ] for sect in sects ]
+
+    # require an equals sign
+    # XXX hacky but much easier to parse
+    if [ True for sect in sects
+         if [i for i in sect if '=' not in i] ]:
+        parser.error("All arguments must be `key=value`")
+    sects = [dict([i.split('=', 1) for i in sect]) for sect in sects]
+
+    # instantiate models
+    from_model = models[_models[0]](**sects[0])
+    to_model = models[_models[1]](**sects[1])
+
+    # convert the data
+    from_model.export(to_model)
+
+if __name__ == '__main__':
+    convert()

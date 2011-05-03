@@ -4,52 +4,45 @@
 <title>{{title}}</title>
 
 {{for sheet in css}}
-<link href="{{link(sheet)}}" rel="stylesheet" type="text/css" />
+<link href="{{sheet}}" rel="stylesheet" type="text/css" />
 {{endfor}}
 
 {{for sheet in less}}
-<link href="{{link(sheet)}}" rel="stylesheet/less" type="text/css" />
+<link href="{{sheet}}" rel="stylesheet/less" type="text/css" />
 {{endfor}}
 
 {{for script in js}}
-<script src="{{link(script)}}"></script>
+<script src="{{script}}"></script>
 {{endfor}}
-
-<!-- focus the search element -->
-<script type="text/javascript">
-$(document).ready(function() {
-$('#search-text').focus();
-});
-</script>
 
 </head>
 <body>
+  <!-- navigation menu -->
+  <nav>
+    <ul>
+      <li><a href="./" title="toolbox">toolbox</a></li>
+      {{if hasAbout}}
+      <li><a href="about" title="about:toolbox">about</a></li>
+      {{endif}}
+      <li><a href="new" title="add a tool">new</a></li>
+      {{for field in fields}}
+      <li>
+        <a class="by-field" href="{{field}}" title="tools by {{field}}">{{field}}</a>
+      </li>
+      {{endfor}}
+    </ul>
+  </nav>
 
-<!-- navigation menu -->
-<nav>
-  <ul>
-    <li><a href="/" title="toolbox">toolbox</a></li>
-    {{if hasAbout}}
-    <li><a href="{{link('about')}}" title="about:toolbox">about</a></li>
-    {{endif}}
-    <li><a href="{{link('new')}}" title="add a tool">new</a></li>
-    {{for field in fields}}
-    <li>
-      <a class="by-field" href="{{link(field)}}" title="tools by {{field}}">{{field}}</a>
-    </li>
-    {{endfor}}
-  </ul>
-</nav>
-
-<div id="container">
-  <!-- text search form -->
-  <form id="search" action="{{link()}}">
-    <input id="search-text" type="text" name="q" value="{{request.GET.get('q', '')}}"/>
-    <input id="search-submit" type="submit" value=""/>
-  </form>
-  <div id="content">
-    {{content | html}}
+  <div id="container">
+    <!-- text search form -->
+    <form id="search" action="./">
+      <input id="search-text" type="text" name="q" value="{{request.GET.get('q', '')}}"/>
+      <input id="search-submit" type="submit" title="search" value=""/>
+    </form>
+    <div id="content">
+      {{content | html}}
+    </div>
   </div>
-</div>
+
 </body>
 </html>

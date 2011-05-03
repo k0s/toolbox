@@ -29,7 +29,7 @@ class WhooshSearch(object):
         self.ix = index.create_in(self.index, self.schema)
 
     def update(self, name, description, **kw):
-        """update adocument"""
+        """update a document"""
 
         writer = self.ix.writer()
 
@@ -51,6 +51,13 @@ class WhooshSearch(object):
         writer.update_document(name=name, description=description, **kw)
         writer.commit()
 
+    def delete(self, name):
+        """delete a document of a given name"""
+        writer = self.ix.writer()
+        name = unicode(name)
+        writer.delete_by_term('name', name)
+        writer.commit()
+
     def __call__(self, query):
         """search"""
         query = unicode(query)
@@ -59,7 +66,7 @@ class WhooshSearch(object):
         extendedquery = Or([myquery] +
                            [Term(field, query) for field in self.keywords])
         searcher = self.ix.searcher()
-        return [i['name'] for i in searcher.search(extendedquery)]
+        return [i['name'] for i in searcher.search(extendedquery, limit=None)]
         
     def __del__(self):
         if self.tempdir:

@@ -1,0 +1,228 @@
+Test toolbox JSON handling
+==========================
+
+Ensure we have no projects::
+
+    >>> app.get('/')
+    []
+
+Also no authors::
+
+    >>> app.get('/author')
+    {}
+
+Make a project::
+
+    >>> project = {'name': 'foo', 'description': 'foo description', 'url': 'http://example.com'}
+    >>> response = app.post('/new', params=project)
+    >>> response.status
+    303
+    >>> newproject = app.get('/')[0]
+    >>> modified = newproject.pop('modified')
+    >>> project == newproject
+    True
+
+Get the project by name::
+
+    >>> foo = app.get('/foo')
+    >>> modified == foo.pop('modified')
+    True
+    >>> foo == project
+    True
+
+Add some fields to it::
+
+    >>> fields = {'author': 'jhammel'}
+    >>> url = '/' + project['name']
+    >>> response = app.post(url, params=fields)
+    >>> app.get('/')[0]['author']
+    [u'jhammel']
+    >>> app.get('/author')
+    {u'jhammel': [u'foo']}
+    >>> fields = {'author': 'turing'}
+    >>> response = app.post(url, params=fields)
+    >>> sorted(app.get(url)['author'])
+    [u'jhammel', u'turing']
+    >>> sorted(app.get('/')[0]['author'])
+    [u'jhammel', u'turing']
+
+Now let's search for the project!::
+
+    >>> authors = app.get('/author')
+    >>> len(authors)
+    2
+    >>> authors['jhammel']
+    [u'foo']
+    >>> authors['turing']
+    [u'foo']
+
+Let's search for it a different way::
+
+    >>> project = app.get('/')[0]
+    >>> projects = app.get('/', params={'author': 'jhammel'})
+    >>> newproject = projects[0]
+    >>> newproject == project
+    True
+
+Just to show that the search is doing something::
+
+    >>> app.get('/', params={'author': 'sauron'})
+    []
+
+Now lets add another project::
+    
+    >>> project2 = {'name': 'bar', 'description': 'a bar downtown', 'url': 'http://www.example.com'}
+    >>> response = app.post('/new', params=project2)
+    >>> projects = app.get('/')
+    >>> len(projects)
+    2
+    >>> projects[0]['name']
+    u'bar'
+    >>> projects[1]['name']
+    u'foo'
+    >>> jhammels_projects = app.get('/', params={'author': 'jhammel'})
+    >>> len(jhammels_projects)
+    1
+    >>> jhammels_projects[0]['name']
+    u'foo'
+    
+Test search::
+
+    >>> projects = app.get('/', params={'q': 'jhammel'})
+    >>> len(projects)
+    1
+    >>> projects[0]['name']
+    u'foo'
+    >>> projects = app.get('/', params={'q': 'downtown'})
+    >>> len(projects)
+    1
+    >>> projects[0]['name']
+    u'bar'
+
+Add some metadata. Make sure we see it::
+
+    >>> url = '/bar'
+    >>> response = app.post(url, {'author': 'turing'})
+    >>> len(app.get())
+    2
+    >>> len(app.get('/', params={'author': 'jhammel'}))
+    1
+    >>> len(app.get('/', params={'q': 'jhammel'}))
+    1
+    >>> len(app.get('/', params={'author': 'turing'}))
+    2
+    >>> len(app.get('/', params={'q': 'turing'}))
+    2
+    >>> projects = app.get('/', params={'author': 'turing', 'q': 'downtown'})
+    >>> len(projects)
+    1
+    >>> projects[0]['name'] 
+    u'bar'
+
+Add a third project, just for variety::
+
+    >>> response = app.post('/new', params=dict(name='fleem', description='fleem in a building downtown', url='http://example.net'))
+    >>> projects = app.get('/')
+    >>> len(projects)
+    3
+    >>> [i['name'] for i in app.get('/', params=dict(q='downtown'))]
+    [u'fleem', u'bar']
+    >>> [i['name'] for i in app.get('/', params=dict(q='building'))]
+    [u'fleem']
+    
+Delete some metadata::
+
+    >>> response = app.post('/bar', params={'action': 'delete', 'author': 'turing'})
+    >>> projects = app.get('/', params={'author': 'turing'})
+    >>> len(projects)
+    1
+    >>> projects[0]['name']
+    u'foo'
+    >>> projects = app.get('/', params={'q': 'turing'})
+    >>> len(projects)
+    1
+    >>> projects[0]['name']
+    u'foo'
+
+Delete a project::
+
+    >>> response = app.post('/delete', params={'project': 'foo'})
+    >>> len(app.get('/'))
+    2
+    >>> len(app.get('/', params={'author': 'jhammel'}))
+    0
+    >>> results = app.get('/', params={'q': 'jhammel'})
+    >>> len(results)
+    0
+
+You're back to two basic projects without much metadata.  Let's give them some!::
+
+   >>> projects = app.get('/')
+   >>> [sorted(project.keys()) for project in projects]
+   [[u'description', u'modified', u'name', u'url'], [u'description', u'modified', u'name', u'url']]
+   >>> bar_modified_last = projects[0]['modified'] 
+   >>> fleem_modified_earlier = projects[1]['modified']
+   >>> bar_modified_last > fleem_modified_earlier
+   True
+   >>> [project['name'] for project in projects]
+   [u'bar', u'fleem']
+   >>> description = 'You could be swining on a star'
+   >>> response = app.post('/bar', params=dict(description=description))
+   >>> projects = app.get('/', params={'q': 'star'})
+   >>> len(projects)
+   1
+   >>> projects[0]['description'] == description
+   True
+   >>> response = app.post('/bar', params={'type': 'song', 'usage': 'music', 'author': 'Sinatra'})
+   >>> songs = app.get('/', params={'type': 'song'})
+   >>> len(songs)
+   1
+   >>> songs[0]['name'] == 'bar'
+   True
+   >>> songs = app.get('/', params={'q': 'song'})
+   >>> len(songs)
+   1
+   >>> songs[0]['name'] == 'bar'
+   True
+   >>> response = app.post('/fleem', params={'type': 'song', 'description': 'Cotton Eye Joe', 'author': 'Rednex'})
+   >>> songs = app.get('/', params={'type': 'song'})
+   >>> len(songs)
+   2
+   >>> songs = app.get('/', params={'q': 'song'})
+   >>> len(songs)
+   2
+   >>> songs = app.get('/', params={'type': 'song', 'q': 'star'})
+   >>> len(songs)
+   1
+   >>> songs[0]['name']
+   u'bar'
+   >>> songs = app.get('/', params={'type': 'song', 'author': 'Sinatra'})
+   >>> len(songs)
+   1
+   >>> songs[0]['name']
+   u'bar'
+
+Now try renaming a tool::
+   >>> [i['name'] for i in app.get('/')]
+   [u'fleem', u'bar']
+   >>> response = app.post('/bar', params={'name': 'star'})
+   >>> songs = app.get('/')
+   >>> len(songs)
+   2
+   >>> projects = app.get('/', params={'q': 'star'})
+   >>> len(projects)
+   1
+   >>> star = projects[0]
+   >>> star['name']
+   u'star'
+   >>> star['type']
+   [u'song']
+
+You should not be allowed to rename a tool if another tool has the
+same name::
+
+   >>> sorted([i['name'] for i in app.get('/')])
+   [u'fleem', u'star']
+   >>> response = app.post('/star', params={'name': 'fleem'}, status=403) # Forbidden
+   >>> sorted([i['name'] for i in app.get('/')])
+   [u'fleem', u'star']

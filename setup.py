@@ -15,7 +15,8 @@ dependencies = [
     'pastescript', # technically optional, but here for ease of install
     'whoosh',
     'couchdb',
-    'docutils'
+    'docutils',
+    'relocator'
     ]
 try:
     import json
@@ -37,6 +38,9 @@ setup(name='toolbox',
       install_requires=dependencies,
       entry_points="""
       # -*- Entry points: -*-
+      [console_scripts]
+      convert-toolbox-model = toolbox.model:convert
+      
       [paste.app_factory]
       toolbox = toolbox.factory:paste_factory
       """,

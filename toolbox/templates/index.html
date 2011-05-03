@@ -1,6 +1,12 @@
 {{if len(projects) > 1}}
 <h1 id="title">{{len(projects)}} tools</h1>
 {{endif}}
+{{if not len(projects)}}
+<h1 id="title">No tools found</h1>
+{{endif}}
+{{if error}}
+<h1 id="title">{{error | html}}</h1>
+{{endif}}
 
 {{for project in projects}}
   <div class="project" id="{{project['name']}}">
@@ -11,7 +17,7 @@
 
     <!-- title -->
     <h1 class="project-title">
-      <a href="{{link(project['name'])}}">{{project['name']}}</a> 
+      <a href="{{project['name']}}">{{project['name']}}</a> 
       <!-- TODO: urlescape -->
     </h1>
     <!-- description -->
@@ -23,15 +29,15 @@
     <ul class="fields">
       {{for field in fields}}
       <li class="field {{field}}">
-        <h2 class="field-name"><a href="{{link(field)}}" title="tools by {{field}}">{{field}}:</a></h2>
+        <h2 class="field-name"><a href="{{field}}" title="tools by {{field}}">{{field}}:</a></h2>
         <span class="field-value-container">
-          {{if not field in project}}
+          {{if (not field in project) or not project[field]}}
             <div class="field-none field-value">none</div>
           {{else}}
           <ul class="field-values field-value">
             {{for entry in project[field]}}
               <li class="field-value-item">
-               <a href="?{{field}}={{entry}}" title="tools with {{field}}={{entry}}">{{entry}}</a>
+               <a href="./?{{field}}={{entry}}" title="tools with {{field}}={{entry}}">{{entry}}</a>
               </li>
             {{endfor}}
           </ul>
@@ -48,7 +54,7 @@
     </ul>
  
     <!-- project deletion -->
-    <form class="delete" action="{{link('delete')}}" method="POST">
+    <form class="delete" action="delete" method="POST">
       <button type="submit" name="project" title="delete tool" value="{{project['name']}}">
         Delete
       </button>

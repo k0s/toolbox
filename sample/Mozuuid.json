@@ -1,0 +1,1 @@
+{"name": "Mozuuid", "language": ["perl"], "author": ["smaug"], "url": "http://mozilla.pettay.fi/cgi-bin/mozuuid.pl", "modified": 1302953422.0, "usage": ["uuid"], "description": "Generates a new UUID, both in .idl and .h format"}

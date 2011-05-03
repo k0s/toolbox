@@ -10,10 +10,6 @@ $(document).ready(function(){
         container.hide();
         edit.show();
 
-        var input = edit.children('input');
-
-        var field = $(this).parents(".field").attr('class').split(' ')[1];
-
         var items = valueList.children('.field-value-item');
         var values = [];
         for(var i = 0; i < items.length; i++) {
@@ -23,6 +19,9 @@ $(document).ready(function(){
         var tokenData = values.map(function(value) {
           return {id: value, name: value};
         });
+        
+        var input = edit.children('input');
+        var field = $(this).parents(".field").attr('class').split(' ')[1];
 
         input.tokenInput("/tags?format=json&field=" + field, {
           theme: 'facebook',
@@ -69,10 +68,8 @@ $(document).ready(function(){
               action: 'replace'
             };
             data[field] = values.join(",");
-            console.log("values " + JSON.stringify(data));
             
             $.post(url, data, function() {
-              console.log("submitted " + field +" for " + project);
             });
           }
         });

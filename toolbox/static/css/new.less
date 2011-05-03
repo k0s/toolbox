@@ -1,0 +1,59 @@
+#new-container {
+  margin-top: 20px;
+  width: 600px;
+}
+
+#new {
+  margin: 20px auto;
+}
+
+table {
+  text-transform: lowercase;
+}
+
+td {
+  padding: .5em .5em;
+  
+  &.field-name {
+    text-align: right;
+  }
+
+  input {
+    padding: .2em;
+    
+    &:not(.submit) {
+      width: 250px;
+    }
+    
+    &[name="name"] {
+      width: 140px;
+    }
+    
+    &[name="description"] {
+      width: 320px;
+    }
+  }
+  
+  .token-input-list-facebook {
+    width: 240px;
+  }
+}
+
+input[type="submit"] {
+  float: right;
+}
+
+.error {
+  color: red;
+}
+
+.button {
+  background-color: #F7F7F7;
+  border-radius: 8px 8px 8px 8px;
+  box-shadow: 0 1px 3px #999999;
+  color: #222222;
+  cursor: pointer;
+  display: inline-block;
+  margin: 0.3em;
+  padding: 0.4em 0.7em;
+}
