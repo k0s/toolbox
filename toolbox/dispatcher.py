@@ -24,7 +24,8 @@ class Dispatcher(object):
     # class defaults
     defaults = { 'about': None, # file path to ReST about page
                  'model_type': 'memory_cache', # type of model to use
-                 'reserved': set(['css', 'js', 'img']), # reserved URL namespaces
+                 'handlers': None,
+                 'reserved': None, # reserved URL namespaces
                  'template_dir': None, # directory for template overrides
                  }
 
@@ -38,7 +39,6 @@ class Dispatcher(object):
         for key in self.defaults:
             setattr(self, key, kw.pop(key, self.defaults[key]))
 
-
         # model: backend storage and associated methods
         if 'fields' in kw and isinstance(kw['fields'], basestring):
             # split fields if given as a string
@@ -51,17 +51,9 @@ class Dispatcher(object):
             try:
                 import pyloader
                 model = pyloader.load(self.model_type)
-            except ImportError:
+            except:
                 raise AssertionError("model_type '%s' not found in %s" % (self.model_type, models.keys()))
         self.model = model(**kw)
-
-        # request handlers in order they will be tried
-        self.handlers = [ TagsView,
-                          CreateProjectView,
-                          FieldView,
-                          ProjectView,
-                          QueryView,
-                          DeleteProjectHandler ]
 
         # add an about view if file specified
         if self.about:
@@ -69,12 +61,25 @@ class Dispatcher(object):
             import docutils.core
             about = docutils.core.publish_parts(about, writer_name='html')['body']
             self.about = about
-            self.handlers.append(AboutView)
+
+
+        # request handlers in order they will be tried
+        if self.handlers is None:
+            self.handlers = [ TagsView,
+                              CreateProjectView,
+                              FieldView,
+                              ProjectView,
+                              QueryView,
+                              DeleteProjectHandler ]
+            if self.about:
+                self.handlers.append(AboutView)
 
         # extend reserved URLS from handlers
-        for handler in self.handlers:
-            if handler.handler_path:
-                self.reserved.add(handler.handler_path[0])
+        if self.reserved is None:
+            self.reserved = set(['css', 'js', 'img'])
+            for handler in self.handlers:
+                if handler.handler_path:
+                    self.reserved.add(handler.handler_path[0])
 
     def __call__(self, environ, start_response):
 
