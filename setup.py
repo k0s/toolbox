@@ -16,7 +16,7 @@ dependencies = [
     'whoosh',
     'couchdb',
     'docutils',
-    'relocator'
+    'relocator' # technically optional, but here for ease of install
     ]
 try:
     import json
@@ -30,7 +30,7 @@ setup(name='toolbox',
       classifiers=[], # Get strings from http://www.python.org/pypi?%3Aaction=list_classifiers
       author='Jeff Hammel',
       author_email='jhammel@mozilla.com',
-      url='',
+      url='https://github.com/mozilla/toolbox',
       license="MPL",
       packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
       include_package_data=True,
