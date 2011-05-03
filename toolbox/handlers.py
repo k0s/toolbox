@@ -273,7 +273,6 @@ class ProjectView(ProjectsView):
                         else:
                             value = value.split(",")
                     if action == 'replace':
-                        print value
                         # replace the field from the POST request
                         project[field] = value
                     else:

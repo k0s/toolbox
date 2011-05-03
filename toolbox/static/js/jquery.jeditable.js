@@ -407,7 +407,6 @@
                     return(input);
                 },
                 content : function(string, settings, original) {
-                    //                   alert(string)
                     $(':input:first', this).val(string);
                 },
                 reset : function(settings, original) {
