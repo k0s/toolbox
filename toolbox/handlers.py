@@ -83,14 +83,14 @@ class TempitaHandler(Handler):
 
     template_dirs = [ resource_filename(__name__, 'templates') ]
 
-    css = ['/css/html5boilerplate.css']
+    css = ['css/html5boilerplate.css']
 
-    less = ['/css/style.less']
+    less = ['css/style.less']
 
-    js = ['/js/jquery-1.6.min.js',
-          '/js/less-1.0.41.min.js',
-          '/js/jquery.timeago.js',
-          '/js/main.js']
+    js = ['js/jquery-1.6.min.js',
+          'js/less-1.0.41.min.js',
+          'js/jquery.timeago.js',
+          'js/main.js']
     
     def __init__(self, app, request):
         Handler.__init__(self, app, request)
@@ -135,16 +135,16 @@ class ProjectsView(TempitaHandler):
     """abstract base class for views of projects"""
 
     js = TempitaHandler.js[:]
-    js.extend(['/js/jquery.tokeninput.js',
-               '/js/jquery.jeditable.js',
-               '/js/project.js'])
+    js.extend(['js/jquery.tokeninput.js',
+               'js/jquery.jeditable.js',
+               'js/project.js'])
                
     less = TempitaHandler.less[:]
-    less.extend(['/css/project.less'])
+    less.extend(['css/project.less'])
 
     css = TempitaHandler.css[:]
-    css.extend(['/css/token-input.css',
-                '/css/token-input-facebook.css'])
+    css.extend(['css/token-input.css',
+                'css/token-input-facebook.css'])
 
     def __init__(self, app, request):
         """project views specific init"""
@@ -340,15 +340,15 @@ class CreateProjectView(TempitaHandler):
     methods = set(['GET', 'POST'])
     handler_path = ['new']
     js = TempitaHandler.js[:]
-    js.extend(['/js/jquery.tokeninput.js',
-               '/js/new.js'])
+    js.extend(['js/jquery.tokeninput.js',
+               'js/new.js'])
                
     less = TempitaHandler.less[:]
-    less.extend(['/css/new.less'])
+    less.extend(['css/new.less'])
     
     css = TempitaHandler.css[:]
-    css.extend(['/css/token-input.css',
-                '/css/token-input-facebook.css'])
+    css.extend(['css/token-input.css',
+                'css/token-input-facebook.css'])
 
     def __init__(self, app, request):
         TempitaHandler.__init__(self, app, request)
