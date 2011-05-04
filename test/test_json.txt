@@ -226,3 +226,12 @@ same name::
    >>> response = app.post('/star', params={'name': 'fleem'}, status=403) # Forbidden
    >>> sorted([i['name'] for i in app.get('/')])
    [u'fleem', u'star']
+
+You should not be allowed to have multiple identical item in the same
+field::
+
+   >>> app.get('/star')['author']
+   [u'Sinatra']
+   >>> response = app.post('/star', params={'action': 'replace', 'author': 'Sinatra,Sinatra'})
+   >>> app.get('/star')['author']
+   [u'Sinatra']
