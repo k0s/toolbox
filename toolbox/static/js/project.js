@@ -2,79 +2,6 @@ $(document).ready(function(){
     $(".date").timeago();
     $(".field-edit").hide();
 
-    $(".edit-message").click(function() {
-        var container = $(this).parents('.field-value-container');
-        var edit = $(this).parents('.field').children('.field-edit');
-        var valueList = container.children('.field-values');
-
-        container.hide();
-        edit.show();
-
-        var items = valueList.children('.field-value-item');
-        var values = [];
-        for(var i = 0; i < items.length; i++) {
-          values.push($(items.get(i)).text().trim());
-        }
-
-        var tokenData = values.map(function(value) {
-          return {id: value, name: value};
-        });
-        
-        var input = edit.children('input');
-        var field = $(this).parents(".field").attr('class').split(' ')[1];
-
-        input.tokenInput("tags?format=json&field=" + field, {
-          theme: 'facebook',
-          prePopulate: tokenData,
-          autoFocus: true,
-          submitOnBlur: true,
-          canBlur: function(elem) {
-            return !container.find($(elem)).length;
-          },
-          hintText: false,
-          onSubmit: function(values) {
-            console.log(values);
-            edit.hide();
-            container.show();
-            valueList.empty();
-
-            if(!values.length) {
-              container.children(".field-value").remove();
-              container.prepend($('<div class="field-none field-value">none</div>'));
-            }
-            else {
-              values.forEach(function(value) {
-                var li = $("<li></li>")
-                  .addClass("field-value-item");
-                var a = $("<a></a>")
-                  .attr("href", "?" + field + "=" + value)
-                  .attr("title", "tools with " + field + " " + value)
-                  .text(value)
-                  .appendTo(li);
-                
-                if(valueList.length == 0) {
-                  container.children(".field-value").remove();
-                  valueList = $("<ul class='field-values field-value'></ul>")
-                    .prependTo(container);
-                }
-                valueList.append(li);
-              });
-            }
-            
-            var project = container.parents('.project').attr('id');
-            var url = project;
-            
-            var data = {
-              action: 'replace'
-            };
-            data[field] = values.join(",");
-            
-            $.post(url, data, function() {
-            });
-          }
-        });
-    });
-
     // modify project div
     $('div.project').each(function(){
         var project = $(this).attr('id');
@@ -88,5 +15,79 @@ $(document).ready(function(){
           'name': 'description',
           'tooltip': 'click to edit description'
         });
+
+
+        // autocomplete
+        $(this).find(".edit-message").click(function() {
+          var container = $(this).parents('.field-value-container');
+          var edit = $(this).parents('.field').children('.field-edit');
+          var valueList = container.children('.field-values');
+
+          container.hide();
+          edit.show();
+
+          var items = valueList.children('.field-value-item');
+          var values = [];
+          for(var i = 0; i < items.length; i++) {
+              values.push($(items.get(i)).text().trim());
+          }
+
+          var tokenData = values.map(function(value) {
+              return {id: value, name: value};
+              });
+        
+          var input = edit.children('input');
+          var field = $(this).parents(".field").attr('class').split(' ')[1];
+
+          input.tokenInput("tags?format=json&field=" + field + "&omit=" + project, {
+              theme: 'facebook',
+              prePopulate: tokenData,
+              autoFocus: true,
+              submitOnBlur: true,
+              canBlur: function(elem) {
+                  return !container.find($(elem)).length;
+                  },
+              hintText: false,
+              onSubmit: function(values) {
+                  edit.hide();
+                  container.show();
+                  valueList.empty();
+
+                  if(!values.length) {
+                      container.children(".field-value").remove();
+                      container.prepend($('<div class="field-none field-value">none</div>'));
+                  }
+                  else {
+                      values.forEach(function(value) {
+                         var li = $("<li></li>")
+                             .addClass("field-value-item");
+                         var a = $("<a></a>")
+                             .attr("href", "?" + field + "=" + value)
+                             .attr("title", "tools with " + field + " " + value)
+                             .text(value)
+                             .appendTo(li);
+                
+                         if(valueList.length == 0) {
+                             container.children(".field-value").remove();
+                             valueList = $("<ul class='field-values field-value'></ul>")
+                                 .prependTo(container);
+                         }
+                         valueList.append(li);
+                          });
+                  }
+            
+                  //            var project = container.parents('.project').attr('id');
+                  //            var url = project;
+                  
+                  var data = {
+                      action: 'replace'
+                  };
+                  data[field] = values.join(",");
+                  
+                  $.post(url, data, function() {
+                      });
+                  }
+              });
+            });
+        });
     });
-});
