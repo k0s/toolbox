@@ -76,8 +76,6 @@ $(document).ready(function(){
                           });
                   }
             
-                  //            var project = container.parents('.project').attr('id');
-                  //            var url = project;
                   
                   var data = {
                       action: 'replace'
