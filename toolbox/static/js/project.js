@@ -18,6 +18,81 @@ $(document).ready(function(){
           'tooltip': 'click to edit description'
         });
 
+        // make the name and url editable
+        function nameHover(eventObject) {
+           var img = $('<img class="UEB" src="img/UEB16.png"/>');
+           $(this).append(img);
+           var header = this;
+           $(img).click(function() {
+               var link = $(header).children('a');
+               var text = $(link).html();
+               var form = $('<form method="POST" action="' + url + '"><input type="text" name="name" value="' + text +'"/><button class="cancel">Cancel</button><input type="submit" value="Rename"/></form>');
+               $(form).css('display', 'block');
+               $(header).replaceWith(form);
+               $(form).find('button.cancel').click(function(){
+                   $(header).find('img.UEB').remove();
+                   $(header).hover(nameHover,
+                                   function(eventObject) { $(this).children('img.UEB').remove(); });
+                   $(form).replaceWith(header);
+                   });
+               $(form).find('input[type=text]').keypress(function(event) {
+                       if (event.which == 13) {
+                           $(form).submit();
+                       }
+                   });
+               $(form).find('input[type=text]').focus();
+               });
+        }
+        $(this).find('h1').hover(nameHover,
+                                 function(eventObject) { $(this).children('img.UEB').remove(); });
+        $(this).find('a.home').each(function() {
+                var home = this;
+                $(this).wrap('<span/>');
+                var wrapper = $(this).parent();
+                function urlHover(eventObject) {
+                    var img = $('<img class="UEB" src="img/UEB16.png"/>');
+                    $(this).append(img);
+                    $(img).click(function() {
+                        var link = $(home).attr('href');
+                        var size = link.length;
+                        var input = $('<input type="text" value="' + link + '" size="' + size + '"/>');
+                        $(wrapper).replaceWith(input);
+                        
+                        function urlEditBlur() {
+                            var newlink = $(this).val();
+                            var that = this;
+                            newlink = newlink.trim();
+                            if (newlink != link) {
+                                var throbber = $('<img class="throbber" src="img/indicator.gif"/>');
+                                $(this).after(throbber);
+                                $(this).hide();
+                                $.post(url, {"url": newlink}, function(data) {
+                                    $(throbber).remove();
+                                    var a = $(wrapper).children('a');
+                                    a.attr('href', newlink);
+                                    a.html(newlink);
+                                    $(wrapper).children('img.UEB').remove();
+                                    wrapper.hover(urlHover, function(eventObject) { $(this).children('img.UEB').remove(); });
+                                    $(that).replaceWith(wrapper);
+                                    });
+                            }
+                            else {
+                                $(wrapper).children('img.UEB').remove();
+                                wrapper.hover(urlHover, function(eventObject) { $(this).children('img.UEB').remove(); });
+                                $(this).replaceWith(wrapper);
+                            }
+                        }
+                        $(input).blur(urlEditBlur);
+                        $(input).keypress(function(event) {
+                                if (event.which == 13) {
+                                    $(this).blur();
+                                }
+                            });
+                        $(input).focus();
+                        });
+                }
+                wrapper.hover(urlHover, function(eventObject) { $(this).children('img.UEB').remove(); });
+            });
 
         // autocomplete
         $(this).find(".edit-message").click(function() {
