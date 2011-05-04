@@ -439,6 +439,7 @@ class TagsView(TempitaHandler):
         TempitaHandler.__init__(self, app, request)
         self.data['fields'] = self.app.model.fields()
         fields = self.request.GET.getall('field') or self.data['fields']
+        query = self.request.GET.get('q', '')
         self.data['title'] = 'Tags'
         field_tags = dict((i, {}) for i in fields)
         omit = self.request.GET.getall('omit')
@@ -454,9 +455,10 @@ class TagsView(TempitaHandler):
             if project in omit:
                 continue
             # TODO: cache this for speed somehow
+            # possibly at the model level
             for field in fields:
                 for value in project.get(field, []):
-                    if value in ommitted[field]:
+                    if value in ommitted[field] or query not in value:
                         continue
                     count = field_tags[field].get(value, 0) + 1
                     field_tags[field][value] = count
@@ -464,7 +466,8 @@ class TagsView(TempitaHandler):
         for field in field_tags:
             for value, count in field_tags[field].items():
                 tags.append({'field': field, 'value': value, 'count': count, 'id': value, 'name': value})
-        tags.sort(key=lambda x: x['count'], reverse=True)            
+        tags.sort(key=lambda x: x['count'], reverse=True)
+
         self.data['tags'] = tags
 
     def get_json(self):
