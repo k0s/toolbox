@@ -120,7 +120,6 @@ class MemoryCache(ProjectsModel):
             return # nothing to do
         if not load:
             project['modified'] = time()
-        self._projects[project['name']] = deepcopy(project)
         if self._fields is None:
             fields = [i for i in project if i not in self.reserved]
             self.field_set.update(fields)
@@ -131,12 +130,14 @@ class MemoryCache(ProjectsModel):
                 _set.discard(project['name'])
             if field not in project:
                 continue
+            project[field] = list(set(project[field]))
             index = self.index.setdefault(field, {})
             values = project[field]
             if isinstance(values, basestring):
                 values = [values]
             for value in values:
                 index.setdefault(value, set()).update([project['name']])
+        self._projects[project['name']] = deepcopy(project)
         self.update_search(project)
         if not load:
             self.save(project)
