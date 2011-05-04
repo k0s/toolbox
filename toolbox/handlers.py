@@ -7,6 +7,7 @@ import os
 from datetime import datetime
 from pkg_resources import resource_filename
 from urlparse import urlparse
+from util import strsplit
 from util import JSONEncoder
 from webob import Response, exc
 from tempita import HTMLTemplate
@@ -268,10 +269,7 @@ class ProjectView(ProjectsView):
                 if field in post_data:
                     value = post_data[field]
                     if isinstance(value, basestring):
-                        if value == '':
-                            value = []
-                        else:
-                            value = value.split(",")
+                        value = strsplit(value)
                     if action == 'replace':
                         # replace the field from the POST request
                         project[field] = value
@@ -407,7 +405,7 @@ class CreateProjectView(TempitaHandler):
         # currently used only for JSON requests
         for field in self.app.model.fields():
             value = post_data.get(field, '').strip()
-            values = [i.strip() for i in value.split(',') if i.strip()]
+            values = strsplit(value)
             if not value:
                 continue
             project[field] = values or value

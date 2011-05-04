@@ -14,6 +14,7 @@ from handlers import TagsView
 from handlers import AboutView
 
 from model import models
+from util import strsplit
 from webob import Request, Response, exc
 
 here = os.path.dirname(os.path.abspath(__file__))
@@ -42,7 +43,7 @@ class Dispatcher(object):
         # model: backend storage and associated methods
         if 'fields' in kw and isinstance(kw['fields'], basestring):
             # split fields if given as a string
-            kw['fields'] = kw['fields'].split()
+            kw['fields'] = strsplit(kw['fields'])
         if hasattr(self.model_type, '__call__'):
             model = self.model_type
         elif self.model_type in models:
