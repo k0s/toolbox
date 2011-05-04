@@ -23,7 +23,7 @@ $(document).ready(function(){
         var input = edit.children('input');
         var field = $(this).parents(".field").attr('class').split(' ')[1];
 
-        input.tokenInput("/tags?format=json&field=" + field, {
+        input.tokenInput("tags?format=json&field=" + field, {
           theme: 'facebook',
           prePopulate: tokenData,
           autoFocus: true,
@@ -62,7 +62,7 @@ $(document).ready(function(){
             }
             
             var project = container.parents('.project').attr('id');
-            var url = '/' + project;
+            var url = project;
             
             var data = {
               action: 'replace'
@@ -78,12 +78,12 @@ $(document).ready(function(){
     // modify project div
     $('div.project').each(function(){
         var project = $(this).attr('id');
-        var url = '/' + project; // TODO: urlquote
+        var url = project; // TODO: urlquote
 
         // make description editable with jeditable
         $(this).find('p.description').editable(url, {
           'cols': 80,
-          'indicator': '<img src="/img/indicator.gif"/>',
+          'indicator': '<img src="img/indicator.gif"/>',
           'onblur': 'submit',
           'name': 'description',
           'tooltip': 'click to edit description'
