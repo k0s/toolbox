@@ -389,6 +389,22 @@ Each function should live in its own module::
   |
   templates
 
+
+Use Cases
+---------
+
+The target use-case is software tools for Mozilla, or, more generally,
+a software index.  For this case, the default fields uses are given in
+the paste.ini file: usage, author, type, language. More fields may be
+added to the running instance in the future.
+
+However, the classifier classification can be used for a wide variety
+of web-locatable resources.  A few examples:
+
+* songs: artist, album, genre, instruments
+* de.li.cio.us: type, media, author, site
+
+
 Resources
 ---------
 
