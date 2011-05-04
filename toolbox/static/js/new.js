@@ -3,7 +3,7 @@
 $(document).ready(function(){
     $('input.field-input').each(function(index) {
         var field = $(this).attr('name');
-        $(this).tokenInput("/tags?format=json&field=" + field, {
+        $(this).tokenInput("tags?format=json&field=" + field, {
             theme: 'facebook',
             submitOnEnter: false,
             closeOnBlur: true,
