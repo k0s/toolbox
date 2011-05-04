@@ -32,14 +32,11 @@ $(document).ready(function(){
             return !container.find($(elem)).length;
           },
           hintText: false,
-          onSubmit: function(tokens) {
+          onSubmit: function(values) {
+            console.log(values);
             edit.hide();
             container.show();
             valueList.empty();
-
-            var values = [];
-            for(token in tokens)
-              values.push(tokens[token].name);
 
             if(!values.length) {
               container.children(".field-value").remove();

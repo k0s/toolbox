@@ -34,6 +34,7 @@ var DEFAULT_SETTINGS = {
     submitOnEnter: true,
     submitOnBlur: false,
     closeOnBlur: true,
+    autoSelect: false,
     canBlur: function() { return true; }
 };
 
@@ -154,13 +155,12 @@ $.TokenList = function (input, url_or_data, settings) {
         .keydown(function (event) {
             var previous_token;
             var next_token;
-
             switch(event.keyCode) {
                 case KEY.LEFT:
                 case KEY.RIGHT:
                 case KEY.UP:
                 case KEY.DOWN:
-                    if(!$(this).val()) {
+                    if(!$(this).val()) {                      
                         previous_token = input_token.prev();
                         next_token = input_token.next();
 
@@ -180,9 +180,12 @@ $.TokenList = function (input, url_or_data, settings) {
                         }
                     } else {
                         var dropdown_item = null;
-
+                        
                         if(event.keyCode === KEY.DOWN || event.keyCode === KEY.RIGHT) {
+                          if($(selected_dropdown_item).length)
                             dropdown_item = $(selected_dropdown_item).next();
+                          else
+                            dropdown_item = $($(dropdown).find('li').get(0));
                         } else {
                             dropdown_item = $(selected_dropdown_item).prev();
                         }
@@ -221,9 +224,13 @@ $.TokenList = function (input, url_or_data, settings) {
                     add_token($(selected_dropdown_item));
                     return false;
                   }
-                  else if(KEY.ENTER && settings.submitOnEnter)
+                  else if(event.keyCode == KEY.COMMA) {
+                    return true;
+                  }
+                  else if(event.keyCode == KEY.ENTER && settings.submitOnEnter) {
                     submit();
-                  else if(KEY.TAB || KEY.ENTER)
+                  }
+                  else if(event.keyCode == KEY.TAB || event.keyCode == KEY.ENTER)
                     return true;
                   
                   break;
@@ -349,7 +356,13 @@ $.TokenList = function (input, url_or_data, settings) {
     function submit() {
       dropdown.remove();
       token_list.remove();
-      settings.onSubmit(saved_tokens);
+      var val = hidden_input.val();
+      if(val && input_box.val())
+        val += ",";
+      if(input_box.val())
+        val += input_box.val();
+      var vals = val ? val.split(",") : [];
+      settings.onSubmit(vals);
     }
 
     function resize_input() {
@@ -594,7 +607,7 @@ $.TokenList = function (input, url_or_data, settings) {
                     this_li.addClass(settings.classes.dropdownItem2);
                 }
 
-                if(index === 0) {
+                if(index === 0 && settings.autoSelect) {   
                     select_dropdown_item(this_li);
                 }
 
