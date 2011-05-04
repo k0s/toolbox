@@ -402,7 +402,6 @@ class CreateProjectView(TempitaHandler):
             return self.redirect(location)
 
         # add fields to the project
-        # currently used only for JSON requests
         for field in self.app.model.fields():
             value = post_data.get(field, '').strip()
             values = strsplit(value)
