@@ -9,6 +9,8 @@ $(document).ready(function(){
 
         // make description editable with jeditable
         $(this).find('p.description').editable(url, {
+          'type': 'textarea',
+          'rows': 7,
           'cols': 80,
           'indicator': '<img src="img/indicator.gif"/>',
           'onblur': 'submit',
