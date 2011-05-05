@@ -26,7 +26,8 @@ $(document).ready(function(){
            $(img).click(function() {
                var link = $(header).children('a');
                var text = $(link).html();
-               var form = $('<form method="POST" action="' + url + '"><input type="text" name="name" value="' + text +'"/><button class="cancel">Cancel</button><input type="submit" value="Rename"/></form>');
+               var size = text.length;
+               var form = $('<form method="POST" action="' + url + '"><input type="text" name="name" value="' + text +'" size="' + size + '"/><button class="cancel">Cancel</button><input type="submit" value="Rename"/></form>');
                $(form).css('display', 'block');
                $(header).replaceWith(form);
                $(form).find('button.cancel').click(function(){
