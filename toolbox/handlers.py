@@ -3,6 +3,7 @@ request handlers:
 these are instantiated for every request, then called
 """
 
+import cgi
 import os
 from datetime import datetime
 from pkg_resources import resource_filename
@@ -289,7 +290,7 @@ class ProjectView(ProjectsView):
         # XXX for compatability with jeditable:
         if id is not None:
             return Response(content_type='text/plain',
-                            body=project['description'])
+                            body=cgi.escape(project['description']))
 
         # XXX should redirect instead
         return self.Get()
