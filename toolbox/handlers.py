@@ -479,7 +479,7 @@ class AboutView(TempitaHandler):
     methods = set(['GET'])
     handler_path = ['about']
     template = 'about.html'
-
+    less = TempitaHandler.less[:] + ['css/about.less']
     def __init__(self, app, request):
         TempitaHandler.__init__(self, app, request)
         self.data['fields'] = self.app.model.fields()
