@@ -175,7 +175,6 @@ class ProjectsView(TempitaHandler):
         return datetime.fromtimestamp(timestamp).strftime(format_string)
 
 
-
 class QueryView(ProjectsView):
     """general index view to query projects"""
     
@@ -188,7 +187,9 @@ class QueryView(ProjectsView):
         query = self.request.GET.mixed()
         search = query.pop('q', None)
         self.data['projects']= self.app.model.get(search, **query)
-        self.sort(sort_type)
+        if not search:
+            # preserve search order results 
+            self.sort(sort_type)
         self.data['fields'] = self.app.model.fields()
         self.data['title'] = 'Toolbox'
 
