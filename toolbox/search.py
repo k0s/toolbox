@@ -63,8 +63,21 @@ class WhooshSearch(object):
         query = unicode(query)
         query_parser = QueryParser("description", schema=self.ix.schema)
         myquery = query_parser.parse(query)
-        extendedquery = Or([myquery] +
-                           [Term(field, query) for field in self.keywords])
+
+# Old code: too strict
+#        extendedquery = Or([myquery] +
+#                           [Term(field, query) for field in self.keywords])
+
+
+        # New code: too permissive
+        extendedquery = [myquery]
+        excluded = set(['AND', 'OR', 'NOT'])
+        terms = [i for i in query.split() if i not in excluded]
+        for field in self.keywords:
+            extendedquery.extend([Term(field, term) for term in terms])
+        extendedquery = Or(extendedquery)
+
+        # perform the search
         searcher = self.ix.searcher()
         return [i['name'] for i in searcher.search(extendedquery, limit=None)]
         
