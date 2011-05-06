@@ -70,23 +70,12 @@ TODO
 
 There is much more that we plan to add to Toolbox:
 
-* add scrapers for hosted tools
-* allow projects to point to a setup.py or AMO URL to be scraped
-* URLs in the description should be made links
-* make fields computationable
-* integrate author with community phonebook (and bugzilla id)
+* add scrapers for hosted tools to automatically seed toolbox with data
+* integrate author with community phonebook and bugzilla id
 * the first time someone edits a description (etc.) from a pointed-to
   file (e.g. a setup.py) then the project should be notified
 * you should be able to edit a field, e.g. author.  Changing one field
   value should give the option to change all similar field values.
-* you should be able to drag a field from one classifier to
-  another. Doing so should prompt for doing this for all similar
-  values
-* you should be able to rename classifiers
-* it would be nice to point the description to a URL
-* front-ending single-button INSTALL (when applicable)
-* for the addons of particular types, there should be some correlation
-  and some sort of direction/help of what these are and why these are
 * a "Request a tool" link that functions like stack overflow; users
   can request a tool. If it does not exist, it gets turned into a
   bug. Users should also be able to point to a tool to answer the
