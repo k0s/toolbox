@@ -85,6 +85,12 @@ code may be found at https://github.com/mozilla/toolbox .
 * Similarly, users should be able to note similarity of tools and
   propose a consolidation strategy
 
+Oustanding issues are listed at
+https://bugzilla.mozilla.org/buglist.cgi?resolution=---&component=Toolbox&product=Webtools
+. Please file new bugs or feature requests at
+https://bugzilla.mozilla.org/enter_bug.cgi?product=Webtools&component=Toolbox
+or contact jhammel@mozilla.org or discuss in #ateam at irc.mozilla.org.
+
 
 Other Resources
 ---------------
