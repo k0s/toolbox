@@ -247,7 +247,7 @@ class ProjectView(ProjectsView):
                                 status=403,
                                 body=self.render('main.html', **self.data))
 
-        # XXX for compatability with jetitable:
+        # XXX for compatability with jeditable:
         id = post_data.pop('id', None)
 
         action = post_data.pop('action', None)
