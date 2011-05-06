@@ -286,7 +286,7 @@ class ProjectView(ProjectsView):
 
         self.app.model.update(project)
 
-        # XXX for compatability with jetitable:
+        # XXX for compatability with jeditable:
         if id is not None:
             return Response(content_type='text/plain',
                             body=project['description'])
