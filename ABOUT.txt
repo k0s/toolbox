@@ -68,7 +68,8 @@ Autocomplete is enabled to help you find the classifier you want.
 TODO
 ----
 
-There is much more that we plan to add to Toolbox:
+There is much more that we plan to add to Toolbox. The project source
+code may be found at https://github.com/mozilla/toolbox .
 
 * add scrapers for hosted tools to automatically seed toolbox with data
 * integrate author with community phonebook and bugzilla id
