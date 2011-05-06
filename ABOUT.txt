@@ -7,37 +7,34 @@ toolbox
 The Story of Toolbox
 --------------------
 
-A tool is only useful if you know it exists and can find it and
-information about it. Toolbox is an index of tools developed by and
+Tools are only useful if you know where they exists and can find them.
+Toolbox is an index of tools developed by and
 for the Mozilla community.  Toolbox is not a hosting service -- it is a
 listing of tools which can live anywhere that are of use to Mozillians.
 
-It could also be used to track:
+It can also be used to track:
 
 * smart bookmarks
 * code snippets
 * webapps
 
-A tool will always have
+Each tool in the listing must provide the following attributes:
 
 * a *name* that uniquely identifies the tool
 * a text *description* of the tool
 * a canonical *URL* where you can find the tool
 
-Tools can also have a 'usage' for what it applies to
-(e.g. 'bugzilla'), a 'type' for what type of tool it is (e.g. 'addon'
-or 'webapp'), 'authors' with the names and links of the authors, and
-'languages' for what programming language the tool is written in.
+Toolbox also tracks several optional classifiers for each tool in its
+database.   The classifiers are described below.
 
 
 How to use Toolbox
 ------------------
 
 The `index page <./>`_ of toolbox lists all tools with the most
-recently updated first.  A tool has a name, a description, a URL, and a
-number of classifier fields.  Most everything is clickable.  Clicking on the
-description lets you edit the description which will be saved on
-blur. Hovering over the tool title or URL will display an
+recently updated first. All fiels on a tool are clickable.  Clicking on the
+description lets you edit the description which will be saved after
+you finish editing it. Hovering over the tool title or URL will display an
 `edit button <http://universaleditbutton.org/>`_ which on clicking
 will allow you to edit the appropriate data.
 Clicking a URL, like `?author=harth <./?author=harth>`_ will give
@@ -57,11 +54,11 @@ Classifiers
 -----------
 
 Outside of the required fields (name, description, and URL), a tool
-has a number of classifier tags.  Out of the box, these fields are:
+has a number of classifier tags.  These fields are:
 
 * usage: what the tool is for
-* type: is the tool a particular definative kind of software such as an addon?
-* language: which computer languages the tool is written in
+* type: is the tool a particular kind of software such as an addon or a script?
+* language: which programming language the tool is written in
 * author: who wrote and/or maintains the software?
 
 You can freely add and remove classifiers for each project.
@@ -71,19 +68,11 @@ Autocomplete is enabled to help you find the classifier you want.
 TODO
 ----
 
-Toolbox features a fairly free form data format (a few required fields
-and an arbitrary number of classifiers). While this is a conceptually
-simplistic base, there is much that can be done with it! Several
-improvements are listed below:
+There is much more that we plan to add to Toolbox:
 
-* add scrapers for hosted tools:
-  * setup.py 
-  * AMO 
-  * mozdev 
-* allow projects to point to a setup.py or AMO URL
+* add scrapers for hosted tools
+* allow projects to point to a setup.py or AMO URL to be scraped
 * URLs in the description should be made links
-* calendar view for projects
-* make the /tags view useful
 * make fields computationable
 * integrate author with community phonebook (and bugzilla id)
 * the first time someone edits a description (etc.) from a pointed-to

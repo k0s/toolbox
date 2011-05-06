@@ -125,8 +125,8 @@ Add a third project, just for variety::
     >>> projects = app.get('/')
     >>> len(projects)
     3
-    >>> [i['name'] for i in app.get('/', params=dict(q='downtown'))]
-    [u'fleem', u'bar']
+    >>> sorted([i['name'] for i in app.get('/', params=dict(q='downtown'))])
+    [u'bar', u'fleem']
     >>> [i['name'] for i in app.get('/', params=dict(q='building'))]
     [u'fleem']
     
