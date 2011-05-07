@@ -19,10 +19,11 @@ $(document).ready(function(){
         });
 
         // make the name and url editable
+        var UEB = '<img class="UEB" src="img/UEB16.png"/>'; // universal edit button
         function nameHover(eventObject) {
-           var img = $('<img class="UEB" src="img/UEB16.png"/>');
-           $(this).append(img);
            var header = this;
+           var img = $(this).find('img.UEB');
+           $(img).css('visibility', 'visible');
            $(img).click(function() {
                var link = $(header).children('a');
                var text = $(link).html();
@@ -44,15 +45,26 @@ $(document).ready(function(){
                $(form).find('input[type=text]').focus();
                });
         }
-        $(this).find('h1').hover(nameHover,
-                                 function(eventObject) { $(this).children('img.UEB').remove(); });
+        var header = $(this).find('h1');
+        $(header).append(UEB);
+        //        $(header).each('img.UEB', function() {$(this).css('visibility', 'hidden'); });
+        //        $(header).hover(nameHover,
+        //                        function(eventObject) { $(this).children('img.UEB').css('visibility', 'hidden'); });
+
+        //        $(this).find('h1')
+        //            .append(UEB)
+        //            .each('img.UEB', function() {$(this).css('visibility', 'hidden'); })
+        //            .hover(nameHover,
+        //                   function(eventObject) { $(this).children('img.UEB').css('visibility', 'hidden'); });
         $(this).find('a.home').each(function() {
                 var home = this;
                 $(this).wrap('<span/>');
                 var wrapper = $(this).parent();
+                var img = $('<img class="UEB" src="img/UEB16.png"/>');
+                $(wrapper).append(img);
+                img.css('visibility', 'hidden');
                 function urlHover(eventObject) {
-                    var img = $('<img class="UEB" src="img/UEB16.png"/>');
-                    $(this).append(img);
+                    var img = $(this).find('img.UEB');
                     $(img).click(function() {
                         var link = $(home).attr('href');
                         var size = link.length;
@@ -92,7 +104,7 @@ $(document).ready(function(){
                         $(input).focus();
                         });
                 }
-                wrapper.hover(urlHover, function(eventObject) { $(this).children('img.UEB').remove(); });
+                wrapper.hover(urlHover, function(eventObject) { $(this).children('img.UEB').css('visibility', 'hidden'); });
             });
 
         // autocomplete
