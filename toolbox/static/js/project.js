@@ -7,6 +7,19 @@ $(document).ready(function(){
         var project = $(this).attr('id');
         var url = project; // TODO: urlquote
 
+        // add a delete link
+        var deletelink = $('<a class="delete" title="delete this tool">Delete</a>');
+        $(this).click(function() {
+                if(confirm("Permanantly remove tool: " + project + " ?")) {
+                    $('<form class="delete" action="delete" method="POST"><button type="submit" name="project" value="{{project['name']}}"></button></form>').submit();
+        Delete
+      </button>
+    </form>
+    
+                }
+            });
+        $(this).append(deletelink);
+
         // make description editable with jeditable
         $(this).find('p.description').editable(url, {
           'type': 'textarea',
