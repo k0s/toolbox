@@ -32,9 +32,9 @@ $(document).ready(function(){
                $(form).css('display', 'block');
                $(header).replaceWith(form);
                $(form).find('button.cancel').click(function(){
-                   $(header).find('img.UEB').remove();
+                   $(header).find('img.UEB').css('visibility', 'hidden');
                    $(header).hover(nameHover,
-                                   function(eventObject) { $(this).children('img.UEB').remove(); });
+                                   function(eventObject) { $(this).children('img.UEB').css('visibility', 'hidden'); });
                    $(form).replaceWith(header);
                    });
                $(form).find('input[type=text]').keypress(function(event) {
@@ -47,9 +47,9 @@ $(document).ready(function(){
         }
         var header = $(this).find('h1');
         $(header).append(UEB);
-        //        $(header).each('img.UEB', function() {$(this).css('visibility', 'hidden'); });
-        //        $(header).hover(nameHover,
-        //                        function(eventObject) { $(this).children('img.UEB').css('visibility', 'hidden'); });
+        $(header).find('img.UEB').each(function() {$(this).css('visibility', 'hidden'); });
+        $(header).hover(nameHover,
+                        function(eventObject) { $(this).children('img.UEB').css('visibility', 'hidden'); });
 
         //        $(this).find('h1')
         //            .append(UEB)
