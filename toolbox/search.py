@@ -4,6 +4,7 @@ import tempfile
 
 from whoosh import fields
 from whoosh import index
+from whoosh.query import And
 from whoosh.query import Or
 from whoosh.query import Term
 #from whoosh import store
@@ -70,12 +71,17 @@ class WhooshSearch(object):
 
 
         # New code: too permissive
-        extendedquery = [myquery]
+#        extendedquery = [myquery]
         excluded = set(['AND', 'OR', 'NOT'])
         terms = [i for i in query.split() if i not in excluded]
-        for field in self.keywords:
-            extendedquery.extend([Term(field, term) for term in terms])
-        extendedquery = Or(extendedquery)
+#        for field in self.keywords:
+#            extendedquery.extend([Term(field, term) for term in terms])
+#        extendedquery = Or(extendedquery)
+
+        # Code should look something like
+        #Or([myquery] + [Or(
+        # extendedquery = [myquery]
+        extendedquery = And([Or([myquery] + [Term('description', term)] + [Term(field, term) for field in self.keywords]) for term in terms])
 
         # perform the search
         searcher = self.ix.searcher()
