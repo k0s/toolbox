@@ -11,11 +11,7 @@ $(document).ready(function(){
         var deletelink = $('<a class="delete" title="delete this tool">Delete</a>');
         $(this).click(function() {
                 if(confirm("Permanantly remove tool: " + project + " ?")) {
-                    $('<form class="delete" action="delete" method="POST"><button type="submit" name="project" value="{{project['name']}}"></button></form>').submit();
-        Delete
-      </button>
-    </form>
-    
+                    $('<form class="delete" action="delete" method="POST"><button type="submit" name="project" value="' + project + '"></button></form>').submit();
                 }
             });
         $(this).append(deletelink);
