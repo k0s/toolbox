@@ -30,7 +30,7 @@ $(document).ready(function(){
         });
 
         // make the name and url editable
-        var UEB = '<img class="UEB" src="img/UEB16.png"/>'; // universal edit button
+        var UEB = '<img class="UEB" src="img/UEB16.png" alt="click to edit" title="click to edit"/>'; // universal edit button
         function nameHover(eventObject) {
            var header = this;
            var img = $(this).find('img.UEB');
