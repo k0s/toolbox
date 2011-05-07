@@ -9,9 +9,11 @@ $(document).ready(function(){
 
         // add a delete link
         var deletelink = $('<a class="delete" title="delete this tool">Delete</a>');
-        $(this).click(function() {
+        $(deletelink).click(function() {
                 if(confirm("Permanantly remove tool: " + project + " ?")) {
-                    $('<form class="delete" action="delete" method="POST"><button type="submit" name="project" value="' + project + '"></button></form>').submit();
+                    var form = $('<form class="delete" action="delete" method="POST"><button type="submit" name="project" value="' + project + '"></button></form>');
+                    $(this).after(form);
+                    $(form).submit();
                 }
             });
         $(this).append(deletelink);
