@@ -50,21 +50,16 @@ $(document).ready(function(){
         $(header).find('img.UEB').each(function() {$(this).css('visibility', 'hidden'); });
         $(header).hover(nameHover,
                         function(eventObject) { $(this).children('img.UEB').css('visibility', 'hidden'); });
-
-        //        $(this).find('h1')
-        //            .append(UEB)
-        //            .each('img.UEB', function() {$(this).css('visibility', 'hidden'); })
-        //            .hover(nameHover,
-        //                   function(eventObject) { $(this).children('img.UEB').css('visibility', 'hidden'); });
         $(this).find('a.home').each(function() {
                 var home = this;
                 $(this).wrap('<span/>');
                 var wrapper = $(this).parent();
-                var img = $('<img class="UEB" src="img/UEB16.png"/>');
+                var img = $(UEB);
                 $(wrapper).append(img);
                 img.css('visibility', 'hidden');
                 function urlHover(eventObject) {
                     var img = $(this).find('img.UEB');
+                    $(img).css('visibility', 'visible');
                     $(img).click(function() {
                         var link = $(home).attr('href');
                         var size = link.length;
@@ -84,14 +79,14 @@ $(document).ready(function(){
                                     var a = $(wrapper).children('a');
                                     a.attr('href', newlink);
                                     a.html(newlink);
-                                    $(wrapper).children('img.UEB').remove();
-                                    wrapper.hover(urlHover, function(eventObject) { $(this).children('img.UEB').remove(); });
+                                    $(wrapper).children('img.UEB').css('visibility', 'hidden');
+                                    wrapper.hover(urlHover, function(eventObject) { $(this).children('img.UEB').css('visibility', 'hidden'); });
                                     $(that).replaceWith(wrapper);
                                     });
                             }
                             else {
-                                $(wrapper).children('img.UEB').remove();
-                                wrapper.hover(urlHover, function(eventObject) { $(this).children('img.UEB').remove(); });
+                                $(wrapper).children('img.UEB').css('visibility', 'hidden');
+                                wrapper.hover(urlHover, function(eventObject) { $(this).children('img.UEB').css('visibility', 'hidden'); });
                                 $(this).replaceWith(wrapper);
                             }
                         }
