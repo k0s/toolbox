@@ -71,7 +71,7 @@ class ProjectsModel(object):
         for project in self.get():
             other.update(project)
 
-    def rename_field(self, field, from_value, to_value):
+    def rename_field_value(self, field, from_value, to_value):
         projects = self.get(None, **{field: from_value})
         for project in projects:
             project[field].remove(from_value)

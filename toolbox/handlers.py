@@ -300,6 +300,7 @@ class FieldView(ProjectsView):
     """view of projects sorted by a field"""
 
     template = 'fields.html'
+    methods=set(['GET', 'POST'])
 
     @classmethod
     def match(cls, app, request):
@@ -332,6 +333,15 @@ class FieldView(ProjectsView):
         self.data['projects'] = projects
         self.data['title'] = 'Tools by %s' % field
 
+
+    def Post(self):
+        field = self.data['field']
+        for key in self.request.POST.iterkeys():
+            value = self.request.POST[key]
+            self.app.model.rename_field_value(field, key, value)
+        
+        return self.redirect('/' + field)
+        
         
 class CreateProjectView(TempitaHandler):
     """view to create a new project"""

@@ -235,3 +235,11 @@ field::
    >>> response = app.post('/star', params={'action': 'replace', 'author': 'Sinatra,Sinatra'})
    >>> app.get('/star')['author']
    [u'Sinatra']
+
+You can rename an entire set of fields::
+
+   >>> [project['type'] for project in app.get('/')]
+   [[u'song'], [u'song']]
+   >>> response = app.post('/type', params={'song': 'number one hit'})
+   >>> [project['type'] for project in app.get('/')]
+   [[u'number one hit'], [u'number one hit']]
