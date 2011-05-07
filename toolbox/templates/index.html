@@ -35,7 +35,7 @@
             <div class="field-none field-value">none</div>
           {{else}}
           <ul class="field-values field-value">
-            {{for entry in project[field]}}
+            {{for entry in sorted(project[field], key=lambda x: x.lower())}}
               <li class="field-value-item">
                <a href="./?{{field}}={{entry}}" title="tools with {{field}}={{entry}}">{{entry}}</a>
               </li>
