@@ -420,7 +420,7 @@ class DeleteProjectHandler(Handler):
     methods = set(['POST'])
     handler_path = ['delete']
 
-    def Post(self):
+    def Post(self):        
         post_data = self.post_data()
         project = post_data.get('project')
         if project:
