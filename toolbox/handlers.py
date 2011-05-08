@@ -301,6 +301,7 @@ class FieldView(ProjectsView):
 
     template = 'fields.html'
     methods=set(['GET', 'POST'])
+    js = TempitaHandler.js[:] + ['js/field.js']
 
     @classmethod
     def match(cls, app, request):
