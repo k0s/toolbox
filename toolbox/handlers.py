@@ -331,9 +331,16 @@ class FieldView(ProjectsView):
         if projects is None:
             projects = {}
         self.data['field'] = field
-        self.data['projects'] = projects
+        self.data['values'] = projects
         self.data['title'] = 'Tools by %s' % field
-
+        if self.request.method == 'GET':
+            # get project descriptions for tooltips
+            descriptions = {}
+            project_set = set()
+            for values in projects.values():
+                project_set.update(values)
+            self.data['projects'] = dict([(name, self.app.model.project(name))
+                                          for name in project_set])
 
     def Post(self):
         field = self.data['field']

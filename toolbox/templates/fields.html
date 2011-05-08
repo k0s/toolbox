@@ -1,11 +1,11 @@
 <h1 id="title">Tools by <span id="field-name">{{field}}</span></h1>
 
-{{for key in sorted(projects.keys(), key=lambda x: x.lower())}}
-<div class="field" id="{{key}}"><a name="{{key}}"></a>
-<h2><a href="./?{{field}}={{key}}">{{key}}</a></h2>
+{{for value in sorted(values.keys(), key=lambda x: x.lower())}}
+<div class="field" id="{{value}}"><a name="{{value}}"></a>
+<h2><a href="./?{{field}}={{value}}">{{value}}</a></h2>
 <ul>
-  {{for project in sorted(projects[key])}}
-  <li><a href="{{project}}">{{project}}</a></li>
+  {{for project in sorted(values[value])}}
+  <li><a href="{{project}}" title="{{projects[project]['description']}}">{{project}}</a></li>
   {{endfor}}
 </ul>
 </div>
