@@ -184,16 +184,27 @@ class QueryView(ProjectsView):
 
     def __init__(self, app, request):
         ProjectsView.__init__(self, app, request)
-        sort_type = self.request.GET.pop('sort', '-modified')
-        self.data['sort_type'] = sort_type
         query = self.request.GET.mixed()
+
+        # pop non-query parameters
         search = query.pop('q', None)
+        sort_type = query.pop('sort', None)
+
+        # query for tools
         self.data['projects']= self.app.model.get(search, **query)
-        if search:
-            self.data['sort_type'] = 'search'
-        else:
+
+        # order the results
+        if sort_type is None:
+            if search:
+                sort_type = 'search'
+            else:
+                # default
+                sort_type = '-modified'
+        self.data['sort_type'] = sort_type
+        if sort_type != 'search':
             # preserve search order results 
             self.sort(sort_type)
+            
         self.data['fields'] = self.app.model.fields()
         self.data['title'] = 'Toolbox'
 
