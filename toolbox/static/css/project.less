@@ -111,26 +111,25 @@ margin-left: 0.5em;
 #sort-legend {
  color: black;
  font-size: small;
+ margin-right: 0.5em;
 }
 
 #sort-order { 
  float: right;
  ul {
- float: left;
- display: inline;
- li {
- float: left;
- &:after {
- content: "|";
- }        
- }
- &:last-child {
- &after { content: ""; }
- }             
- &:first-child {
- &:before {
-/* content: "sort by "; */
- }
- }
+    float: left;
+    display: inline;
+    li {
+       float: left;
+       &:after {
+       content: "|";
+       }        
+       &:last-child {
+       &:after { content: none; }
+       }             
+       &:first-child {
+       &:before { /* content: "sort by "; */ }
+       }
+    }
  }
 }

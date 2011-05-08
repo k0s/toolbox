@@ -2,18 +2,18 @@
 <nav id="sort-order">
   <ul>
     {{if 'q' in request.GET}}
-    <li><span id="search-type">search rank</span></li>
+    <li><span id="search-type" title="sorted by search rank">search rank</span></li>
     {{endif}}
     <li>
       {{if sort_type == 'name'}}
-      <span id="search_type">name</span>
+      <span id="search_type" title="sorted by name">name</span>
       {{else}}
       <a href="?sort=name" title="sort by name">name</a>
       {{endif}}
     </li>
     <li>
       {{if sort_type == '-modified'}}
-      <span id="search_type">last updated</span>
+      <span id="search_type" title="sorted by last updated">last updated</span>
       {{else}}
       <a href="?sort=-modified" title="sort by last updated">last updated</a>
       {{endif}}
