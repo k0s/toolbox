@@ -133,8 +133,10 @@ class MemoryCache(ProjectsModel):
         else:
             fields = self._fields
         for field in fields:
-            for _set in self.index.get(field, {}).values():
+            for key, _set in self.index.get(field, {}).items():
                 _set.discard(project['name'])
+                if not _set:
+                    self.index[field].pop(key)
             if field not in project:
                 continue
             project[field] = list(set(project[field]))
