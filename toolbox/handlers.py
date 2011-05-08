@@ -368,6 +368,8 @@ class FieldView(ProjectsView):
         
         return self.redirect('/' + field + '#' + value)
         
+    def get_json(self):
+        return self.data['values']
         
 class CreateProjectView(TempitaHandler):
     """view to create a new project"""
