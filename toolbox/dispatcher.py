@@ -12,6 +12,7 @@ from handlers import ProjectView
 from handlers import QueryView
 from handlers import TagsView
 from handlers import AboutView
+from handlers import NotFound
 
 from model import models
 from util import strsplit
@@ -102,8 +103,8 @@ class Dispatcher(object):
             if handler is not None:
                 break
         else:
-            # TODO: our own 404 handler with a menu
-            handler = exc.HTTPNotFound
+            # our 404 handler
+            handler = NotFound(self, request)
 
         # get response
         res = handler()

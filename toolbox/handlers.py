@@ -524,3 +524,14 @@ class AboutView(TempitaHandler):
         self.data['fields'] = self.app.model.fields()
         self.data['title'] = 'about:toolbox'
         self.data['about'] = self.app.about
+
+class NotFound(TempitaHandler):
+    def __init__(self, app, request):
+        TempitaHandler.__init__(self, app, request)
+        self.data['fields'] = self.app.model.fields()
+
+    def __call__(self):
+        self.data['content'] = '<h1 id="title">Not Found</h1>'
+        return Response(content_type='text/html',
+                        status=404,
+                        body=self.render('main.html', **self.data))
