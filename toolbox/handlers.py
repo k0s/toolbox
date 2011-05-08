@@ -341,7 +341,7 @@ class FieldView(ProjectsView):
             value = self.request.POST[key]
             self.app.model.rename_field_value(field, key, value)
         
-        return self.redirect('/' + field)
+        return self.redirect('/' + field + '#' + value)
         
         
 class CreateProjectView(TempitaHandler):
