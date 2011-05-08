@@ -16,7 +16,9 @@ $(document).ready(function(){
                 var submitHandler = function () {
                     var newvalue = $(this).val();
                     if (newvalue != value) {
-                        $('<form method="POST"><input type="text" name="' + value + '" value="' + newvalue + '"/></form>').submit();
+                        form = $('<form method="POST"><input name="' + value + '" value="' + newvalue + '"/></form>').submit();
+                        $(this).after(form);
+                        $(form).submit();
                     }
                     $(this).blur(function() {});
                     $(this).replaceWith(header);
