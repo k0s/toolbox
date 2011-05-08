@@ -16,9 +16,11 @@ $(document).ready(function(){
                 var submitHandler = function () {
                     var newvalue = $(this).val();
                     if (newvalue != value) {
-                        form = $('<form method="POST"><input name="' + value + '" value="' + newvalue + '"/></form>').submit();
+                        form = $('<form method="POST"><input type="hidden" name="' + value + '" value="' + newvalue + '"/></form>').submit();
                         $(this).after(form);
                         $(form).submit();
+                        $(this).replaceWith('<img class="throbber" src="img/indicator.gif"/>');
+                        return;
                     }
                     $(this).blur(function() {});
                     $(this).replaceWith(header);
