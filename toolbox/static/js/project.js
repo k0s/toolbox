@@ -2,6 +2,9 @@ $(document).ready(function(){
     $(".date").timeago();
     $(".field-edit").hide();
 
+    // insert helper text for sort navigation
+    $("#sort-order li:first-child").prepend('<span id="sort-legend">sort by </span>')
+
     // modify project div
     $('div.project').each(function(){
         var project = $(this).attr('id');

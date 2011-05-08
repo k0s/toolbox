@@ -185,10 +185,13 @@ class QueryView(ProjectsView):
     def __init__(self, app, request):
         ProjectsView.__init__(self, app, request)
         sort_type = self.request.GET.pop('sort', '-modified')
+        self.data['sort_type'] = sort_type
         query = self.request.GET.mixed()
         search = query.pop('q', None)
         self.data['projects']= self.app.model.get(search, **query)
-        if not search:
+        if search:
+            self.data['sort_type'] = 'search'
+        else:
             # preserve search order results 
             self.sort(sort_type)
         self.data['fields'] = self.app.model.fields()

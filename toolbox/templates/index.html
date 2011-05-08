@@ -1,4 +1,28 @@
 {{if len(projects) > 1}}
+<nav id="sort-order">
+  <ul>
+    {{if 'q' in request.GET}}
+    <li><span id="search-type">search rank</span></li>
+    {{endif}}
+    <li>
+      {{if sort_type == 'name'}}
+      <span id="search_type">name</span>
+      {{else}}
+      <a href="?sort=name" title="sort by name">name</a>
+      {{endif}}
+    </li>
+    <li>
+      {{if sort_type == '-modified'}}
+      <span id="search_type">last updated</span>
+      {{else}}
+      <a href="?sort=-modified" title="sort by last updated">last updated</a>
+      {{endif}}
+    </li>
+  </ul>
+</nav>
+{{endif}}
+
+{{if len(projects) > 1}}
 <h1 id="title">{{len(projects)}} tools</h1>
 {{endif}}
 {{if not len(projects)}}
