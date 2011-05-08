@@ -1,23 +1,15 @@
 {{if len(projects) > 1}}
 <nav id="sort-order">
   <ul>
-    {{if 'q' in request.GET}}
-    <li><span id="search-type" title="sorted by search rank">search rank</span></li>
-    {{endif}}
+    {{for sort_link, sort_description in sort_types}}
     <li>
-      {{if sort_type == 'name'}}
-      <span id="search_type" title="sorted by name">name</span>
+      {{if sort_type == sort_link}}
+      <span id="search-type" title="sorted by {{sort_description}}">{{sort_description}}</span>
       {{else}}
-      <a href="?sort=name" title="sort by name">name</a>
+      <a href="?{{if request.query_string}}{{request.query_string + '&'}}{{endif}}sort={{sort_link}}" title="sort by {{sort_description}}">{{sort_description}}</a>
       {{endif}}
     </li>
-    <li>
-      {{if sort_type == '-modified'}}
-      <span id="search_type" title="sorted by last updated">last updated</span>
-      {{else}}
-      <a href="?sort=-modified" title="sort by last updated">last updated</a>
-      {{endif}}
-    </li>
+    {{endfor}}
   </ul>
 </nav>
 {{endif}}
