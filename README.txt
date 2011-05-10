@@ -390,6 +390,29 @@ Each function should live in its own module::
   templates
 
 
+URLs
+----
+
+A more RESTful proposed URL schema:
+
+/{{project}}
+* PUT: replace the project
+* GET: return the project
+* POST: update the project
+* DELETE: remove the project
+
+/{{project}}/{{field}}
+* PUT: replace all field values
+* POST: for lists, add field values
+* GET: return field value(s)
+
+/{{project}}/{{field}}/{{value}}
+* DELETE: remove value from a list field
+
+/{{field}}
+* POST: rename a field value: /{{field}}?jahml=jhammel
+* should also take a description
+
 Use Cases
 ---------
 
