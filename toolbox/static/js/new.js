@@ -7,9 +7,7 @@ $(document).ready(function(){
             theme: 'facebook',
             submitOnEnter: false,
             closeOnBlur: true,
-            hintText: false,
-            onSubmit: function() {
-            }
+            hintText: false
         });
     });
     $("input[name=name]").focus();

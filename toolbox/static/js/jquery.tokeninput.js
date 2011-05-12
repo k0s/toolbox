@@ -344,6 +344,12 @@ $.TokenList = function (input, url_or_data, settings) {
                 $(document).unbind(event);            
               }
               else if(settings.closeOnBlur) {
+                var val = hidden_input.val();
+                if(val && input_box.val())
+                  val += ",";
+                val += input_box.val();                
+                hidden_input.val(val);    
+            
                 hide_dropdown();
               }
           }
