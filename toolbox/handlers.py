@@ -54,7 +54,7 @@ class Handler(object):
         return getattr(self, self.request.method.title())()
 
     def redirect(self, location):
-        return exc.HTTPSeeOther(location=location)
+        return exc.HTTPSeeOther(location=quote(location))
 
     def query_string(self, query):
         """
