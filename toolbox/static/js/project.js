@@ -8,7 +8,7 @@ $(document).ready(function(){
     // modify project div
     $('div.project').each(function(){
         var project = $(this).attr('id');
-        var url = project; // TODO: urlquote
+        var url = escape(project); // urlquote
 
         // add a delete link
         var deletelink = $('<a class="delete" title="delete this tool">Delete</a>');
