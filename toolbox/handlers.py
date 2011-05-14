@@ -7,6 +7,7 @@ import cgi
 import os
 from datetime import datetime
 from pkg_resources import resource_filename
+from urllib import quote
 from urlparse import urlparse
 from util import strsplit
 from util import JSONEncoder
@@ -106,7 +107,8 @@ class TempitaHandler(Handler):
                       'less': self.less,
                       'js':  self.js,
                       'title': self.__class__.__name__,
-                      'hasAbout': bool(app.about)}
+                      'hasAbout': bool(app.about),
+                      'urlescape': quote }
 
     def find_template(self, template):
         """find a template of a given name"""
