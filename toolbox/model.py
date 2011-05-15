@@ -176,7 +176,8 @@ class MemoryCache(ProjectsModel):
             return deepcopy(self._projects[name])
 
     def field_query(self, field):
-        return self.index.get(field)
+        if field in self.index:
+            return deepcopy(self.index.get(field))
 
     def delete(self, project):
         """
@@ -186,11 +187,11 @@ class MemoryCache(ProjectsModel):
         if project not in self._projects:
             return
         del self._projects[project]
-        for key, value in self.index.items():
-            if project in value:
-                if len(value) == 1:
-                    self._fields.pop(key)
-                value.pop(project)
+        for field, classifiers in self.index.items():
+            for key, values in classifiers.items():
+                classifiers[key].discard(project)
+                if not classifiers[key]:
+                    del classifiers[key]
         self.search.delete(project)
         
     def load(self):

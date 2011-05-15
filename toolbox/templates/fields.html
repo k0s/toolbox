@@ -5,7 +5,7 @@
 <h2><a href="./?{{field}}={{value}}">{{value}}</a></h2>
 <ul>
   {{for project in sorted(values[value])}}
-  <li><a href="{{project}}" title="{{projects[project]['description']}}">{{project}}</a></li>
+  <li><a href="{{urlescape(project)}}" title="{{projects[project]['description']}}">{{project}}</a></li>
   {{endfor}}
 </ul>
 </div>
