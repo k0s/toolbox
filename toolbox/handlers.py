@@ -53,8 +53,8 @@ class Handler(object):
     def __call__(self):
         return getattr(self, self.request.method.title())()
 
-    def redirect(self, location):
-        return exc.HTTPSeeOther(location=quote(location))
+    def redirect(self, location, query=None):
+        return exc.HTTPSeeOther(location=quote(location) + (query and self.query_string(query) or ''))
 
     def query_string(self, query):
         """
@@ -440,8 +440,7 @@ class CreateProjectView(TempitaHandler):
             for key in errors:
                 # flatten the error dict into a list
                 error_list.extend([(key, i) for i in errors[key]])
-            location = self.request.path_info.strip('/') + self.query_string(error_list)
-            return self.redirect(location)
+            return self.redirect(self.request.path_info.strip('/'), error_list)
 
         # add fields to the project
         for field in self.app.model.fields():

@@ -36,8 +36,12 @@ $(document).ready(function(){
     // add the form to the DOM
     $(form).append(table);
     $(form).append('<input id="submit-new-tool" class="submit button" type="submit" value="Add it!"/>');
+    $(form).submit(function() {
+        // TODO: add submit guard
+        return true;
+    });
     $('#new-container').append(form);
-    // TODO: add submit guards
+
 
     // add autocomplete
     $('input.field-input').each(function(index) {
