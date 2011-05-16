@@ -381,6 +381,7 @@ class CreateProjectView(TempitaHandler):
     handler_path = ['new']
     js = TempitaHandler.js[:]
     js.extend(['js/jquery.tokeninput.js',
+               'js/queryString.js',
                'js/new.js'])
                
     less = TempitaHandler.less[:]
@@ -395,27 +396,16 @@ class CreateProjectView(TempitaHandler):
         self.data['title'] = 'Add a tool'
         self.data['fields'] = self.app.model.fields()
 
-        # deal with errors, currently badly contracted in query string
-        self.data['errors'] = {}
-        for field in self.request.GET.getall('missing'):
-            self.data['errors'].setdefault(field, []).append('Required')
-        if 'conflict' in self.request.GET:
-            self.data['errors'].setdefault('name', []).append(self.check_name(self.request.GET['conflict']))
-
     def check_name(self, name):
         """
         checks a project name for validity
         returns None on success or an error message if invalid
         """
         reserved = self.app.reserved.copy()
-        reserved_msg = "'%s' conflicts with a reserved URL" % name
-        if name in reserved: # check application-level reserved URLS
-            return reserved_msg
-        if name in self.app.model.fields(): # check field URLs (XXX incestuous)
-            return reserved_msg
-
+        if name in reserved or name in self.app.model.fields(): # check application-level reserved URLS
+            return 'reserved'
         if self.app.model.project(name): # check projects for conflict
-            return '<a href="%s">%s</a> already exists' % (name, name)
+            return 'conflict'
 
     def Post(self):
 
@@ -434,9 +424,9 @@ class CreateProjectView(TempitaHandler):
         # and other url namespace collisions
         name_conflict = self.check_name(project['name'])
         if name_conflict:
-            errors['conflict'] = [project['name']]
+            errors[name_conflict] = [project['name']]
         if errors:
-            error_list = [] 
+            error_list = []
             for key in errors:
                 # flatten the error dict into a list
                 error_list.extend([(key, i) for i in errors[key]])
