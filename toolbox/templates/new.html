@@ -1,45 +1,4 @@
 <div id="new-container">
   <h1 id="title">Add a tool</h1>
-  <form id="new" method="post">
-    <!-- required fields -->
-    <table>
-    {{for field in ['name', 'description', 'url']}}
-      <tr>
-        <td for="{{field}}"
-          class="field-name">{{field}}</td>
-        <td>
-          {{if field == 'description'}}
-          <textarea name="description"></textarea>
-          {{else}}
-          <input type="text" name="{{field}}"/>
-          {{endif}}
-        </td>
-        {{if field in errors}}
-         <td>
-         <ul class="error">
-           {{for error in errors[field]}}
-           <li>{{error| html}}</li>
-           {{endfor}}
-         </ul>
-         </td>
-        {{endif}}
-      </tr>
-    {{endfor}}
-
-    {{for field in fields}}
-    <tr>
-      <td for="{{field}}" class="field-name">{{field.title()}} </td>
-      <td class="{{field}}">
-        <input class="field-input" type="text" name="{{field}}"/>
-      </td>
-    </tr>
-    {{endfor}}
-    <tr>
-      <td></td>
-      <td>
-        <input id="submit-new-tool" class="submit button" type="submit" value="Add it!"/>
-      </td>      
-    </tr>
-    </table>
-  </form>
+  <!-- form from JS -->
 </div>
