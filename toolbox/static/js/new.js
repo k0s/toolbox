@@ -12,7 +12,9 @@ $(document).ready(function(){
         return 'Conflicts with a reserved URL';
     }
     function errorConflict() {
-        return 'Tool already exists';
+        tool = query['conflict'][0];
+        retval = 'Tool already exists: <a href="' + escape(tool) + '">' + tool + '</a>';
+        return retval;
         //             return '<a href="%s">%s</a> already exists' % (name, name)
     }
     var queryStringErrors = {'missing': errorMissing,
