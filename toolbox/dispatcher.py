@@ -27,6 +27,7 @@ class Dispatcher(object):
     defaults = { 'about': None, # file path to ReST about page
                  'model_type': 'memory_cache', # type of model to use
                  'handlers': None,
+                 'reload': True,
                  'reserved': None, # reserved URL namespaces
                  'template_dir': None, # directory for template overrides
                  }
@@ -40,6 +41,10 @@ class Dispatcher(object):
         # set instance parameters from kw and defaults
         for key in self.defaults:
             setattr(self, key, kw.pop(key, self.defaults[key]))
+
+        # should templates be reloaded?
+        if isinstance(self.reload, basestring):
+            self.reload = self.reload.lower() == 'true'
 
         # model: backend storage and associated methods
         if 'fields' in kw and isinstance(kw['fields'], basestring):

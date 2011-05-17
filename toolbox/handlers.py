@@ -87,6 +87,8 @@ class TempitaHandler(Handler):
 
     template_dirs = [ resource_filename(__name__, 'templates') ]
 
+    template_cache = {}
+
     css = ['css/html5boilerplate.css']
 
     less = ['css/style.less']
@@ -111,15 +113,19 @@ class TempitaHandler(Handler):
                       'hasAbout': bool(app.about),
                       'urlescape': quote }
 
-    def find_template(self, template):
+    def find_template(self, name):
         """find a template of a given name"""
-        # TODO: make this faster; the application should probably cache
-        # a dict of the (loaded) templates unless app.reload is specified
+        # the application caches a dict of the templates if app.reload is False
+        if name in self.template_cache:
+            return self.template_cache[name]
         
         for d in self.template_dirs:
-            path = os.path.join(d, template)
+            path = os.path.join(d, name)
             if os.path.exists(path):
-                return HTMLTemplate.from_filename(path)
+                template = HTMLTemplate.from_filename(path)
+                if self.app.reload:
+                    self.template_cache[name] = template
+                return template
 
     def render(self, template, **data):
         template = self.find_template(template)
