@@ -12,7 +12,7 @@ $(document).ready(function(){
         return 'Conflicts with a reserved URL';
     }
     function errorConflict() {
-        return 'Project already exists';
+        return 'Tool already exists';
         //             return '<a href="%s">%s</a> already exists' % (name, name)
     }
     var queryStringErrors = {'missing': errorMissing,
@@ -29,8 +29,14 @@ $(document).ready(function(){
         var errors = $('<ul class="error"></ul>');
         for (var key in query) {
             var error = queryStringErrors[key];
-            if(error && (jQuery.inArray(fieldName, query[key]) != -1)) {
-                errors.append('<li>' + error() + '</li>');
+            if(error) {
+                if (jQuery.inArray(fieldName, query[key]) != -1) {
+                    errors.append('<li>' + error() + '</li>');
+                }
+                // name-specific errors
+                if ((key != 'missing') && (fieldName == 'name')) {
+                    errors.append('<li>' + error() + '</li>');
+                }
             }
         }
         var cell = $('<td></td>');
