@@ -1,8 +1,22 @@
 @greyed: #999;
 @greyed-out: #aaa;
 
+.query {
+  font-size: 65%;
+  font-weight: normal;
+}
+
+.query-value {
+  font-weight: bold;
+}
+
+.query-search {
+  &:before, &:after {
+    content: '"';
+  }
+}
+
 .project {
-  
   .description {
     margin-top: .2em;
   }
@@ -17,7 +31,7 @@
   float: right;
 
   &:before {
-  content: "updated ";
+    content: "updated ";
   }
 }
 

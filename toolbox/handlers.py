@@ -192,7 +192,9 @@ class QueryView(ProjectsView):
         # sort is popped first so that it does go in the query
         sort_type = self.request.GET.pop('sort', None)
         query = self.request.GET.mixed()
+        self.data['query'] = query
         search = query.pop('q', None)
+        self.data['search'] = search
 
         # query for tools
         self.data['projects']= self.app.model.get(search, **query)

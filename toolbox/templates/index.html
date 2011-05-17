@@ -15,7 +15,24 @@
 {{endif}}
 
 {{if len(projects) > 1}}
-<h1 id="title">{{len(projects)}} tools</h1>
+<h1 id="title">{{len(projects)}} tools
+<span class="query">
+{{if search}}
+  matching <span class="query-value query-search">{{search}}</span>
+{{endif}}
+{{for loop, key_value in looper(query.items())}}
+  {{if loop.first}} with {{endif}}
+  {{py:key, value = key_value}}
+  <span class="query-item">
+    <span class="query-key">{{key}}</span>
+    <span class="query-value">{{value}}</span>
+  </span>
+  {{if not loop.last}}
+    and
+  {{endif}}
+{{endfor}}
+</span>
+</h1>
 {{endif}}
 {{if not len(projects)}}
 <h1 id="title">No tools found</h1>
