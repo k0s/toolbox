@@ -114,7 +114,7 @@ class TempitaHandler(Handler):
     def find_template(self, template):
         """find a template of a given name"""
         # TODO: make this faster; the application should probably cache
-        # a dict of the (loaded) templates unless (e.g.) debug is given
+        # a dict of the (loaded) templates unless app.reload is specified
         
         for d in self.template_dirs:
             path = os.path.join(d, template)
