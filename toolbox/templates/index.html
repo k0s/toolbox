@@ -25,7 +25,7 @@
   {{py:key, value = key_value}}
   <span class="query-item">
     <span class="query-key">{{key}}</span>
-    <span class="query-value">{{value}}</span>
+    <span class="query-value">{{isinstance(value, basestring) and value or ', '.join(value)}}</span>
   </span>
   {{if not loop.last}}
     and
