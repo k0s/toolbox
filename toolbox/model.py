@@ -163,8 +163,11 @@ class MemoryCache(ProjectsModel):
         else:
             results = self._projects.keys()
         results = set(results)
-        for key, value in query.items():
-            results.intersection_update(self.index.get(key, {}).get(value, set()))
+        for key, values in query.items():
+            if isinstance(values, basestring):
+                values = [values]
+            for value in values:
+                results.intersection_update(self.index.get(key, {}).get(value, set()))
         if order:
             # preserve search order
             results = sorted(list(results), key=lambda x: order[x])
