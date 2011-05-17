@@ -65,6 +65,8 @@ $(document).ready(function(){
 
     // add the form to the DOM
     $(form).append(table);
+    var now = new Date().getTime() / 1000; // seconds
+    $(form).append('<input type="hidden" name="form-render-date" value="' + now + '"/>');
     $(form).append('<input id="submit-new-tool" class="submit button" type="submit" value="Add it!"/>');
     $(form).submit(function() {
         // submit guard
@@ -85,7 +87,6 @@ $(document).ready(function(){
         return retval;
     });
     $('#new-container').append(form);
-
 
     // add autocomplete
     $('input.field-input').each(function(index) {

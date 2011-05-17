@@ -13,6 +13,7 @@ from util import strsplit
 from util import JSONEncoder
 from webob import Response, exc
 from tempita import HTMLTemplate
+from time import time
 
 try:
     import json
@@ -412,6 +413,21 @@ class CreateProjectView(TempitaHandler):
         # get some data
         required = self.app.model.required
         post_data = self.post_data()
+
+        # ensure the form isn't over 24 hours old
+        day = 24*3600
+        form_date = post_data.pop('form-render-date', -day)
+        try:
+            form_date = float(form_date)
+        except ValueError:
+            form_date = -day
+        if abs(form_date - time()) > day:
+            # if more than a day old, don't honor the request
+            return Response(content_type='text/plain',
+                            status=400,
+                            body="Your form is over a day old or you don't have Javascript enabled")
+
+        # build up a project dict
         project = dict([(i, post_data.get(i, '').strip())
                         for i in required])
 

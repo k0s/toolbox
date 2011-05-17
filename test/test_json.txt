@@ -14,7 +14,7 @@ Also no authors::
 Make a project::
 
     >>> project = {'name': 'foo', 'description': 'foo description', 'url': 'http://example.com'}
-    >>> response = app.post('/new', params=project)
+    >>> response = app.new(**project)
     >>> response.status
     303
     >>> newproject = app.get('/')[0]
@@ -72,7 +72,7 @@ Just to show that the search is doing something::
 Now lets add another project::
     
     >>> project2 = {'name': 'bar', 'description': 'a bar downtown', 'url': 'http://www.example.com'}
-    >>> response = app.post('/new', params=project2)
+    >>> response = app.new(**project2)
     >>> projects = app.get('/')
     >>> len(projects)
     2
@@ -121,7 +121,7 @@ Add some metadata. Make sure we see it::
 
 Add a third project, just for variety::
 
-    >>> response = app.post('/new', params=dict(name='fleem', description='fleem in a building downtown', url='http://example.net'))
+    >>> response = app.new(name='fleem', description='fleem in a building downtown', url='http://example.net')
     >>> projects = app.get('/')
     >>> len(projects)
     3

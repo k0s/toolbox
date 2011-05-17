@@ -10,6 +10,7 @@ import shutil
 import sys
 from optparse import OptionParser
 from paste.fixture import TestApp
+from time import time
 from toolbox.dispatcher import Dispatcher
 
 try:
@@ -33,6 +34,10 @@ class ToolboxTestApp(TestApp):
         kwargs.setdefault('params', {})['format'] = 'json'
         response = TestApp.get(self, url, **kwargs)
         return json.loads(response.body)
+
+    def new(self, **kwargs):
+        kwargs['form-render-date'] = str(time())
+        return self.post('/new', params=kwargs)
 
     def cleanup(self):
         pass
