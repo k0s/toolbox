@@ -40,18 +40,35 @@ $(document).ready(function(){
         $(table).append(row)
     }
     function addTextInput(fieldName, isFieldInput) {
-        var input = '';
-        if (isFieldInput) {
-            input = '<input type="text" class="field-input" name="' + fieldName + '"/>';
-        } else {
-            input = '<input type="text" name="' + fieldName + '"/>';
+        var value = null;
+        if (query) { 
+            value = query[fieldName];
         }
+        var input = '<input type="text" name="' + fieldName + '"';
+        if (isFieldInput) {
+            if (value) {
+                value = value.join(", ");
+            }
+            input += ' class="field-input"'
+        } else {
+            if (value) {
+                value = value[0];
+            }
+        }
+        if (value) {
+            input += ' value="' + value + '"';
+        }
+        input += '/>';
         addRow(fieldName, input);
     }
 
     // insert mandatory data: name, description, url
     addTextInput('name', false);
-    addRow('description', '<textarea name="description"></textarea>');
+    var description = '';
+    if (query && query['description']) {
+        description = query['description'][0];
+    }
+    addRow('description', '<textarea name="description">' + description + '</textarea>');
     addTextInput('url', false);
 
     // find other fields
