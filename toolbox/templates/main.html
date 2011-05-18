@@ -21,14 +21,14 @@
   <!-- navigation menu -->
   <nav>
     <ul>
-      <li><a href="./" title="toolbox">toolbox</a></li>
+      <li><a href="./" title="{{site_name}}">{{site_name}}</a></li>
       {{if hasAbout}}
-      <li><a href="about" title="about:toolbox">about</a></li>
+      <li><a href="about" title="about:{{site_name}}">about</a></li>
       {{endif}}
-      <li><a href="new" title="add a tool">new</a></li>
+      <li><a href="new" title="add a {{item_name}}">new</a></li>
       {{for field in fields}}
       <li>
-        <a class="by-field" href="{{field}}" title="tools by {{field}}">{{field}}</a>
+        <a class="by-field" href="{{field}}" title="{{item_plural}} by {{field}}">{{field}}</a>
       </li>
       {{endfor}}
     </ul>

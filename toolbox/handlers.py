@@ -107,8 +107,11 @@ class TempitaHandler(Handler):
             
         self.data = { 'request': request,
                       'css': self.css,
+                      'item_name': self.app.item_name,
+                      'item_plural': self.app.item_plural,
                       'less': self.less,
                       'js':  self.js,
+                      'site_name': app.site_name,
                       'title': self.__class__.__name__,
                       'hasAbout': bool(app.about),
                       'urlescape': quote }
@@ -221,7 +224,7 @@ class QueryView(ProjectsView):
             self.sort(sort_type)
             
         self.data['fields'] = self.app.model.fields()
-        self.data['title'] = 'Toolbox'
+        self.data['title'] = self.app.site_name
 
 
 class ProjectView(ProjectsView):
@@ -361,7 +364,7 @@ class FieldView(ProjectsView):
             projects = {}
         self.data['field'] = field
         self.data['values'] = projects
-        self.data['title'] = 'Tools by %s' % field
+        self.data['title'] = app.item_plural + ' by %s' % field
         if self.request.method == 'GET':
             # get project descriptions for tooltips
             descriptions = {}
@@ -402,7 +405,7 @@ class CreateProjectView(TempitaHandler):
 
     def __init__(self, app, request):
         TempitaHandler.__init__(self, app, request)
-        self.data['title'] = 'Add a tool'
+        self.data['title'] = 'Add a ' + app.item_name
         self.data['fields'] = self.app.model.fields()
 
     def check_name(self, name):
@@ -537,7 +540,7 @@ class AboutView(TempitaHandler):
     def __init__(self, app, request):
         TempitaHandler.__init__(self, app, request)
         self.data['fields'] = self.app.model.fields()
-        self.data['title'] = 'about:toolbox'
+        self.data['title'] = 'about:' + self.app.site_name
         self.data['about'] = self.app.about
 
 class NotFound(TempitaHandler):

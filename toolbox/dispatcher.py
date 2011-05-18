@@ -27,9 +27,14 @@ class Dispatcher(object):
     defaults = { 'about': None, # file path to ReST about page
                  'model_type': 'memory_cache', # type of model to use
                  'handlers': None,
-                 'reload': True,
+                 'reload': True, # reload templates
                  'reserved': None, # reserved URL namespaces
                  'template_dir': None, # directory for template overrides
+
+                 # branding variables
+                 'site_name': 'toolbox', # name of the site
+                 'item_name': 'tool', # name of a single item
+                 'item_plural': None, # item_name's plural, or None for item_name + 's'
                  }
 
     def __init__(self, **kw):
@@ -41,6 +46,8 @@ class Dispatcher(object):
         # set instance parameters from kw and defaults
         for key in self.defaults:
             setattr(self, key, kw.pop(key, self.defaults[key]))
+        if self.item_plural is None:
+            self.item_plural = self.item_name + 's'
 
         # should templates be reloaded?
         if isinstance(self.reload, basestring):

@@ -11,9 +11,9 @@ $(document).ready(function(){
         var url = escape(project); // urlquote
 
         // add a delete link
-        var deletelink = $('<a class="delete" title="delete this tool">Delete</a>');
+        var deletelink = $('<a class="delete" title="permanantly remove">Delete</a>');
         $(deletelink).click(function() {
-                if(confirm("Permanantly remove tool: " + project + " ?")) {
+                if(confirm("Permanently remove: " + project + " ?")) {
                     var form = $('<form class="delete" action="delete" method="POST"><input type="hidden" name="project" value="' + project + '"/></form>');
                     $(this).after(form);
                     $(form).submit();

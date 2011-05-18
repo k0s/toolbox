@@ -13,9 +13,7 @@ $(document).ready(function(){
     }
     function errorConflict() {
         tool = query['conflict'][0];
-        retval = 'Tool already exists: <a href="' + escape(tool) + '">' + tool + '</a>';
-        return retval;
-        //             return '<a href="%s">%s</a> already exists' % (name, name)
+        return '<a href="' + escape(tool) + '">' + tool + '</a> already exists';
     }
     var queryStringErrors = {'missing': errorMissing,
                              'reserved': errorReserved,
