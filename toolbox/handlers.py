@@ -104,7 +104,7 @@ class TempitaHandler(Handler):
         # add application template_dir if specified
         if app.template_dir:
             self.template_dirs = self.template_dirs[:] + [app.template_dir]
-
+            
         self.data = { 'request': request,
                       'css': self.css,
                       'less': self.less,
@@ -123,7 +123,7 @@ class TempitaHandler(Handler):
             path = os.path.join(d, name)
             if os.path.exists(path):
                 template = HTMLTemplate.from_filename(path)
-                if self.app.reload:
+                if not self.app.reload:
                     self.template_cache[name] = template
                 return template
 
