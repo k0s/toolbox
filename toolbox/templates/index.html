@@ -1,20 +1,6 @@
-{{if len(projects) > 1}}
-<nav id="sort-order">
-  <ul>
-    {{for sort_link, sort_description in sort_types}}
-    <li>
-      {{if sort_type == sort_link}}
-      <span id="search-type" title="sorted by {{sort_description}}">{{sort_description}}</span>
-      {{else}}
-      <a href="?{{if request.query_string}}{{request.query_string + '&'}}{{endif}}sort={{sort_link}}" title="sort by {{sort_description}}">{{sort_description}}</a>
-      {{endif}}
-    </li>
-    {{endfor}}
-  </ul>
-</nav>
-{{endif}}
 
 {{if len(projects) > 1}}
+<header>
 <h1 id="title">{{len(projects)}} tools
 <span class="query">
 {{if search}}
@@ -33,7 +19,23 @@
 {{endfor}}
 </span>
 </h1>
+<nav id="sort-order">
+  <ul>
+    <li><span id="sort-legend">sort by</span></li>
+    {{for sort_link, sort_description in sort_types}}
+    <li>
+      {{if sort_type == sort_link}}
+      <span id="search-type" title="sorted by {{sort_description}}">{{sort_description}}</span>
+      {{else}}
+      <a href="?{{if request.query_string}}{{request.query_string + '&'}}{{endif}}sort={{sort_link}}" title="sort by {{sort_description}}">{{sort_description}}</a>
+      {{endif}}
+    </li>
+    {{endfor}}
+  </ul>
+</nav>
 {{endif}}
+</header>
+
 {{if not len(projects)}}
 <h1 id="title">No tools found</h1>
 {{endif}}
