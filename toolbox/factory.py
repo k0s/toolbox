@@ -14,7 +14,7 @@ class PassthroughFileserver(object):
 
     def __call__(self, environ, start_response):
         path = environ['PATH_INFO'].strip('/')
-        if path and os.path.exists(os.path.join(self.directory, path)):
+        if path and os.path.exists(os.path.join(self.directory, path)) and '..' not in path:
             return self.fileserver(environ, start_response)
         return self.app(environ, start_response)
 
