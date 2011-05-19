@@ -1,7 +1,7 @@
 
 {{if len(projects) > 1}}
 <header>
-<h1 id="title">{{len(projects)}} tools
+<h1 id="title">{{len(projects)}} {{item_plural}}
 <span class="query">
 {{if search}}
   matching <span class="query-value query-search">{{search}}</span>
@@ -37,7 +37,7 @@
 </header>
 
 {{if not len(projects)}}
-<h1 id="title">No tools found</h1>
+<h1 id="title">No {{item_plural}} found</h1>
 {{endif}}
 {{if error}}
 <h1 id="title">{{error | html}}</h1>
@@ -64,7 +64,7 @@
     <ul class="fields">
       {{for field in fields}}
       <li class="field {{field}}">
-        <h2 class="field-name"><a href="{{field}}" title="tools by {{field}}">{{field}}:</a></h2>
+        <h2 class="field-name"><a href="{{field}}" title="{{item_plural}} by {{field}}">{{field}}:</a></h2>
         <span class="field-value-container">
           {{if (not field in project) or not project[field]}}
             <div class="field-none field-value">none</div>
@@ -72,7 +72,7 @@
           <ul class="field-values field-value">
             {{for entry in sorted(project[field], key=lambda x: x.lower())}}
               <li class="field-value-item">
-               <a href="./?{{field}}={{entry}}" title="tools with {{field}}={{entry}}">{{entry}}</a>
+               <a href="./?{{field}}={{entry}}" title="{{item_plural}} with {{field}}={{entry}}">{{entry}}</a>
               </li>
             {{endfor}}
           </ul>
