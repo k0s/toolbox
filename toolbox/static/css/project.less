@@ -58,8 +58,8 @@
   width: 86%;
 
   &:hover {
-	  background-color: #D9FFD1;
-	}
+    background-color: #D9FFD1;
+  }
 }
 
 .field-value-item:not(:last-child) {
@@ -91,21 +91,21 @@
   display: inline-block;
   width: 60%;
 
-	&:hover {
-	  cursor: pointer;
-	}
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .edit-message {
   display: inline-block;
   width: 100%;
 
-	 &:hover {
+   &:hover {
     &:before {
-	     content: "edit field";
-	     margin-left: 24px;
-	     color: @greyed-out;
-	  }
+       content: "edit field";
+       margin-left: 24px;
+       color: @greyed-out;
+    }
   }
 }
 
@@ -119,31 +119,32 @@
 }
 
 .UEB {
-margin-left: 0.5em;
+  margin-left: 0.5em;
 }
 
 #sort-legend {
- color: black;
- font-size: small;
- margin-right: 0.5em;
+  color: black;
+  font-size: small;
+  margin-right: 0.5em;
 }
 
 #sort-order { 
- float: right;
- ul {
+  float: right;
+  font-size: 100%;
+  margin-top: 16px;
+
+  ul {
     float: left;
     display: inline;
+
     li {
-       float: left;
-       &:after {
-       content: "|";
-       }        
-       &:last-child {
-       &:after { content: none; }
-       }             
-       &:first-child {
-       &:before { /* content: "sort by "; */ }
-       }
+      float: left;
+  
+      &:not(:last-child) &:not(:first-child) {
+        &:after {
+          content: "|"; 
+        }
+      }
     }
- }
+  }
 }
