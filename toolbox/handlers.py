@@ -185,7 +185,7 @@ class ProjectsView(TempitaHandler):
     def format_date(self, timestamp):
         """return a string representation of a timestamp"""
         format_string = '%Y-%m-%dT%H:%M:%SZ'
-        return datetime.fromtimestamp(timestamp).strftime(format_string)
+        return datetime.utcfromtimestamp(timestamp).strftime(format_string)
 
 
 class QueryView(ProjectsView):
