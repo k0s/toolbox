@@ -23,11 +23,13 @@ def paste_factory(global_conf, **app_conf):
     """create a webob view and wrap it in middleware"""
 
     keystr = 'toolbox.'
+    static_directory = app_conf.pop('static',
+                                    resource_filename(__name__, 'static'))
     args = dict([(key.split(keystr, 1)[-1], value)
                  for key, value in app_conf.items()
                  if key.startswith(keystr) ])
     app = Dispatcher(**args)
-    return PassthroughFileserver(app, resource_filename(__name__, 'static'))
+    return PassthroughFileserver(app, static_directory)
 
 try:
     from relocator import Relocator
