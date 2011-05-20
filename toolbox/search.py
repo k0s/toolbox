@@ -94,7 +94,8 @@ class WhooshSearch(object):
         # Code should look something like
         #Or([myquery] + [Or(
         # extendedquery = [myquery]
-        extendedquery = And([Or([myquery] + [Term('description', term)] + [Term(field, term) for field in self.keywords]) for term in terms])
+        extendedquery = And([Or([myquery] + [Term('description', term), Term('name', term)] +
+                                [Term(field, term) for field in self.keywords]) for term in terms])
 
         # perform the search
         searcher = self.ix.searcher()

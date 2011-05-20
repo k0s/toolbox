@@ -19,3 +19,8 @@ Define a search interface for our convenience::
     ...     return [i['name'] for i in app.get('/', params=dict(q=query))]
     >>> search('addon')
     [u'my crazy addon']
+
+You should be able to search for a name::
+
+    >>> search('bzconsole')
+    [u'bzconsole']
