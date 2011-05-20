@@ -139,7 +139,7 @@ class MemoryCache(ProjectsModel):
                     self.index[field].pop(key)
             if field not in project:
                 continue
-            project[field] = list(set(project[field]))
+            project[field] = list(set([i.strip() for i in project[field] if i.strip()]))
             index = self.index.setdefault(field, {})
             values = project[field]
             if isinstance(values, basestring):
