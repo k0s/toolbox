@@ -2,13 +2,14 @@ import os
 import shutil
 import tempfile
 
+from time import sleep
 from whoosh import fields
 from whoosh import index
 from whoosh.query import And
 from whoosh.query import Or
 from whoosh.query import Term
-#from whoosh import store
 from whoosh.qparser import QueryParser
+from whoosh.store import LockError
 
 class WhooshSearch(object):
     """full-text search"""
@@ -32,7 +33,19 @@ class WhooshSearch(object):
     def update(self, name, description, **kw):
         """update a document"""
 
-        writer = self.ix.writer()
+        # forgivingly get the writer
+        timeout = 3. # seconds
+        ctr = 0.
+        incr = 0.2
+        while ctr < timeout:
+            try:
+                writer = self.ix.writer()
+                break
+            except LockError:
+                ctr += incr
+                sleep(incr)
+        else:
+            raise
 
         # add keywords
         for key in kw:
