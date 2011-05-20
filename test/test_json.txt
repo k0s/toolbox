@@ -243,3 +243,20 @@ You can rename an entire set of fields::
    >>> response = app.post('/type', params={'song': 'number one hit'})
    >>> [project['type'] for project in app.get('/')]
    [[u'number one hit'], [u'number one hit']]
+
+Fields in the request should be comma-separated and stripped of whitespace::
+
+    >>> project = {'name': 'A New Project', 'description': 'new description', 'url': 'http://example.com'}
+    >>> project_url = '/' + urlescape(project['name'])
+    >>> response = app.new(**project)
+    >>> fields = {'type': 'song, project, something special'}
+    >>> response = app.post(project_url, params=fields)
+    >>> sorted(app.get(project_url)['type'])
+    [u'project', u'something special', u'song']
+    
+You won't be able to have multiple identical field values or empty values::
+
+    >>> response = app.post(project_url, params=dict(author=' john, , , fielding, the third,,'))
+    >>> sorted(app.get(project_url)['author'])
+    [u'fielding', u'john', u'the third']
+
