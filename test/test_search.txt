@@ -1,0 +1,21 @@
+Test toolbox search
+===================
+
+Ensure toolbox search does what we want it to.  First, create some
+projects::
+
+    >>> app.get('/')
+    []
+    >>> project = {'name': 'bzconsole', 'description': 'interact with bugzilla from the command line', 'url': 'http://k0s.org/mozilla/hg/bzconsole'}
+    >>> response = app.new(**project)
+    >>> project = {'name': 'my crazy addon', 'description': 'a crazy addon i made', 'url': 'http://a.m.o'}
+    >>> response = app.new(**project)
+    >>> [i['name'] for i in app.get('/')]
+    [u'my crazy addon', u'bzconsole']
+
+Define a search interface for our convenience::
+
+    >>> def search(query):
+    ...     return [i['name'] for i in app.get('/', params=dict(q=query))]
+    >>> search('addon')
+    [u'my crazy addon']
