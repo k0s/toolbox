@@ -151,6 +151,7 @@ class ProjectsView(TempitaHandler):
     js = TempitaHandler.js[:]
     js.extend(['js/jquery.tokeninput.js',
                'js/jquery.jeditable.js',
+               'js/jquery.autolink.js',
                'js/project.js'])
                
     less = TempitaHandler.less[:]

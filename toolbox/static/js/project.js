@@ -1,6 +1,8 @@
 $(document).ready(function(){
     $(".date").timeago();
     $(".field-edit").hide();
+    
+    $(".description").autolink();
 
     // insert helper text for sort navigation
    // $("#sort-order li:first-child").prepend('<span id="sort-legend">sort by </span>')
@@ -23,13 +25,17 @@ $(document).ready(function(){
 
         // make description editable with jeditable
         $(this).find('p.description').editable(url, {
-          'type': 'textarea',
-          'rows': 7,
-          'cols': 80,
-          'indicator': '<img src="img/indicator.gif"/>',
-          'onblur': 'submit',
-          'name': 'description',
-          'tooltip': 'click to edit description'
+          type: 'textarea',
+          rows: 7,
+          cols: 80,
+          indicator: '<img src="img/indicator.gif"/>',
+          onblur: 'submit',
+          name: 'description',
+          tooltip: 'click to edit description',
+          beforeedit: function (settings, jedit, event) {
+              if(event.target.nodeName == "A")
+                  return false; 
+          }
         });
 
         // make the name and url editable
