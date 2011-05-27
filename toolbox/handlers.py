@@ -54,6 +54,28 @@ class Handler(object):
     def __call__(self):
         return getattr(self, self.request.method.title())()
 
+    def link(self, path=None):
+        """
+        link relative to the site root
+        """
+        path_info = self.request.path_info
+        segments = path_info.split('/')
+        if segments[0]:
+            segments.insert(0, '')
+
+        if len(segments) <3:
+            if not path or path == '/':
+                return './'
+            return path
+
+        nlayers = len(segments[2:])
+        string = '../' * nlayers
+
+        if not path or path == '/':
+            return string
+        return string + path
+
+
     def redirect(self, location, query=None):
         return exc.HTTPSeeOther(location=quote(location) + (query and self.query_string(query) or ''))
 
@@ -114,7 +136,8 @@ class TempitaHandler(Handler):
                       'site_name': app.site_name,
                       'title': self.__class__.__name__,
                       'hasAbout': bool(app.about),
-                      'urlescape': quote }
+                      'urlescape': quote,
+                      'link': self.link}
 
     def find_template(self, name):
         """find a template of a given name"""

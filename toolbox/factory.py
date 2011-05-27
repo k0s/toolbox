@@ -3,6 +3,7 @@ import os
 from dispatcher import Dispatcher
 from paste.urlparser import StaticURLParser
 from pkg_resources import resource_filename
+from theslasher import TheSlasher
 
 class PassthroughFileserver(object):
     """serve files if they exist"""
@@ -28,7 +29,7 @@ def paste_factory(global_conf, **app_conf):
     args = dict([(key.split(keystr, 1)[-1], value)
                  for key, value in app_conf.items()
                  if key.startswith(keystr) ])
-    app = Dispatcher(**args)
+    app = TheSlasher(Dispatcher(**args))
     return PassthroughFileserver(app, static_directory)
 
 try:

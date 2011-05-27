@@ -2,18 +2,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>{{title}}</title>
-<link rel="icon" href="img/favicon.ico" />
+<link rel="icon" href="{{link('img/favicon.ico')}}" />
 
 {{for sheet in css}}
-<link href="{{sheet}}" rel="stylesheet" type="text/css" />
+<link href="{{link(sheet)}}" rel="stylesheet" type="text/css" />
 {{endfor}}
 
 {{for sheet in less}}
-<link href="{{sheet}}" rel="stylesheet/less" type="text/css" />
+<link href="{{link(sheet)}}" rel="stylesheet/less" type="text/css" />
 {{endfor}}
 
 {{for script in js}}
-<script src="{{script}}"></script>
+<script src="{{link(script)}}"></script>
 {{endfor}}
 
 </head>
@@ -21,14 +21,14 @@
   <!-- navigation menu -->
   <nav>
     <ul>
-      <li><a href="./" title="{{site_name}}">{{site_name}}</a></li>
+      <li><a href="{{link()}}" title="{{site_name}}">{{site_name}}</a></li>
       {{if hasAbout}}
-      <li><a href="about" title="about:{{site_name}}">about</a></li>
+      <li><a href="{{link('about')}}" title="about:{{site_name}}">about</a></li>
       {{endif}}
-      <li><a href="new" title="add a {{item_name}}">new</a></li>
+      <li><a href="{{link('new')}}" title="add a {{item_name}}">new</a></li>
       {{for field in fields}}
       <li>
-        <a class="by-field" href="{{field}}" title="{{item_plural}} by {{field}}">{{field}}</a>
+        <a class="by-field" href="{{link(field)}}" title="{{item_plural}} by {{field}}">{{field}}</a>
       </li>
       {{endfor}}
     </ul>

@@ -17,7 +17,8 @@ dependencies = [
     'couchdb',
     'docutils',
     'relocator', # technically optional, but here for ease of install
-    'pyloader'
+    'pyloader',
+    'theslasher'
     ]
 try:
     import json
