@@ -23,6 +23,10 @@ def strreplace(string, translation):
 def str2filename(string):
     """converts a string to an acceptable filename"""
     matrix = {' ': '_',
+              '>': '',
+              '<': '',
+              "'": '',
+              '"': '',
               '&': '+',
               '\\': '',
               '/': ''}

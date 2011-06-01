@@ -16,7 +16,10 @@ $(document).ready(function(){
         var deletelink = $('<a class="delete" title="permanantly remove">Delete</a>');
         $(deletelink).click(function() {
                 if(confirm("Permanently remove: " + project + " ?")) {
-                    var form = $('<form class="delete" action="delete" method="POST"><input type="hidden" name="project" value="' + project + '"/></form>');
+                    var form = $('<form class="delete" action="delete" method="POST"></form>')
+                    var input = $('<input type="hidden" name="project"/>');
+                    input.val(project);
+                    form.append(input);
                     $(this).after(form);
                     $(form).submit();
                 }

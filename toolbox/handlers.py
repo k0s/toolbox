@@ -504,7 +504,10 @@ class DeleteProjectHandler(Handler):
         post_data = self.post_data()
         project = post_data.get('project')
         if project:
-            self.app.model.delete(project)
+            try:
+                self.app.model.delete(project)
+            except:
+                pass # XXX better than internal server error
 
         # redirect to query view
         return self.redirect(location='/')
