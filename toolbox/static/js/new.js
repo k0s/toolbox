@@ -12,7 +12,8 @@ $(document).ready(function(){
         return 'Conflicts with a reserved URL';
     }
     function errorConflict() {
-        tool = query['conflict'][0];
+        var tool = query['conflict'][0];
+        tool = $('<div></div>').text(tool).html();
         return '<a href="' + escape(tool) + '">' + tool + '</a> already exists';
     }
     var queryStringErrors = {'missing': errorMissing,
@@ -103,8 +104,14 @@ $(document).ready(function(){
             var value = $(inputElement).val()
             var trimmed = value.trim();
             if (trimmed.length == 0) {
-                $(row).find('ul.error').append('<li>' + errorMissing() + '</li');
+                $(row).find('ul.error').append('<li>' + errorMissing() + '</li>');
                 retval = false;
+            }
+            // no slashes in name
+            if (required[i] == 'name') {
+                if (value.indexOf('/') != -1) {
+                    $(row).find('ul.error').append('<li>slashes are not allowed in names</li>');
+                }
             }
         }
         return retval;
