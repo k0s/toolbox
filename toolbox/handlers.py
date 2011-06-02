@@ -7,13 +7,18 @@ import cgi
 import os
 from datetime import datetime
 from pkg_resources import resource_filename
-from urllib import quote
+from urllib import quote as _quote
 from urlparse import urlparse
 from util import strsplit
 from util import JSONEncoder
 from webob import Response, exc
 from tempita import HTMLTemplate
 from time import time
+
+def quote(s, safe='/'):
+    if isinstance(s, unicode):
+        s = s.encode('utf-8', 'ignore') # hope we're using utf-8!
+    return _quote(s, safe)
 
 try:
     import json
@@ -269,7 +274,13 @@ class ProjectView(ProjectsView):
             return None
 
         # get the project if it exists
-        project = app.model.project(request.environ['path'][0])
+        projectname = request.environ['path'][0]
+        try:
+            # if its utf-8, we should try to keep it utf-8
+            projectname = projectname.decode('utf-8')
+        except UnicodeDecodeError:
+            pass
+        project = app.model.project(projectname)
         if not project:
             return None
 
