@@ -7,11 +7,12 @@ $(document).ready(function(){
         var fielddiv = $(this);
         var field = $(this).attr('id');
         $(this).children('h2').each(function() {
-            var header = $(this);
-            var value = $(this).children('a').text();
-            var UEB = $('<img class="UEB" src="img/UEB16.png" title="rename ' + fieldname + ': ' + field + '"/>');
-            $(UEB).css('visibility', 'hidden');
-            var editField = function() {
+             var header = $(this);
+             var value = $(this).children('a').text();
+             var UEB = $('<img class="UEB" src="img/UEB16.png"/>');
+             $(UEB).attr('title', 'rename ' + fieldname + ': ' + field);
+             $(UEB).css('visibility', 'hidden');
+             var editField = function() {
                 var input = $('<input class="text" value="' + field + '"/>');
                 var submitHandler = function () {
                     var newvalue = $(this).val();
@@ -42,9 +43,9 @@ $(document).ready(function(){
                 $(input).focus();
             }
             $(UEB).click(editField);
-            $(this).append(UEB);
-            $(this).hover(function(eventObject) { $(this).children('img.UEB').css('visibility', 'visible'); },
-                          function(eventObject) { $(this).children('img.UEB').css('visibility', 'hidden'); });
+             $(this).append(UEB);
+             $(this).hover(function(eventObject) { $(this).children('img.UEB').css('visibility', 'visible'); },
+                           function(eventObject) { $(this).children('img.UEB').css('visibility', 'hidden'); });
 
         });
     });
