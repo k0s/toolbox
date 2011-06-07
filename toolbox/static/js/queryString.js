@@ -15,7 +15,12 @@ function parseQueryString() {
     
     for (p in params) {
         var l = params[p].split("=").map(function(x) {
-            return decodeURIComponent(x); });
+            try {
+                return decodeURIComponent(x); 
+            } catch(e) {
+                return x;
+            }
+            });
         if (l.length != 2) {
             continue;
         }
