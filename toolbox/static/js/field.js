@@ -13,11 +13,16 @@ $(document).ready(function(){
              $(UEB).attr('title', 'rename ' + fieldname + ': ' + field);
              $(UEB).css('visibility', 'hidden');
              var editField = function() {
-                var input = $('<input class="text" value="' + field + '"/>');
+                var input = $('<input class="text"/>');
+                $(input).val(field);
                 var submitHandler = function () {
                     var newvalue = $(this).val();
                     if (newvalue != value) {
-                        form = $('<form method="POST"><input type="hidden" name="' + value + '" value="' + newvalue + '"/></form>').submit();
+                        var hiddeninput = $('<input type="hidden"/>');
+                        $(hiddeninput).attr('name', value);
+                        $(hiddeninput).val(newvalue);
+                        var form = $('<form method="POST"></form>');
+                        form.append(hiddeninput);
                         $(this).after(form);
                         $(form).submit();
                         $(this).replaceWith('<img class="throbber" src="img/indicator.gif"/>');
