@@ -111,6 +111,7 @@ $(document).ready(function(){
             if (required[i] == 'name') {
                 if (value.indexOf('/') != -1) {
                     $(row).find('ul.error').append('<li>slashes are not allowed in names</li>');
+                    retval = false;
                 }
             }
         }
