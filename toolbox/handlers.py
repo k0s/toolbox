@@ -81,8 +81,10 @@ class Handler(object):
         return string + path
 
 
-    def redirect(self, location, query=None):
-        return exc.HTTPSeeOther(location=quote(location) + (query and self.query_string(query) or ''))
+    def redirect(self, location, query=None, anchor=None):
+        return exc.HTTPSeeOther(location=quote(location)
+                                + (query and self.query_string(query) or '')
+                                + (anchor and ('#' + anchor) or ''))
 
     def query_string(self, query):
         """
@@ -415,7 +417,7 @@ class FieldView(ProjectsView):
             value = self.request.POST[key]
             self.app.model.rename_field_value(field, key, value)
         
-        return self.redirect('/' + field + '#' + value)
+        return self.redirect('/' + field, anchor=value)
         
     def get_json(self):
         return self.data['values']
