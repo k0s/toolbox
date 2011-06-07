@@ -24,7 +24,8 @@ $(document).ready(function(){
     var form = $('<form id="new" method="post"></form>');
     var table = $('<table></table>');    
     function addRow(fieldName, rhs) {
-        var row = $('<tr id="' + fieldName + '-row"><td class="field-name" for="' + fieldName + '">' + fieldName + '</td><td class="input">' + rhs + '</td></tr>');
+        var row = $('<tr id="' + fieldName + '-row"><td class="field-name" for="' + fieldName + '">' + fieldName + '</td><td class="input"></td></tr>');
+        $(row).find('td.input').append(rhs);
 
         // add errors
         var errors = $('<ul class="error"></ul>');
@@ -51,32 +52,46 @@ $(document).ready(function(){
         if (query) { 
             value = query[fieldName];
         }
-        var input = '<input type="text" name="' + fieldName + '"';
+        var input = $('<input type="text"/>');
+        $(input).attr('name', fieldName);
         if (isFieldInput) {
             if (value) {
-                value = value.join(", ");
+                value = value.join(", "); 
+                // XXX for some reason, this doesnt get reflected in the observed input;
+                // an oversight with the token parser/autocomplete? ::shrug::
             }
-            input += ' class="field-input"'
+            $(input).addClass('field-input');
         } else {
             if (value) {
                 value = value[0];
             }
         }
         if (value) {
-            input += ' value="' + value + '"';
+            $(input).val(value);
         }
-        input += '/>';
         addRow(fieldName, input);
+        return input;
     }
 
     // insert mandatory data: name, description, url
-    addTextInput('name', false);
+    var nameInput = addTextInput('name', false);
     var description = '';
     if (query && query['description']) {
         description = query['description'][0];
     }
-    addRow('description', '<textarea name="description">' + description + '</textarea>');
-    addTextInput('url', false);
+    addRow('description', $('<textarea name="description">' + description + '</textarea>'));
+    var urlInput = addTextInput('url', false);
+    var urlValue = urlInput.val();
+    if (urlValue && !query['name']) {
+        if (urlValue.charAt(urlValue.length -1) == '/') {
+            urlValue = urlValue.slice(0, urlValue.length -1);
+        }
+        var index = urlValue.lastIndexOf('/');
+        if (index != -1) {
+            var name = urlValue.slice(index+1);
+            $(nameInput).val(name);
+        }
+    }
 
     // find other fields
     var fields = [];
@@ -108,11 +123,9 @@ $(document).ready(function(){
                 retval = false;
             }
             // no slashes in name
-            if (required[i] == 'name') {
-                if (value.indexOf('/') != -1) {
+            if (required[i] == 'name' && value.indexOf('/') != -1) {
                     $(row).find('ul.error').append('<li>slashes are not allowed in names</li>');
                     retval = false;
-                }
             }
         }
         return retval;
