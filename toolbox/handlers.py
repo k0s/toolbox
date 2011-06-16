@@ -104,7 +104,15 @@ class Handler(object):
         if self.json:
             return json.loads(self.request.body)
         else:
-            return self.request.POST.mixed()
+            retval = self.request.POST.mixed()
+            for key in retval:
+                value = retval[key]
+                if isinstance(value, basestring):
+                    retval[key] = value.strip()
+                else:
+                    # TODO[?]: just throw away all empty values here
+                    retval[key] = [i.strip() for i in value]
+            return retval
 
     def get_json(self):
         """JSON to serialize if requested for GET"""
@@ -306,6 +314,15 @@ class ProjectView(ProjectsView):
         # data
         post_data = self.post_data()
         project = self.data['projects'][0]
+
+        # insist that you have a name
+        if 'name' in post_data and not post_data['name'].strip():
+            self.data['title'] = 'Rename error'
+            self.data['error'] = 'Cannot give a project an empty name'
+            self.data['content'] = self.render(self.template, **self.data)
+            return Response(content_type='text/html',
+                            status=403,
+                            body=self.render('main.html', **self.data))
 
         # don't allow overiding other projects with your fancy rename
         if 'name' in post_data and post_data['name'] != project['name']:
