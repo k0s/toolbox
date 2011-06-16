@@ -52,6 +52,15 @@ $(document).ready(function(){
                var text = $(link).html();
                var size = text.length;
                var form = $('<form method="POST" action="' + url + '"><input type="text" name="name" value="' + text +'" size="' + size + '"/><button class="cancel">Cancel</button><input type="submit" value="Rename"/></form>');
+               $(form).submit(function() {
+                   var input = $(this).find('input[name="name"]')
+                   var name = $(input).val()
+                   name = name.trim();
+                   if (name.length == 0) {
+                       return false;
+                   }
+                   return true;
+               })
                $(form).css('display', 'block');
                $(header).replaceWith(form);
                $(form).find('button.cancel').click(function(){
