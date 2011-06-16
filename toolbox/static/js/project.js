@@ -57,6 +57,7 @@ $(document).ready(function(){
                    var name = $(input).val()
                    name = name.trim();
                    if (name.length == 0) {
+                       $(this).append('<div class="error">A project must have a name</span>');
                        return false;
                    }
                    return true;
