@@ -260,3 +260,15 @@ You won't be able to have multiple identical field values or empty values::
     >>> sorted(app.get(project_url)['author'])
     [u'fielding', u'john', u'the third']
 
+You should not be able to rename a project::
+
+    >>> sorted([project['name'] for project in app.get('/')])
+    [u'A New Project', u'fleem', u'star']
+    >>> response = app.post('/star', params=dict(name=''), status=403)
+    >>> response.status
+    403
+    >>> response = app.post('/fleem', params=dict(name='       '), status=403)
+    >>> response.status
+    403
+    >>> sorted([project['name'] for project in app.get('/')])
+    [u'A New Project', u'fleem', u'star']
