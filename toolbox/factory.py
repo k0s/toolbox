@@ -20,7 +20,7 @@ class PassthroughFileserver(object):
         return self.app(environ, start_response)
 
 
-def paste_factory(global_conf, **app_conf):
+def paste_factory(global_conf=None, **app_conf):
     """create a webob view and wrap it in middleware"""
 
     keystr = 'toolbox.'
@@ -34,7 +34,7 @@ def paste_factory(global_conf, **app_conf):
 
 try:
     from relocator import Relocator
-    def relocator_factory(global_conf, **app_conf):
+    def relocator_factory(global_conf=None, **app_conf):
         """
         create a toolbox app that uses relocator to set outgoing Location headers:
         http://k0s.org/hg/relocator
