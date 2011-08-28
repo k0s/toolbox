@@ -148,7 +148,7 @@ $(document).ready(function(){
           }
 
           var tokenData = values.map(function(value) {
-              return {id: value, name: value};
+                  return {id: value, name: escape(value)};
               });
         
           var input = edit.children('input');
