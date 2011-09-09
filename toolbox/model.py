@@ -272,7 +272,11 @@ class CouchCache(MemoryCache):
         """load JSON objects from CouchDB docs"""
         for id in self.db:
             doc = self.db[id]
-            project = doc['project']
+            try:
+                project = doc['project']
+            except KeyError:
+                print doc
+                raise
             self.update(project, load=True)
             
     def save(self, project):
