@@ -275,8 +275,7 @@ class CouchCache(MemoryCache):
             try:
                 project = doc['project']
             except KeyError:
-                print doc
-                raise
+                continue   # it's prob a design doc
             self.update(project, load=True)
             
     def save(self, project):
