@@ -8,6 +8,10 @@
  *
  */
 
+function HTMLescape(value) {
+    return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
 (function ($) {
 // Default settings
 var DEFAULT_SETTINGS = {
@@ -389,9 +393,12 @@ $.TokenList = function (input, url_or_data, settings) {
 
     // Inner function to a token to the list
     function insert_token(id, value) {
-        var this_token = $("<li><p>"+ value +"</p> </li>")
+        var paragraph = $("<p></p>");
+        paragraph.text(value);
+        var this_token = $("<li></li>")
           .addClass(settings.classes.token)
           .insertBefore(input_token);
+        this_token.append(paragraph);
 
         // The 'delete token' button
         $("<span>" + settings.deleteText + "</span>")
@@ -403,7 +410,7 @@ $.TokenList = function (input, url_or_data, settings) {
             });
 
         // Store data on the token
-        var token_data = {"id": id, "name": value};
+        var token_data = {"id": id, "name": HTMLescape(value)};
         $.data(this_token.get(0), "tokeninput", token_data);
 
         // Save this token for duplicate checking
@@ -585,6 +592,7 @@ $.TokenList = function (input, url_or_data, settings) {
 
     // Highlight the query part of the search term
     function highlight_term(value, term) {
+        value = HTMLescape(value);
         return value.replace(new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + term + ")(?![^<>]*>)(?![^&;]+;)", "gi"), "<b>$1</b>");
     }
 
@@ -607,6 +615,7 @@ $.TokenList = function (input, url_or_data, settings) {
                 var this_li = $("<li>" + highlight_term(value.name, query) + "</li>")
                                   .appendTo(dropdown_ul);
 
+                
                 if(index % 2) {
                     this_li.addClass(settings.classes.dropdownItem);
                 } else {
@@ -728,7 +737,6 @@ $.TokenList = function (input, url_or_data, settings) {
                 var results = $.grep(settings.local_data, function (row) {
                     return row.name.toLowerCase().indexOf(query.toLowerCase()) > -1;
                 });
-
                 populate_dropdown(query, results);
             }
         }
