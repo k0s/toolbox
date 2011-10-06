@@ -82,9 +82,9 @@ class Dispatcher(object):
             self.handlers = [ TagsView,
                               CreateProjectView,
                               FieldView,
-                              ProjectView,
                               QueryView,
-                              DeleteProjectHandler ]
+                              DeleteProjectHandler,
+                              ProjectView]
             if self.about:
                 self.handlers.append(AboutView)
 

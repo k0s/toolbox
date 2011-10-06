@@ -15,10 +15,14 @@ from webob import Response, exc
 from tempita import HTMLTemplate
 from time import time
 
+# this is necessary because WSGI stupidly follows the CGI convention wrt encoding slashes
+# http://comments.gmane.org/gmane.comp.web.pylons.general/5922
+encoded_slash = '%25%32%66'
+
 def quote(s, safe='/'):
     if isinstance(s, unicode):
         s = s.encode('utf-8', 'ignore') # hope we're using utf-8!
-    return _quote(s, safe)
+    return _quote(s, safe).replace('/', encoded_slash)
 
 try:
     import json
@@ -79,7 +83,6 @@ class Handler(object):
         if not path or path == '/':
             return string
         return string + path
-
 
     def redirect(self, location, query=None, anchor=None):
         return exc.HTTPSeeOther(location=quote(location)
@@ -280,11 +283,11 @@ class ProjectView(ProjectsView):
             return None
 
         # the path should match a project
-        if len(request.environ['path']) != 1:
+        if not len(request.environ['path']) == 1:
             return None
 
         # get the project if it exists
-        projectname = request.environ['path'][0]
+        projectname = request.environ['path'][0].replace('%2f', '/')  # double de-escape slashes, see top of file
         try:
             # if its utf-8, we should try to keep it utf-8
             projectname = projectname.decode('utf-8')

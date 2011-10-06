@@ -7,7 +7,7 @@ $(document).ready(function(){
     // modify project div
     $('div.project').each(function(){
         var project = $(this).attr('id');
-        var url = escape(project).replace(/\//g, '%2f'); // urlquote
+        var url = escape(project).replace(/\//g, '%25%32%66'); // urlquote
 
         // add a delete link
         var deletelink = $('<a class="delete" title="permanantly remove">Delete</a>');
