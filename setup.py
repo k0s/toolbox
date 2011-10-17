@@ -5,7 +5,7 @@ try:
 except IOError: 
     description = ''
 
-version = "0.1.1"
+version = "0.2"
 
 # dependencies
 dependencies = [
@@ -16,7 +16,6 @@ dependencies = [
     'whoosh',
     'couchdb',
     'docutils',
-    'relocator', # technically optional, but here for ease of install
     'pyloader',
     'theslasher'
     ]

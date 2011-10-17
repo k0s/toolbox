@@ -85,7 +85,7 @@ class Handler(object):
         return string + path
 
     def redirect(self, location, query=None, anchor=None):
-        return exc.HTTPSeeOther(location=quote(location)
+        return exc.HTTPSeeOther(location=self.app.baseurl + '/' + location
                                 + (query and self.query_string(query) or '')
                                 + (anchor and ('#' + anchor) or ''))
 
@@ -372,7 +372,7 @@ class ProjectView(ProjectsView):
         if 'name' in post_data and post_data['name'] != old_name:
             self.app.model.delete(old_name)
             self.app.model.update(project)
-            return self.redirect(project['name'])
+            return self.redirect(quote(project['name']))
 
         self.app.model.update(project)
 
@@ -437,10 +437,11 @@ class FieldView(ProjectsView):
             value = self.request.POST[key]
             self.app.model.rename_field_value(field, key, value)
         
-        return self.redirect('/' + field, anchor=value)
+        return self.redirect(field, anchor=value)
         
     def get_json(self):
         return self.data['values']
+
         
 class CreateProjectView(TempitaHandler):
     """view to create a new project"""
@@ -525,7 +526,7 @@ class CreateProjectView(TempitaHandler):
             project[field] = values or value
 
         self.app.model.update(project)
-        return self.redirect('/' + project['name'])
+        return self.redirect(quote(project['name']))
 
 
 class DeleteProjectHandler(Handler):
@@ -543,7 +544,7 @@ class DeleteProjectHandler(Handler):
                 pass # XXX better than internal server error
 
         # redirect to query view
-        return self.redirect(location='/')
+        return self.redirect('')
 
 
 class TagsView(TempitaHandler):

@@ -30,6 +30,7 @@ class Dispatcher(object):
                  'reload': True, # reload templates
                  'reserved': None, # reserved URL namespaces
                  'template_dir': None, # directory for template overrides
+                 'baseurl': '', # base URL for redirects
 
                  # branding variables
                  'site_name': 'toolbox', # name of the site
