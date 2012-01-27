@@ -4,6 +4,7 @@ models for toolbox
 
 import couchdb
 import os
+import pyes
 import sys
 from copy import deepcopy
 from search import WhooshSearch
@@ -247,6 +248,72 @@ class FileCache(MemoryCache):
         file(filename, 'w').write(json.dumps(project))
 
 
+class ElasticSearchCache(MemoryCache):
+    """
+    store json in ElasticSearch
+    """
+
+    def __init__(self,
+                 server="localhost:9200",
+                 es_index="toolbox",
+                 doc_type="projects",
+                 fields=None,
+                 whoosh_index=None):
+        self.es_index = es_index
+        self.doc_type = doc_type
+
+        try:
+            self.es = pyes.ES([server])
+            self.es.create_index(self.es_index)
+        except pyes.urllib3.connectionpool.MaxRetryError:
+            raise Exception("Could not connect to ES instance")
+        except pyes.exceptions.ElasticSearchException:
+            # this just means the index already exists
+            pass
+        MemoryCache.__init__(self, fields=fields, whoosh_index=whoosh_index)
+
+    def es_query(self, query):
+        """make an ElasticSearch query and return the results"""
+        search = pyes.Search(query)
+        results = self.es.search(query=search,
+                                 indexes=[self.es_index],
+                                 doc_types=[self.doc_type])
+        if not 'hits' in results and not 'hits' in results['hits']:
+            raise Exception("bad ES response %s" % json.dumps(results))
+        return results
+
+    def load(self):
+        """load all json documents from ES:toolbox/projects"""
+        query = pyes.MatchAllQuery()
+        results = self.es_query(query)
+
+        for hit in results['hits']['hits']:
+            self.update(hit['_source'], True)
+
+    def save(self, project):
+        query = pyes.FieldQuery()
+        query.add('name', project['name'])
+        results = self.es_query(query)
+
+        # If there is an existing records in ES with the same
+        # project name, update that record.  Otherwise create a new record.
+        id = None
+        if results['hits']['hits'][0]:
+            id = results['hits']['hits'][0]['_id']
+
+        self.es.index(project, self.es_index, self.doc_type, id)
+
+    def delete(self, project):
+        MemoryCache.delete(self, project)
+        query = pyes.FieldQuery()
+        query.add('name', project['name'])
+        results = self.es_query(query)
+        print json.dumps(results)
+        if results['hits']['hits']:
+            id = results['hits']['hits'][0]['_id']
+            self.es.delete(self.index, self.doc_type, id)
+
+
 class CouchCache(MemoryCache):
     """
     store json files in couchdb
@@ -294,7 +361,8 @@ class CouchCache(MemoryCache):
 # directory of available models
 models = {'memory_cache': MemoryCache,
           'file_cache': FileCache,
-          'couch': CouchCache}
+          'couch': CouchCache,
+          'es': ElasticSearchCache}
 
 def convert(args=sys.argv[1:]):
     """CLI front-end for model conversion"""
