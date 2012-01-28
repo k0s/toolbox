@@ -17,7 +17,8 @@ dependencies = [
     'couchdb',
     'docutils',
     'pyloader',
-    'theslasher'
+    'theslasher',
+    'pyes == 0.15',
     ]
 try:
     import json
