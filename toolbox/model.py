@@ -311,7 +311,7 @@ class ElasticSearchCache(MemoryCache):
         print json.dumps(results)
         if results['hits']['hits']:
             id = results['hits']['hits'][0]['_id']
-            self.es.delete(self.index, self.doc_type, id)
+            self.es.delete(self.es_index, self.doc_type, id)
 
 
 class CouchCache(MemoryCache):
