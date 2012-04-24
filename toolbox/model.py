@@ -36,7 +36,7 @@ class ProjectsModel(object):
         """
         self.required = set(required)
 
-        # reserved fields        
+        # reserved fields
         self.reserved = self.required.copy()
         self.reserved.update(['modified']) # last modified, a computed value
         self.search = WhooshSearch(whoosh_index=whoosh_index)
@@ -244,8 +244,15 @@ class FileCache(MemoryCache):
         filename = self.files.get(project['name'])
         if not filename:
             filename = str2filename(project['name']) + '.json'
+        filename = filename.encode('ascii', errors='ignore')
         filename = os.path.join(self.directory, filename)
-        file(filename, 'w').write(json.dumps(project))
+        try:
+            f = file(filename, 'w')
+        except Exception, e:
+            print filename, repr(filename)
+            raise
+        f.write(json.dumps(project))
+        f.close()
 
 
 class ElasticSearchCache(MemoryCache):

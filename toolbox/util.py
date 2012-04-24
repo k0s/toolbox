@@ -29,6 +29,7 @@ def str2filename(string):
               '"': '',
               '&': '+',
               '\\': '',
+              '\x00': '',
               '/': ''}
     return strreplace(string, matrix)
 
