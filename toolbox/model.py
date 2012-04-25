@@ -305,7 +305,7 @@ class ElasticSearchCache(MemoryCache):
         # If there is an existing records in ES with the same
         # project name, update that record.  Otherwise create a new record.
         id = None
-        if results['hits']['hits'][0]:
+        if results['hits']['hits']:
             id = results['hits']['hits'][0]['_id']
 
         self.es.index(project, self.es_index, self.doc_type, id)
