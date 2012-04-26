@@ -284,9 +284,23 @@ class ElasticSearchCache(MemoryCache):
         search = pyes.Search(query)
         results = self.es.search(query=search,
                                  indexes=[self.es_index],
-                                 doc_types=[self.doc_type])
+                                 doc_types=[self.doc_type],
+                                 size=0)
+
+        # the first query is just used to determine the size of the set
+        if not 'hits' in results and not 'total' in results['hits']:
+            raise Exception("bad ES response %s" % json.dumps(results))
+        total = results['hits']['total']
+
+        # repeat the query to retrieve the entire set
+        results = self.es.search(query=search,
+                                 indexes=[self.es_index],
+                                 doc_types=[self.doc_type],
+                                 size=total)
+
         if not 'hits' in results and not 'hits' in results['hits']:
             raise Exception("bad ES response %s" % json.dumps(results))
+
         return results
 
     def load(self):
@@ -315,7 +329,6 @@ class ElasticSearchCache(MemoryCache):
         query = pyes.FieldQuery()
         query.add('name', project['name'])
         results = self.es_query(query)
-        print json.dumps(results)
         if results['hits']['hits']:
             id = results['hits']['hits'][0]['_id']
             self.es.delete(self.es_index, self.doc_type, id)
