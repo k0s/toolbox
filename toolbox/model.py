@@ -244,7 +244,7 @@ class FileCache(MemoryCache):
         filename = self.files.get(project['name'])
         if not filename:
             filename = str2filename(project['name']) + '.json'
-        filename = filename.encode('ascii', errors='ignore')
+        filename = filename.encode('ascii', 'ignore')
         filename = os.path.join(self.directory, filename)
         try:
             f = file(filename, 'w')
