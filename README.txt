@@ -250,7 +250,7 @@ Evolution
 Often, a piece software is presented as a state out of context (that
 is minus the evolution which led it to be and led it to look further
 out towards beyond the horizon).  While this is an interesting special
-effect for an art project, software being communication this 
+effect for an art project, software being communication this
 is only conducive to software in the darkest of black-box approaches.
 
 "Beers are like web frameworks: if they're not micro, you don't know
@@ -321,97 +321,6 @@ considerable (though probably worthwhile) refactoring should be done
 prior to feature extension which will become cost-prohibitive in
 time-critical situations where a one-off is (more) likely to be employed.
 
-
-TODO: Tool Sources
-------------------
-
-In addition to manually indexed tools, toolbox is intended to harvest
-index data from distributed sources.  Several scrapers should be
-written and run on a scheduled basis (i.e. with a cron job or
-preferably something that could actually be reliably depended on and
-automatable via python).  Useful project sources are:
-
-* setup.py for python projects
-* addons.mozilla.org pages
-* OpenWebApps: https://developer.mozilla.org/en/OpenWebApps/The_Manifest
-* userscripts: e.g. https://www.squarefree.com/userscripts/tidybox.user.js
-
-
-TODO: (Alternate) Links
------------------------
-
-Currently, each tool has one canonical URL.
-Since toolbox is an index, this has the distinct advantage of
-associating a single URL with the project.  It is assumed that the
-linked-to resource should point to auxilliary resources as necessary.
-
-However, as an index is useful for correlating information --
-connecting the dots -- allowing a variety of links both allows the
-browser to have information at their fingertips, but also to allow
-mapping and intelligent manipulation of tools by their link types.
-Several types of links may be recorded:
-
-* repository
-* how to report bugs
-* wiki
-* pypi
-
-
-TODO: Directory Structure
--------------------------
-
-Each function should live in its own module::
-
- .
- +-README.txt
- +-ABOUT.txt
- +-INSTALL.sh
- +-setup.py
- +-paste.ini
- |
- toolbox
-  |
-  +-web.py
-  +-factory.py
-  +-json.py
-  |
-  handler
-  ||
-  |...
-  |
-  model
-  ||
-  |...
-  |
-  static
-  ||
-  |...
-  |
-  templates
-
-
-URLs
-----
-
-A more RESTful proposed URL schema:
-
-/{{project}}
-* PUT: replace the project
-* GET: return the project
-* POST: update the project
-* DELETE: remove the project
-
-/{{project}}/{{field}}
-* PUT: replace all field values
-* POST: for lists, add field values
-* GET: return field value(s)
-
-/{{project}}/{{field}}/{{value}}
-* DELETE: remove value from a list field
-
-/{{field}}
-* POST: rename a field value: /{{field}}?jahml=jhammel
-* should also take a description
 
 Use Cases
 ---------
