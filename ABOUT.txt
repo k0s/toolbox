@@ -7,37 +7,34 @@ toolbox
 The Story of Toolbox
 --------------------
 
-A tool is only useful if you know it exists and can find it and
-information about it. Toolbox is an index of tools developed by and
+Tools are only useful if you know where they exists and can find them.
+Toolbox is an index of tools developed by and
 for the Mozilla community.  Toolbox is not a hosting service -- it is a
 listing of tools which can live anywhere that are of use to Mozillians.
 
-It could also be used to track:
+It can also be used to track:
 
 * smart bookmarks
 * code snippets
 * webapps
 
-A tool will always have
+Each tool in the listing must provide the following attributes:
 
 * a *name* that uniquely identifies the tool
 * a text *description* of the tool
 * a canonical *URL* where you can find the tool
 
-Tools can also have a 'usage' for what it applies to
-(e.g. 'bugzilla'), a 'type' for what type of tool it is (e.g. 'addon'
-or 'webapp'), 'authors' with the names and links of the authors, and
-'languages' for what programming language the tool is written in.
+Toolbox also tracks several optional classifiers for each tool in its
+database.   The classifiers are described below.
 
 
 How to use Toolbox
 ------------------
 
 The `index page <./>`_ of toolbox lists all tools with the most
-recently updated first.  A tool has a name, a description, a URL, and a
-number of classifier fields.  Most everything is clickable.  Clicking on the
-description lets you edit the description which will be saved on
-blur. Hovering over the tool title or URL will display an
+recently updated first. All fields on a tool are clickable.  Clicking on the
+description lets you edit the description which will be saved after
+you finish editing it. Hovering over the tool title or URL will display an
 `edit button <http://universaleditbutton.org/>`_ which on clicking
 will allow you to edit the appropriate data.
 Clicking a URL, like `?author=harth <./?author=harth>`_ will give
@@ -57,11 +54,11 @@ Classifiers
 -----------
 
 Outside of the required fields (name, description, and URL), a tool
-has a number of classifier tags.  Out of the box, these fields are:
+has a number of classifier tags.  These fields are:
 
 * usage: what the tool is for
-* type: is the tool a particular definative kind of software such as an addon?
-* language: which computer languages the tool is written in
+* type: is the tool a particular kind of software such as an addon or a script?
+* language: which programming language the tool is written in
 * author: who wrote and/or maintains the software?
 
 You can freely add and remove classifiers for each project.
@@ -71,33 +68,15 @@ Autocomplete is enabled to help you find the classifier you want.
 TODO
 ----
 
-Toolbox features a fairly free form data format (a few required fields
-and an arbitrary number of classifiers). While this is a conceptually
-simplistic base, there is much that can be done with it! Several
-improvements are listed below:
+There is much more that we plan to add to Toolbox. The project source
+code may be found at https://github.com/mozilla/toolbox .
 
-* add scrapers for hosted tools:
-  * setup.py 
-  * AMO 
-  * mozdev 
-* allow projects to point to a setup.py or AMO URL
-* URLs in the description should be made links
-* calendar view for projects
-* make the /tags view useful
-* make fields computationable
-* integrate author with community phonebook (and bugzilla id)
+* add scrapers for hosted tools to automatically seed toolbox with data
+* integrate author with community phonebook and bugzilla id
 * the first time someone edits a description (etc.) from a pointed-to
   file (e.g. a setup.py) then the project should be notified
 * you should be able to edit a field, e.g. author.  Changing one field
   value should give the option to change all similar field values.
-* you should be able to drag a field from one classifier to
-  another. Doing so should prompt for doing this for all similar
-  values
-* you should be able to rename classifiers
-* it would be nice to point the description to a URL
-* front-ending single-button INSTALL (when applicable)
-* for the addons of particular types, there should be some correlation
-  and some sort of direction/help of what these are and why these are
 * a "Request a tool" link that functions like stack overflow; users
   can request a tool. If it does not exist, it gets turned into a
   bug. Users should also be able to point to a tool to answer the
@@ -105,6 +84,12 @@ improvements are listed below:
   requested tools and take ownership of them if desired
 * Similarly, users should be able to note similarity of tools and
   propose a consolidation strategy
+
+Oustanding issues are listed at
+https://bugzilla.mozilla.org/buglist.cgi?resolution=---&component=Toolbox&product=Webtools
+. Please file new bugs or feature requests at
+https://bugzilla.mozilla.org/enter_bug.cgi?product=Webtools&component=Toolbox
+or contact jhammel@mozilla.org or discuss in #ateam at irc.mozilla.org.
 
 
 Other Resources

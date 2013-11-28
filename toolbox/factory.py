@@ -3,6 +3,7 @@ import os
 from dispatcher import Dispatcher
 from paste.urlparser import StaticURLParser
 from pkg_resources import resource_filename
+from theslasher import TheSlasher
 
 class PassthroughFileserver(object):
     """serve files if they exist"""
@@ -14,34 +15,22 @@ class PassthroughFileserver(object):
 
     def __call__(self, environ, start_response):
         path = environ['PATH_INFO'].strip('/')
-        if path and os.path.exists(os.path.join(self.directory, path)):
+        if path and os.path.exists(os.path.join(self.directory, path)) and '..' not in path:
             return self.fileserver(environ, start_response)
         return self.app(environ, start_response)
 
 
-def paste_factory(global_conf, **app_conf):
+def paste_factory(global_conf=None, **app_conf):
     """create a webob view and wrap it in middleware"""
 
     keystr = 'toolbox.'
+    static_directory = app_conf.pop('static',
+                                    resource_filename(__name__, 'static'))
     args = dict([(key.split(keystr, 1)[-1], value)
                  for key, value in app_conf.items()
                  if key.startswith(keystr) ])
-    app = Dispatcher(**args)
-    return PassthroughFileserver(app, resource_filename(__name__, 'static'))
-
-try:
-    from relocator import Relocator
-    def relocator_factory(global_conf, **app_conf):
-        """
-        create a toolbox app that uses relocator to set outgoing Location headers:
-        http://k0s.org/hg/relocator
-        """
-        baseurl = app_conf.pop('baseurl')
-        app = paste_factory(global_conf, **app_conf)
-        return Relocator(app, baseurl)
-    
-except ImportError:
-    pass # relocator unvailable
+    app = TheSlasher(Dispatcher(**args))
+    return PassthroughFileserver(app, static_directory)
 
 def wsgiref_factory(host='0.0.0.0', port=8080):
     # for testing only

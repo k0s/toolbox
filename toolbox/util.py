@@ -7,6 +7,13 @@ try:
 except ImportError:
     import simplejson as json
 
+def strsplit(string):
+    """sensibly split a comma-separated string"""
+    string = string.strip()
+    if not string:
+        return []
+    return [i.strip() for i in string.split(',')]
+
 def strreplace(string, translation):
     """replace substrings from a translation matrix"""
     for key, value in translation.items():
@@ -16,8 +23,13 @@ def strreplace(string, translation):
 def str2filename(string):
     """converts a string to an acceptable filename"""
     matrix = {' ': '_',
-              '&': '',
+              '>': '',
+              '<': '',
+              "'": '',
+              '"': '',
+              '&': '+',
               '\\': '',
+              '\x00': '',
               '/': ''}
     return strreplace(string, matrix)
 

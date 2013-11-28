@@ -136,7 +136,7 @@
                 }
                 
                 /* Abort if onedit hook returns false. */
-                if (false === beforeedit.apply(this, [settings, self])) {
+                if (false === beforeedit.apply(this, [settings, self, e])) {
                    return;
                 }
                 
@@ -248,7 +248,7 @@
                 /* Attach 3rd party plugin if requested. */
                 plugin.apply(form, [settings, self]);
                 
-                onedit.apply(this, [settings, self])
+                onedit.apply(this, [settings, self, e])
                 
                 /* Focus to first visible form element. */
                 $(':input:visible:enabled:first', form).focus();

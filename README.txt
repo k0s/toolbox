@@ -250,7 +250,7 @@ Evolution
 Often, a piece software is presented as a state out of context (that
 is minus the evolution which led it to be and led it to look further
 out towards beyond the horizon).  While this is an interesting special
-effect for an art project, software being communication this 
+effect for an art project, software being communication this
 is only conducive to software in the darkest of black-box approaches.
 
 "Beers are like web frameworks: if they're not micro, you don't know
@@ -322,39 +322,19 @@ prior to feature extension which will become cost-prohibitive in
 time-critical situations where a one-off is (more) likely to be employed.
 
 
-TODO: Tool Sources
-------------------
+Use Cases
+---------
 
-In addition to manually indexed tools, toolbox is intended to harvest
-index data from distributed sources.  Several scrapers should be
-written and run on a scheduled basis (i.e. with a cron job or
-preferably something that could actually be reliably depended on and
-automatable via python).  Useful project sources are:
+The target use-case is software tools for Mozilla, or, more generally,
+a software index.  For this case, the default fields uses are given in
+the paste.ini file: usage, author, type, language. More fields may be
+added to the running instance in the future.
 
-* setup.py for python projects
-* addons.mozilla.org pages
-* OpenWebApps: https://developer.mozilla.org/en/OpenWebApps/The_Manifest
-* userscripts: e.g. https://www.squarefree.com/userscripts/tidybox.user.js
+However, the classifier classification can be used for a wide variety
+of web-locatable resources.  A few examples:
 
-
-TODO: (Alternate) Links
------------------------
-
-Currently, each tool has one canonical URL.
-Since toolbox is an index, this has the distinct advantage of
-associating a single URL with the project.  It is assumed that the
-linked-to resource should point to auxilliary resources as necessary.
-
-However, as an index is useful for correlating information --
-connecting the dots -- allowing a variety of links both allows the
-browser to have information at their fingertips, but also to allow
-mapping and intelligent manipulation of tools by their link types.
-Several types of links may be recorded:
-
-* repository
-* how to report bugs
-* wiki
-* pypi
+* songs: artist, album, genre, instruments
+* de.li.cio.us: type, media, author, site
 
 
 Resources

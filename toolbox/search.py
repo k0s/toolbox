@@ -2,12 +2,14 @@ import os
 import shutil
 import tempfile
 
+from time import sleep
 from whoosh import fields
 from whoosh import index
+from whoosh.query import And
 from whoosh.query import Or
 from whoosh.query import Term
-#from whoosh import store
 from whoosh.qparser import QueryParser
+from whoosh.store import LockError
 
 class WhooshSearch(object):
     """full-text search"""
@@ -31,7 +33,19 @@ class WhooshSearch(object):
     def update(self, name, description, **kw):
         """update a document"""
 
-        writer = self.ix.writer()
+        # forgivingly get the writer
+        timeout = 3. # seconds
+        ctr = 0.
+        incr = 0.2
+        while ctr < timeout:
+            try:
+                writer = self.ix.writer()
+                break
+            except LockError:
+                ctr += incr
+                sleep(incr)
+        else:
+            raise
 
         # add keywords
         for key in kw:
@@ -63,8 +77,27 @@ class WhooshSearch(object):
         query = unicode(query)
         query_parser = QueryParser("description", schema=self.ix.schema)
         myquery = query_parser.parse(query)
-        extendedquery = Or([myquery] +
-                           [Term(field, query) for field in self.keywords])
+
+# Old code: too strict
+#        extendedquery = Or([myquery] +
+#                           [Term(field, query) for field in self.keywords])
+
+
+        # New code: too permissive
+#        extendedquery = [myquery]
+        excluded = set(['AND', 'OR', 'NOT'])
+        terms = [i for i in query.split() if i not in excluded]
+#        for field in self.keywords:
+#            extendedquery.extend([Term(field, term) for term in terms])
+#        extendedquery = Or(extendedquery)
+
+        # Code should look something like
+        #Or([myquery] + [Or(
+        # extendedquery = [myquery]
+        extendedquery = And([Or([myquery] + [Term('description', term), Term('name', term)] +
+                                [Term(field, term) for field in self.keywords]) for term in terms])
+
+        # perform the search
         searcher = self.ix.searcher()
         return [i['name'] for i in searcher.search(extendedquery, limit=None)]
         

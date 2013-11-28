@@ -4,6 +4,7 @@ models for toolbox
 
 import couchdb
 import os
+import pyes
 import sys
 from copy import deepcopy
 from search import WhooshSearch
@@ -35,7 +36,7 @@ class ProjectsModel(object):
         """
         self.required = set(required)
 
-        # reserved fields        
+        # reserved fields
         self.reserved = self.required.copy()
         self.reserved.update(['modified']) # last modified, a computed value
         self.search = WhooshSearch(whoosh_index=whoosh_index)
@@ -70,6 +71,13 @@ class ProjectsModel(object):
         """export the current model to another model instance"""
         for project in self.get():
             other.update(project)
+
+    def rename_field_value(self, field, from_value, to_value):
+        projects = self.get(None, **{field: from_value})
+        for project in projects:
+            project[field].remove(from_value)
+            project[field].append(to_value)
+            self.update(project)
 
     ### implementor methods
 
@@ -120,23 +128,26 @@ class MemoryCache(ProjectsModel):
             return # nothing to do
         if not load:
             project['modified'] = time()
-        self._projects[project['name']] = deepcopy(project)
         if self._fields is None:
             fields = [i for i in project if i not in self.reserved]
             self.field_set.update(fields)
         else:
             fields = self._fields
         for field in fields:
-            for _set in self.index.get(field, {}).values():
+            for key, _set in self.index.get(field, {}).items():
                 _set.discard(project['name'])
+                if not _set:
+                    self.index[field].pop(key)
             if field not in project:
                 continue
+            project[field] = list(set([i.strip() for i in project[field] if i.strip()]))
             index = self.index.setdefault(field, {})
             values = project[field]
             if isinstance(values, basestring):
                 values = [values]
             for value in values:
                 index.setdefault(value, set()).update([project['name']])
+        self._projects[project['name']] = deepcopy(project)
         self.update_search(project)
         if not load:
             self.save(project)
@@ -153,8 +164,11 @@ class MemoryCache(ProjectsModel):
         else:
             results = self._projects.keys()
         results = set(results)
-        for key, value in query.items():
-            results.intersection_update(self.index.get(key, {}).get(value, set()))
+        for key, values in query.items():
+            if isinstance(values, basestring):
+                values = [values]
+            for value in values:
+                results.intersection_update(self.index.get(key, {}).get(value, set()))
         if order:
             # preserve search order
             results = sorted(list(results), key=lambda x: order[x])
@@ -166,7 +180,8 @@ class MemoryCache(ProjectsModel):
             return deepcopy(self._projects[name])
 
     def field_query(self, field):
-        return self.index.get(field)
+        if field in self.index:
+            return deepcopy(self.index.get(field))
 
     def delete(self, project):
         """
@@ -176,11 +191,11 @@ class MemoryCache(ProjectsModel):
         if project not in self._projects:
             return
         del self._projects[project]
-        for key, value in self.index.items():
-            if project in value:
-                if len(value) == 1:
-                    self._fields.pop(key)
-                value.pop(project)
+        for field, classifiers in self.index.items():
+            for key, values in classifiers.items():
+                classifiers[key].discard(project)
+                if not classifiers[key]:
+                    del classifiers[key]
         self.search.delete(project)
         
     def load(self):
@@ -229,8 +244,94 @@ class FileCache(MemoryCache):
         filename = self.files.get(project['name'])
         if not filename:
             filename = str2filename(project['name']) + '.json'
+        filename = filename.encode('ascii', 'ignore')
         filename = os.path.join(self.directory, filename)
-        file(filename, 'w').write(json.dumps(project))
+        try:
+            f = file(filename, 'w')
+        except Exception, e:
+            print filename, repr(filename)
+            raise
+        f.write(json.dumps(project))
+        f.close()
+
+
+class ElasticSearchCache(MemoryCache):
+    """
+    store json in ElasticSearch
+    """
+
+    def __init__(self,
+                 server="localhost:9200",
+                 es_index="toolbox",
+                 doc_type="projects",
+                 fields=None,
+                 whoosh_index=None):
+        self.es_index = es_index
+        self.doc_type = doc_type
+
+        try:
+            self.es = pyes.ES([server])
+            self.es.create_index(self.es_index)
+        except pyes.urllib3.connectionpool.MaxRetryError:
+            raise Exception("Could not connect to ES instance")
+        except pyes.exceptions.ElasticSearchException:
+            # this just means the index already exists
+            pass
+        MemoryCache.__init__(self, fields=fields, whoosh_index=whoosh_index)
+
+    def es_query(self, query):
+        """make an ElasticSearch query and return the results"""
+        search = pyes.Search(query)
+        results = self.es.search(query=search,
+                                 indexes=[self.es_index],
+                                 doc_types=[self.doc_type],
+                                 size=0)
+
+        # the first query is just used to determine the size of the set
+        if not 'hits' in results and not 'total' in results['hits']:
+            raise Exception("bad ES response %s" % json.dumps(results))
+        total = results['hits']['total']
+
+        # repeat the query to retrieve the entire set
+        results = self.es.search(query=search,
+                                 indexes=[self.es_index],
+                                 doc_types=[self.doc_type],
+                                 size=total)
+
+        if not 'hits' in results and not 'hits' in results['hits']:
+            raise Exception("bad ES response %s" % json.dumps(results))
+
+        return results
+
+    def load(self):
+        """load all json documents from ES:toolbox/projects"""
+        query = pyes.MatchAllQuery()
+        results = self.es_query(query)
+
+        for hit in results['hits']['hits']:
+            self.update(hit['_source'], True)
+
+    def save(self, project):
+        query = pyes.FieldQuery()
+        query.add('name', project['name'])
+        results = self.es_query(query)
+
+        # If there is an existing records in ES with the same
+        # project name, update that record.  Otherwise create a new record.
+        id = None
+        if results['hits']['hits']:
+            id = results['hits']['hits'][0]['_id']
+
+        self.es.index(project, self.es_index, self.doc_type, id)
+
+    def delete(self, project):
+        MemoryCache.delete(self, project)
+        query = pyes.FieldQuery()
+        query.add('name', project['name'])
+        results = self.es_query(query)
+        if results['hits']['hits']:
+            id = results['hits']['hits'][0]['_id']
+            self.es.delete(self.es_index, self.doc_type, id)
 
 
 class CouchCache(MemoryCache):
@@ -258,7 +359,10 @@ class CouchCache(MemoryCache):
         """load JSON objects from CouchDB docs"""
         for id in self.db:
             doc = self.db[id]
-            project = doc['project']
+            try:
+                project = doc['project']
+            except KeyError:
+                continue   # it's prob a design doc
             self.update(project, load=True)
             
     def save(self, project):
@@ -277,7 +381,8 @@ class CouchCache(MemoryCache):
 # directory of available models
 models = {'memory_cache': MemoryCache,
           'file_cache': FileCache,
-          'couch': CouchCache}
+          'couch': CouchCache,
+          'es': ElasticSearchCache}
 
 def convert(args=sys.argv[1:]):
     """CLI front-end for model conversion"""

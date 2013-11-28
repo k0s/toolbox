@@ -8,8 +8,10 @@ import doctest
 import os
 import shutil
 import sys
+from cgi import escape
 from optparse import OptionParser
 from paste.fixture import TestApp
+from time import time
 from toolbox.dispatcher import Dispatcher
 
 try:
@@ -33,6 +35,10 @@ class ToolboxTestApp(TestApp):
         kwargs.setdefault('params', {})['format'] = 'json'
         response = TestApp.get(self, url, **kwargs)
         return json.loads(response.body)
+
+    def new(self, **kwargs):
+        kwargs['form-render-date'] = str(time())
+        return self.post('/new', params=kwargs)
 
     def cleanup(self):
         pass
@@ -66,7 +72,6 @@ app_classes = {'memory_cache': ToolboxTestApp,
                'file_cache': FileCacheTestApp,
                'couch': CouchTestApp}
 
-
 def run_tests(app_class, raise_on_error=False, cleanup=True, report_first=False):
 
     results = {}
@@ -81,7 +86,7 @@ def run_tests(app_class, raise_on_error=False, cleanup=True, report_first=False)
         app = app_class()
 
         # doctest arguments
-        extraglobs = {'here': directory, 'app': app}
+        extraglobs = {'here': directory, 'app': app, 'urlescape': escape}
         doctest_args = dict(extraglobs=extraglobs, raise_on_error=raise_on_error)
         if report_first:
             doctest_args['optionflags'] = doctest.REPORT_ONLY_FIRST_FAILURE
