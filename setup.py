@@ -30,14 +30,15 @@ setup(name='toolbox',
       author_email='jhammel@mozilla.com',
       url='https://github.com/mozilla/toolbox',
       license="MPL",
-      packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
+      packages=['toolbox'],
       include_package_data=True,
       zip_safe=False,
       install_requires=dependencies,
       entry_points="""
       # -*- Entry points: -*-
       [console_scripts]
-      convert-toolbox-model = toolbox.model:convert
+      toolbox-convert-model = toolbox.model:convert
+      toolbox-serve = toolbox.factory:main
 
       [paste.app_factory]
       toolbox = toolbox.factory:paste_factory
