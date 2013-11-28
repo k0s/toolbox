@@ -9,7 +9,7 @@ from whoosh.query import And
 from whoosh.query import Or
 from whoosh.query import Term
 from whoosh.qparser import QueryParser
-from whoosh.store import LockError
+from whoosh.index import LockError
 
 class WhooshSearch(object):
     """full-text search"""

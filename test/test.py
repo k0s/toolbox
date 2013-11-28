@@ -5,6 +5,7 @@ doctest runner for toolbox
 """
 
 import doctest
+import json
 import os
 import shutil
 import sys
@@ -14,17 +15,13 @@ from paste.fixture import TestApp
 from time import time
 from toolbox.dispatcher import Dispatcher
 
-try:
-    import json
-except ImportError:
-    import simplejson as json
-
-# globals
+# global
 directory = os.path.dirname(os.path.abspath(__file__))
+
 
 class ToolboxTestApp(TestApp):
     """WSGI app wrapper for testing JSON responses"""
-    
+
     def __init__(self, **kw):
         dispatcher_args = dict(model_type='memory_cache', fields=('usage', 'author', 'type', 'language', 'dependencies'))
         dispatcher_args.update(kw)
@@ -43,6 +40,7 @@ class ToolboxTestApp(TestApp):
     def cleanup(self):
         pass
 
+
 class FileCacheTestApp(ToolboxTestApp):
     """test the MemoryCache file-backed backend"""
 
@@ -54,6 +52,7 @@ class FileCacheTestApp(ToolboxTestApp):
 
     def cleanup(self):
         shutil.rmtree(self.json_dir, ignore_errors=True)
+
 
 class CouchTestApp(ToolboxTestApp):
     """test the MemoryCache file-backed backend"""
@@ -72,18 +71,24 @@ app_classes = {'memory_cache': ToolboxTestApp,
                'file_cache': FileCacheTestApp,
                'couch': CouchTestApp}
 
-def run_tests(app_class, raise_on_error=False, cleanup=True, report_first=False):
+
+def run_tests(app_cls,
+              raise_on_error=False,
+              cleanup=True,
+              report_first=False,
+              output=sys.stdout):
 
     results = {}
 
     # gather tests
     tests =  [ test for test in os.listdir(directory)
                if test.endswith('.txt') ]
-        
+    output.write("Tests:\n%s\n" % '\n'.join(tests))
+
     for test in tests:
 
         # create an app
-        app = app_class()
+        app = app_cls()
 
         # doctest arguments
         extraglobs = {'here': directory, 'app': app, 'urlescape': escape}
@@ -101,8 +106,9 @@ def run_tests(app_class, raise_on_error=False, cleanup=True, report_first=False)
         finally:
             if cleanup:
                 app.cleanup()
-                
+
     return results
+
 
 def main(args=sys.argv[1:]):
 
@@ -117,7 +123,7 @@ def main(args=sys.argv[1:]):
     parser.add_option('--report-first', dest='report_first',
                       default=False, action='store_true',
                       help="report the first error only (all tests will still run)")
-    parser.add_option('--model', dest='model', default='file_cache', 
+    parser.add_option('--model', dest='model', default='file_cache',
                       help="model to use")
     options, args = parser.parse_args(args)
 
@@ -125,7 +131,7 @@ def main(args=sys.argv[1:]):
     kw = dict([(i, getattr(options, i)) for i in ('raise_on_error', 'cleanup', 'report_first')])
     if options.model is not None:
         try:
-            kw['app_class'] = app_classes[options.model]
+            kw['app_cls'] = app_classes[options.model]
         except KeyError:
             parser.error("Model '%s' unknown (choose from: %s)" % (options.model, app_classes.keys()))
 
@@ -134,6 +140,6 @@ def main(args=sys.argv[1:]):
     if sum([i.failed for i in results.values()]):
         sys.exit(1) # error
 
+
 if __name__ == '__main__':
     main()
-

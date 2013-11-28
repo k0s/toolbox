@@ -2,10 +2,10 @@ from setuptools import setup, find_packages
 
 try:
     description = file('README.txt').read()
-except IOError: 
+except IOError:
     description = ''
 
-version = "0.2"
+version = "0.2.1"
 
 # dependencies
 dependencies = [
@@ -13,17 +13,13 @@ dependencies = [
     'tempita',
     'paste',
     'pastescript', # technically optional, but here for ease of install
-    'whoosh',
+    'whoosh >= 2.5',
     'couchdb',
     'docutils',
     'pyloader',
     'theslasher',
     'pyes == 0.15',
     ]
-try:
-    import json
-except ImportError:
-    dependencies.append('simplejson')
 
 setup(name='toolbox',
       version=version,
@@ -42,9 +38,9 @@ setup(name='toolbox',
       # -*- Entry points: -*-
       [console_scripts]
       convert-toolbox-model = toolbox.model:convert
-      
+
       [paste.app_factory]
       toolbox = toolbox.factory:paste_factory
       """,
       )
-      
+
